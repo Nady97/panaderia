@@ -1,8 +1,14 @@
 
 @extends('layouts.app')
-<script src="https://cdn.tailwindcss.com"></script>
 @section('content')
 <div class="dashboard-container">
+
+    <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/src/style.css" rel="stylesheet">
+</head>
+
     <!-- Encabezado con saludo -->
     <x-card class="mb-3">
         <div class="p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
