@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite'
 
 
 export default defineConfig({
     plugins: [
+        tailwindcss(),
         laravel({
             // Agrega aquí todos los archivos CSS y JS que quieras compilar
             input: [
