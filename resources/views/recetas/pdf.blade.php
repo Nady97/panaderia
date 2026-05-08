@@ -85,10 +85,6 @@
             border-top: 1px solid #eee;
             padding-top: 10px;
         }
-        .no-ingredients-note {
-            font-size: 14px;
-            color: #666;
-        }
     </style>
 </head>
 <body>
@@ -138,7 +134,7 @@
             </tbody>
         </table>
     @else
-        <p class="no-ingredients-note">No se han especificado ingredientes para esta receta.</p>
+        <p style="font-size: 14px; color: #666;">No se han especificado ingredientes para esta receta.</p>
     @endif
 
     <h3 class="section-title">Instrucciones de Preparación</h3>

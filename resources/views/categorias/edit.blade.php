@@ -1,19 +1,10 @@
 @extends('layouts.app')
 
-{{-- 
-    -----------------------------------------------------------------------
-    ARCHIVO: resources/views/categorias/edit.blade.php
-    PROPÓSITO: Formulario de Edición de Categorías Existentes.
-    ARQUITECTURA: Utiliza componentes Blade (<x-card>, <x-input>, <x-textarea>) 
-                  para mantener diseño limpio y modular.
-    -----------------------------------------------------------------------
---}}
-
 @section('content')
 <div class="dashboard-container">
     <!-- Encabezado de Edición de Categoría -->
     <x-card class="mb-4">
-        <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-1">
                     <h2 class="fw-bold mb-0 text-main">
@@ -33,22 +24,22 @@
 
     <!-- Tarjeta Principal del Formulario -->
     <x-card>
-        <div class="card-body p-4">
-            <!-- Manejo Global de Errores de Validación -->
-            @if ($errors->any())
-                <div class="alert alert-danger-modern mb-4">
-                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
-                    <div class="w-100">
-                        <h6 class="fw-bold mb-2">Se encontraron los siguientes problemas:</h6>
-                        <ul class="mb-0 ps-3">
-                            @foreach ($errors->all() as $error)
-                                <li class="mb-1">{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+        <!-- Manejo Global de Errores de Validación -->
+        @if ($errors->any())
+            <div class="alert alert-danger-modern mb-4">
+                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
+                <div class="w-100">
+                    <h6 class="fw-bold mb-2">Se encontraron los siguientes problemas:</h6>
+                    <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                            <li class="mb-1">{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            @endif
+            </div>
+        @endif
 
+        <div class="card-body p-4 p-md-5">
             <form action="{{ route('categorias.update', $categoria->id) }}" method="POST" id="formEditarCategoria">
                 @csrf
                 @method('PUT')
@@ -61,12 +52,30 @@
                 <div class="row g-4 mb-5">
                     <!-- Campo: Nombre de la Categoría -->
                     <div class="col-md-6">
-                        <x-input name="nombre" label="Nombre de la Colección" icon='<i class="bi bi-fonts"></i>' required="true" value="{{ old('nombre', $categoria->nombre) }}" autocomplete="off" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Nombre de la Colección <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('nombre') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-fonts"></i></span>
+                            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre', $categoria->nombre) }}" required autocomplete="off">
+                        </div>
+                        @error('nombre')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Campo: Slug (Identificador URL) -->
                     <div class="col-md-6">
-                        <x-input name="slug" label="URL Amigable" icon='<i class="bi bi-link-45deg"></i>' value="{{ old('slug', $categoria->slug) }}" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            URL Amigable
+                        </label>
+                        <div class="input-group input-group-modern @error('slug') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                            <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug', $categoria->slug) }}">
+                        </div>
+                        @error('slug')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -78,7 +87,16 @@
                 <div class="row g-4 mb-4">
                     <!-- Campo: Descripción -->
                     <div class="col-12">
-                        <x-textarea name="descripcion" label="Descripción o Notas Adicionales" icon='<i class="bi bi-card-text"></i>' rows="3" value="{{ old('descripcion', $categoria->descripcion) }}" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Descripción o Notas Adicionales
+                        </label>
+                        <div class="input-group input-group-modern @error('descripcion') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                            <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" rows="3">{{ old('descripcion', $categoria->descripcion) }}</textarea>
+                        </div>
+                        @error('descripcion')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Campo: Estado Operativo Toggle -->
@@ -89,7 +107,7 @@
                                     <i class="bi bi-power text-muted me-2"></i>Estado de la Categoría
                                 </label>
                                 <!-- Switch modernizado -->
-                                <input class="form-check-input ms-3 mt-0" type="checkbox" role="switch" id="activo" name="activo" value="1" {{ old('activo', $categoria->activo) ? 'checked' : '' }} class="form-switch-lg cursor-pointer">
+                                <input class="form-check-input ms-3 mt-0" type="checkbox" role="switch" id="activo" name="activo" value="1" {{ old('activo', $categoria->activo) ? 'checked' : '' }} style="width: 3rem; height: 1.5rem; cursor: pointer;">
                             </div>
                         </div>
                         <div class="form-text mt-2 ms-1 text-muted"><i class="bi bi-info-circle me-1"></i>Si desactiva esta categoría, sus productos asociados podrían perder visibilidad en los catálogos públicos.</div>
@@ -101,7 +119,7 @@
                     <button type="button" class="btn btn-light-panaderia" onclick="window.history.back()">
                         <i class="bi bi-x-circle me-2"></i>Cancelar Cambios
                     </button>
-                    <button type="submit" class="btn btn-warning rounded-3 fw-semibold py-2 px-4 text-white">
+                    <button type="submit" class="btn btn-warning" style="border-radius: 10px; font-weight: 600; padding: 0.6rem 1.5rem; color: #fff;">
                         <i class="bi bi-save me-2"></i>Actualizar Datos
                     </button>
                 </div>
@@ -114,4 +132,3 @@
 @push('scripts')
     @vite(['resources/js/categorias.js'])
 @endpush
-

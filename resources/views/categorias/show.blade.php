@@ -4,7 +4,7 @@
 <div class="dashboard-container">
     <!-- Encabezado -->
     <x-card class="mb-4">
-        <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h2 class="fw-bold mb-1">
                     <i class="bi bi-tags me-2 text-gold-dark"></i>Catálogo: {{ $categoria->nombre }}
@@ -27,12 +27,12 @@
         <div class="card-body p-4">
             <form action="{{ route('categorias.show', $categoria->id) }}" method="GET" class="row g-3 align-items-end">
                 <div class="col-md-10">
-                    <label class="form-label fw-bold mb-2 text-main text-sm">
+                    <label class="form-label fw-bold mb-2 text-main" style="font-size: 0.9rem;">
                         <i class="bi bi-search me-1"></i> Buscar en "{{ $categoria->nombre }}"
                     </label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
-                        <input type="text" name="search" class="form-control" placeholder="Escribe el nombre del pan o producto..." value="{{ request('search') }}" autocomplete="off">
+                        <input type="text" name="search" class="form-control" placeholder="Escribe el nombre del pan o producto..." value="{{ request('request') }}">
                     </div>
                 </div>
                 <div class="col-md-2 text-end d-flex gap-2">
@@ -47,29 +47,29 @@
 
     <!-- Lista Detallada de Productos -->
     <x-card>
-        <div class="card-body p-4">
-            <div class="table-responsive m-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0 text-main">
-                    <thead class="bg-primary-custom border-bottom-custom border-2">
+                    <thead class="bg-main border-bottom border-color">
                         <tr>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted border-0">Producto</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted text-center border-0">Métricas (Precio/Costo)</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted text-center border-0">Stock en Almacén</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted text-center border-0">Estado Venta</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted text-end border-0">Acciones</th>
+                            <th class="py-3 px-4 text-muted fw-semibold text-uppercase" style="font-size: 0.85rem;">Producto</th>
+                            <th class="py-3 px-4 text-center text-muted fw-semibold text-uppercase" style="font-size: 0.85rem;">Métricas (Precio/Costo)</th>
+                            <th class="py-3 px-4 text-center text-muted fw-semibold text-uppercase" style="font-size: 0.85rem;">Stock en Almacén</th>
+                            <th class="py-3 px-4 text-center text-muted fw-semibold text-uppercase" style="font-size: 0.85rem;">Estado Venta</th>
+                            <th class="py-3 px-4 text-end text-muted fw-semibold text-uppercase" style="font-size: 0.85rem;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="border-top-0">
                         @forelse($productos as $producto)
-                        <tr class="border-bottom border-color" >
+                        <tr class="border-bottom border-color" style="transition: background 0.2s;">
                             <!-- Detalle del Producto -->
                             <td class="py-3 px-4">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="p-2 rounded d-flex align-items-center justify-content-center bg-main text-gold-dark border border-color w-40px h-40px">
-                                        <i class="bi bi-box-seam fs-5"></i>
+                                    <div class="p-2 rounded d-flex align-items-center justify-content-center bg-main text-gold-dark border border-color" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-box-seam" style="font-size: 1.2rem;"></i>
                                     </div>
                                     <div>
-                                        <div class="fw-bold text-main fs-6">
+                                        <div class="fw-bold text-main" style="font-size: 1rem;">
                                             {{ $producto->nombre }}
                                         </div>
                                     </div>
@@ -79,10 +79,10 @@
                             <!-- Métricas Financieras Básicas -->
                             <td class="py-3 px-4 text-center">
                                 <div class="d-flex flex-column align-items-center">
-                                    <span class="fw-bold text-success fs-6">
-                                        <i class="bi bi-tag-fill me-1 text-xs"></i>${{ number_format($producto->precio_venta, 2) }}
+                                    <span class="fw-bold text-success" style="font-size: 0.95rem;">
+                                        <i class="bi bi-tag-fill me-1" style="font-size: 0.8rem;"></i>${{ number_format($producto->precio_venta, 2) }}
                                     </span>
-                                    <span class="text-muted mt-1 text-xs" title="Costo de Producción">
+                                    <span class="text-muted mt-1" style="font-size: 0.8rem;" title="Costo de Producción">
                                        Costo: ${{ number_format($producto->precio_costo, 2) }}
                                     </span>
                                 </div>
@@ -91,21 +91,21 @@
                             <!-- Stock Lógico -->
                             <td class="py-3 px-4 text-center">
                                 @if($producto->stock > $producto->stock_minimo)
-                                    <x-badge type="success" class="rounded-2"><i class="bi bi-check-circle me-1"></i> {{ $producto->stock }} u.</x-badge>
+                                    <x-badge type="success" style="border-radius: 6px;"><i class="bi bi-check-circle me-1"></i> {{ $producto->stock }} u.</x-badge>
                                 @elseif($producto->stock > 0)
-                                    <x-badge type="warning" class="rounded-2" title="Stock mínimo: {{ $producto->stock_minimo }}"><i class="bi bi-exclamation-triangle me-1"></i> {{ $producto->stock }} u. (Bajo)</x-badge>
+                                    <x-badge type="warning" style="border-radius: 6px;" title="Stock mínimo: {{ $producto->stock_minimo }}"><i class="bi bi-exclamation-triangle me-1"></i> {{ $producto->stock }} u. (Bajo)</x-badge>
                                 @else
-                                    <x-badge type="danger" class="rounded-2"><i class="bi bi-x-octagon me-1"></i> Agotado (0)</x-badge>
+                                    <x-badge type="danger" style="border-radius: 6px;"><i class="bi bi-x-octagon me-1"></i> Agotado (0)</x-badge>
                                 @endif
-                                <div class="mt-1 text-muted text-xs">Mín. sugerido: {{ $producto->stock_minimo }}</div>
+                                <div class="mt-1 text-muted" style="font-size: 0.75rem;">Mín. sugerido: {{ $producto->stock_minimo }}</div>
                             </td>
 
                             <!-- Estado del producto -->
                             <td class="py-3 px-4 text-center">
                                 @if($producto->estado === 'activo')
-                                    <x-badge type="success" class="rounded-2"><i class="bi bi-circle-fill me-1 text-xs"></i>A la Venta</x-badge>
+                                    <x-badge type="success" style="border-radius: 6px;"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem"></i>A la Venta</x-badge>
                                 @else
-                                    <x-badge type="secondary" class="rounded-2"><i class="bi bi-circle me-1 text-xs"></i>Retirado</x-badge>
+                                    <x-badge type="secondary" style="border-radius: 6px;"><i class="bi bi-circle me-1" style="font-size:0.6rem"></i>Retirado</x-badge>
                                 @endif
                             </td>
 
@@ -123,9 +123,9 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-secondary">
+                            <td colspan="5" class="text-center py-5" style="color: var(--text-secondary);">
                                 <div class="mb-4 mt-3">
-                                    <i class="bi bi-box-seam text-muted display-4 opacity-50"></i>
+                                    <i class="bi bi-box-seam text-muted" style="font-size: 3.5rem; opacity: 0.3;"></i>
                                 </div>
                                 <h5 class="fw-normal mb-1">No se encontraron productos</h5>
                                 @if(request('search'))
@@ -165,6 +165,5 @@
 @push('scripts')
     @vite(['resources/js/categorias.js'])
 @endpush
-
 
 

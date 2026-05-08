@@ -40,7 +40,7 @@
         @endif
 
         <div class="card-body p-4 p-md-5">
-            <form method="POST" action="{{ route('productos.store') }}" id="formCrearProducto" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('productos.store') }}" id="formCrearProducto">
                 @csrf
 
                 <!-- Sección: Identificación y Clasificación -->
@@ -51,19 +51,37 @@
                 <div class="row g-4 mb-5">
                     <!-- Campo: Nombre del producto -->
                     <div class="col-md-6">
-                        <x-input name="nombre" label="Nombre del Pan o Producto" icon='<i class="bi bi-cup-hot"></i>' required="true" placeholder="Ej: Pan Francés Molde..." autocomplete="off" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Nombre del Pan o Producto <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('nombre') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-cup-hot"></i></span>
+                            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" required value="{{ old('nombre') }}" placeholder="Ej: Pan Francés Molde..." autocomplete="off">
+                        </div>
+                        @error('nombre')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Campo: Categoría -->
                     <div class="col-md-6">
-                        <x-select name="categoria_id" label="Familia o Categoría" icon='<i class="bi bi-tags"></i>'>
-                            <option value="">-- Seleccionar Categoría (Opcional) --</option>
-                            @foreach ($categorias as $categoria)
-                                <option value="{{ $categoria->id }}" {{ old('categoria_id', request('categoria_id')) == $categoria->id ? 'selected' : '' }}>
-                                    {{ $categoria->nombre }}
-                                </option>
-                            @endforeach
-                        </x-select>
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Familia o Categoría
+                        </label>
+                        <div class="input-group input-group-modern @error('categoria_id') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-tags"></i></span>
+                            <select name="categoria_id" class="form-select @error('categoria_id') is-invalid @enderror">
+                                <option value="">-- Seleccionar Categoría (Opcional) --</option>
+                                @foreach ($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}" {{ old('categoria_id', request('categoria_id')) == $categoria->id ? 'selected' : '' }}>
+                                        {{ $categoria->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('categoria_id')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -75,12 +93,30 @@
                 <div class="row g-4 mb-5">
                     <!-- Precio Costo -->
                     <div class="col-md-6">
-                        <x-input type="number" step="0.01" name="precio_costo" label="Precio de Producción (Costo)" required="true" icon='<span class="text-secondary fw-bold">Bs.</span>' placeholder="0.00" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Precio de Producción (Costo)
+                        </label>
+                        <div class="input-group input-group-modern @error('precio_costo') is-invalid @enderror">
+                            <span class="input-group-text text-secondary fw-bold">Bs.</span>
+                            <input type="number" step="0.01" name="precio_costo" class="form-control @error('precio_costo') is-invalid @enderror" value="{{ old('precio_costo') }}" placeholder="0.00">
+                        </div>
+                        @error('precio_costo')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Precio Venta -->
                     <div class="col-md-6">
-                        <x-input type="number" step="0.01" name="precio_venta" label="Precio Público (Venta)" required="true" icon='<span class="text-success fw-bold">Bs.</span>' placeholder="0.00" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Precio Público (Venta) <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('precio_venta') is-invalid @enderror">
+                            <span class="input-group-text text-success fw-bold">Bs.</span>
+                            <input type="number" step="0.01" name="precio_venta" class="form-control @error('precio_venta') is-invalid @enderror" required value="{{ old('precio_venta') }}" placeholder="0.00">
+                        </div>
+                        @error('precio_venta')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -92,25 +128,31 @@
                 <div class="row g-4 mb-4">
                     <!-- Stock Inicial -->
                     <div class="col-md-6">
-                        <x-input type="number" step="0.01" name="stock" label="Stock Físico Inicial" required="true" icon='<i class="bi bi-boxes"></i>' placeholder="Unidades actuales" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Stock Físico Inicial <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('stock') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                            <input type="number" step="0.01" name="stock" class="form-control @error('stock') is-invalid @enderror" required value="{{ old('stock') }}" placeholder="Unidades actuales">
+                        </div>
+                        @error('stock')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Stock Mínimo -->
                     <div class="col-md-6">
-                        <x-input type="number" step="0.01" name="stock_minimo" label="Alerta de Stock Mínimo" required="true" value="{{ old('stock_minimo', 5) }}" icon='<i class="bi bi-exclamation-triangle text-warning"></i>' />
-                        <div class="form-text mt-1 text-muted" style="margin-top: -15px;"><i class="bi bi-lightbulb me-1"></i> Notificará cuando queden pocas unidades.</div>
-                    </div>
-                </div>
-
-                <!-- Sección: Imagen -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center pt-3 border-top text-main">
-                    <i class="bi bi-image me-2 text-muted"></i> Imagen del Producto
-                </h5>
-
-                <div class="row g-4 mb-4">
-                    <div class="col-md-6">
-                        <x-input type="file" name="imagen" label="Fotografía o Miniatura" icon='<i class="bi bi-upload"></i>' accept="image/*" />
-                        <div class="form-text mt-1 text-muted"><i class="bi bi-image me-1"></i> Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 2 MB.</div>
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Alerta de Stock Mínimo
+                        </label>
+                        <div class="input-group input-group-modern @error('stock_minimo') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-exclamation-triangle text-warning"></i></span>
+                            <input type="number" step="0.01" name="stock_minimo" class="form-control @error('stock_minimo') is-invalid @enderror" value="{{ old('stock_minimo', 5) }}">
+                        </div>
+                        <div class="form-text mt-1 text-muted"><i class="bi bi-lightbulb me-1"></i> Notificará cuando queden pocas unidades.</div>
+                        @error('stock_minimo')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 

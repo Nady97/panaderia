@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-{{-- 
-    -----------------------------------------------------------------------
-    ARCHIVO: resources/views/proveedores/edit.blade.php
-    PROPÓSITO: Formulario para la edición de Proveedores.
-    ARQUITECTURA: Mantenimiento de legibilidad con Componentes Blade (<x-card>,
-                  <x-input>, <x-select>). Código DRY, uniforme a todo el ecosistema.
-    -----------------------------------------------------------------------
---}}
-
 @section('content')
 <div class="dashboard-container">
     <!-- Encabezado -->
@@ -43,50 +34,82 @@
                 
                 <div class="row g-4">
                     <div class="col-md-6 form-group">
-                        <x-input name="codigo_display" label="Código Identificador" disabled="true" icon='<i class="bi bi-hash text-muted"></i>' value="{{ $proveedor->codigo }}" />
-                        <small class="form-text mt-1 text-muted" style="display: block; margin-top: -15px;">El código del proveedor no puede modificarse.</small>
+                        <label class="form-label fw-bold mb-2" class="text-main">Código Identificador</label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-hash text-muted"></i></span>
+                            <input type="text" class="form-control fw-bold" value="{{ $proveedor->codigo }}" disabled>
+                        </div>
+                        <small class="form-text mt-1">El código del proveedor no puede modificarse.</small>
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <x-input name="empresa" label="Nombre de la Empresa" required="true" maxlength="60" icon='<i class="bi bi-building text-muted"></i>' value="{{ old('empresa', $proveedor->empresa) }}" />
+                        <label class="form-label fw-bold mb-2" class="text-main">Nombre de la Empresa <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-building text-muted"></i></span>
+                            <input type="text" name="empresa" class="form-control" value="{{ old('empresa', $proveedor->empresa) }}" required maxlength="60">
+                        </div>
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <x-input name="nombre_contacto" label="Nombre del Contacto" required="true" maxlength="60" icon='<i class="bi bi-person text-muted"></i>' value="{{ old('nombre_contacto', $proveedor->nombre_contacto) }}" />
+                        <label class="form-label fw-bold mb-2" class="text-main">Nombre del Contacto <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-person text-muted"></i></span>
+                            <input type="text" name="nombre_contacto" class="form-control" value="{{ old('nombre_contacto', $proveedor->nombre_contacto) }}" required maxlength="60">
+                        </div>
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <x-input name="nit" label="NIT / RUC" maxlength="20" icon='<i class="bi bi-card-text text-muted"></i>' value="{{ old('nit', $proveedor->nit) }}" />
+                        <label class="form-label fw-bold mb-2" class="text-main">NIT / RUC</label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-card-text text-muted"></i></span>
+                            <input type="text" name="nit" class="form-control" value="{{ old('nit', $proveedor->nit) }}" maxlength="20">
+                        </div>
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <x-input name="telefono" label="Teléfono" required="true" maxlength="15" icon='<i class="bi bi-telephone text-muted"></i>' value="{{ old('telefono', $proveedor->telefono) }}" />
+                        <label class="form-label fw-bold mb-2" class="text-main">Teléfono <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-telephone text-muted"></i></span>
+                            <input type="text" name="telefono" class="form-control" value="{{ old('telefono', $proveedor->telefono) }}" required maxlength="15">
+                        </div>
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <x-input type="email" name="email" label="Correo Electrónico" maxlength="100" icon='<i class="bi bi-envelope text-muted"></i>' value="{{ old('email', $proveedor->email) }}" />
+                        <label class="form-label fw-bold mb-2" class="text-main">Correo Electrónico</label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-envelope text-muted"></i></span>
+                            <input type="email" name="email" class="form-control" value="{{ old('email', $proveedor->email) }}" maxlength="100">
+                        </div>
                     </div>
 
                     <div class="col-md-8 form-group">
-                        <x-input name="direccion" label="Dirección" maxlength="255" icon='<i class="bi bi-geo-alt text-muted"></i>' value="{{ old('direccion', $proveedor->direccion) }}" />
+                        <label class="form-label fw-bold mb-2" class="text-main">Dirección</label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-geo-alt text-muted"></i></span>
+                            <input type="text" name="direccion" class="form-control" value="{{ old('direccion', $proveedor->direccion) }}">
+                        </div>
                     </div>
 
                     <div class="col-md-4 form-group">
-                        <x-select name="estado" label="Estado" required="true" icon='<i class="bi bi-circle-square text-muted"></i>'>
-                            <option value="activo" {{ old('estado', $proveedor->estado) == 'activo' ? 'selected' : '' }}>Activo</option>
-                            <option value="suspendido" {{ old('estado', $proveedor->estado) == 'suspendido' ? 'selected' : '' }}>Suspendido</option>
-                            <option value="inactivo" {{ old('estado', $proveedor->estado) == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
-                        </x-select>
+                        <label class="form-label fw-bold mb-2" class="text-main">Estado <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-circle-square text-muted"></i></span>
+                            <select name="estado" class="form-select" required>
+                                <option value="activo" {{ old('estado', $proveedor->estado) == 'activo' ? 'selected' : '' }}>Activo</option>
+                                <option value="suspendido" {{ old('estado', $proveedor->estado) == 'suspendido' ? 'selected' : '' }}>Suspendido</option>
+                                <option value="inactivo" {{ old('estado', $proveedor->estado) == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <hr class="my-4">
+                <hr my-4>
                 
                 <div class="d-flex justify-content-end gap-3 mt-4">
                     <a href="{{ route('proveedores.index') }}" class="btn btn-light-panaderia text-nowrap">
                         Cancelar
                     </a>
-                    <button type="submit" class="btn btn-gold-panaderia" style="border-radius: 10px; padding: 0.6rem 1.5rem; background: var(--gold-light); color: #fff; border: 1px solid var(--gold-dark);">
+                    <button type="submit" class="btn btn-gold-panaderia">
                         <i class="bi bi-arrow-repeat me-1"></i> Actualizar Proveedor
                     </button>
                 </div>
@@ -94,5 +117,6 @@
         </div>
     </x-card>
 </div>
+
 
 @endsection

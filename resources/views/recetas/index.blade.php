@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-{{-- 
-    -----------------------------------------------------------------------
-    ARCHIVO: resources/views/recetas/index.blade.php
-    PROPÓSITO: Listado principal del módulo de Recetas.
-    ARQUITECTURA: Mantenimiento de legibilidad con Componentes Blade (<x-card>).
-                  Código DRY, uniforme a todo el ecosistema.
-    -----------------------------------------------------------------------
---}}
-
 @section('content')
 <div class="dashboard-container">
     <!-- Encabezado de Recetas -->

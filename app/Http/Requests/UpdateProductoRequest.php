@@ -30,8 +30,8 @@ class UpdateProductoRequest extends FormRequest
             'stock' => 'required|numeric|min:0',
             'stock_minimo' => 'required|numeric|min:0',
             'estado' => 'required|string|in:activo,agotado,descontinuado',
-            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'categoria_id' => 'nullable|integer|exists:categorias,id',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'categoria_id' => 'nullable|integer',
         ];
     }
 }

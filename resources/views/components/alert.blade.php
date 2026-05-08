@@ -16,7 +16,7 @@
         default => 'alert-success-modern bg-success-subtle text-success border border-success'
     };
 @endphp
-<div {{ $attributes->merge(['class' => 'alert alert-modern alert-rounded-strong ' . $alertClass . ' alert-dismissible fade show']) }} role="alert">
+<div {{ $attributes->merge(['class' => 'alert alert-modern ' . $alertClass . ' alert-dismissible fade show']) }} role="alert" style="border-radius: 12px; font-weight: 500;">
     <i class="bi {{ $icon }} me-2"></i>{{ $slot }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>

@@ -111,9 +111,9 @@
             <x-card class="h-100">
                 <div class="card-body p-4">
                     <div class="text-center mb-4 pb-4 border-bottom border-color">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-main rounded-4 mb-3 overflow-hidden" style="width: 160px; height: 160px; border: 4px solid var(--bg-card); box-shadow: 0 0 0 2px var(--gold-dark);">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-main rounded-circle mb-3" style="width: 120px; height: 120px; border: 4px solid var(--bg-card); box-shadow: 0 0 0 2px var(--gold-dark);">
                             @if($producto->imagen)
-                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid" style="width: 100%; height: 100%; object-fit: contain; background: var(--bg-card); padding: 10px;">
+                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
                                 <i class="bi bi-image text-gold-dark" style="font-size: 3rem;"></i>
                             @endif

@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-{{-- 
-    -----------------------------------------------------------------------
-    ARCHIVO: resources/views/produccion/show.blade.php
-    PROPÓSITO: Vista de solo lectura para detallar una Orden de Producción.
-    ARQUITECTURA: Mantenimiento de legibilidad con Componentes Blade (<x-card>).
-                  Muestra trazabilidad, desglose de insumos y estados.
-    -----------------------------------------------------------------------
---}}
-
 @section('content')
 <div class="dashboard-container p-4 animate-fade-in">
     
@@ -25,7 +16,7 @@
                 <i class="bi bi-arrow-left me-1"></i> Volver
             </a>
             @if($produccion->estado !== 'completado')
-            <a href="{{ route('produccion.edit', $produccion->id) }}" class="btn btn-gold-panaderia shadow-sm" style="border-radius: 10px; padding: 0.6rem 1.5rem; background: var(--gold-light); color: #fff; border: 1px solid var(--gold-dark);">
+            <a href="{{ route('produccion.edit', $produccion->id) }}" class="btn btn-primary-panaderia shadow-sm">
                 <i class="bi bi-pencil me-1"></i> Editar Orden
             </a>
             @endif

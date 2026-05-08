@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-{{-- 
-    -----------------------------------------------------------------------
-    ARCHIVO: resources/views/produccion/index.blade.php
-    PROPÓSITO: Listado principal del módulo de Producción.
-    ARQUITECTURA: Mantenimiento de legibilidad con Componentes Blade (<x-card>).
-                  Código DRY, uniforme a todo el ecosistema.
-    -----------------------------------------------------------------------
---}}
-
 @section('content')
 <div class="dashboard-container">
     <!-- Encabezado -->
@@ -36,20 +27,20 @@
                     <input type="hidden" name="estado" value="{{ request('estado') }}">
                 @endif
                 <div class="col-md-7">
-                    <label class="form-label fw-bold mb-2 text-main text-sm">
+                    <label class="form-label fw-bold mb-2 text-main" style="font-size: 0.9rem;">
                         <i class="bi bi-search me-1"></i> Buscar Orden
                     </label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-arrow-repeat"></i></span>
-                        <input type="text" name="search" class="form-control" placeholder="Buscar por lote, producto o descripción..." value="{{ request('search') }}" autocomplete="off">
-                        <button type="submit" class="btn btn-gold-panaderia px-4"><i class="bi bi-search"></i></button>
+                        <input type="text" name="search" class="form-control" placeholder="Buscar por lote, producto o descripción..." value="{{ request('search') }}">
+                        <button type="submit" class="btn btn-gold-panaderia px-4"><i class="bi bi-search text-white"></i></button>
                         @if(request()->has('search') || request()->has('estado'))
-                            <a href="{{ route('produccion.index') }}" class="btn btn-light-panaderia" title="Limpiar"><i class="bi bi-x-circle"></i></a>
+                            <a href="{{ route('produccion.index') }}" class="btn btn-light-panaderia" title="Limpiar"><i class="bi bi-x-circle text-danger"></i></a>
                         @endif
                     </div>
                 </div>
                 <div class="col-md-5 text-md-end">
-                    <label class="form-label fw-bold mb-2 text-main text-start w-100 text-md-end text-sm">
+                    <label class="form-label fw-bold mb-2 text-main text-start w-100 text-md-end" style="font-size: 0.9rem;">
                         <i class="bi bi-funnel me-1"></i> Filtrar por Estado
                     </label>
                     <div class="btn-group w-100" role="group">
@@ -77,22 +68,22 @@
 
     <!-- Tabla Principal de Produccion Paginada -->
     <x-card>
-        <div class="card-body p-4">
-            <div class="table-responsive m-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0 text-main">
-                    <thead class="bg-primary-custom border-bottom-custom border-2">
+                    <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted border-0">Lote</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted border-0">Producto</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted border-0">Cantidad</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted border-0">Fecha Programada</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted border-0">Estado</th>
-                            <th class="py-3 px-4 fw-semibold text-sm text-uppercase text-muted text-end border-0">Acciones</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Lote</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Producto</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Cantidad</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Fecha Programada</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado</th>
+                            <th class="py-3 px-4 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($producciones as $produccion)
-                            <tr class="border-bottom-custom transition-bg">
+                            <tr class="border-bottom-modern" style="transition: background 0.2s;">
                                 {{-- Lote --}}
                                 <td class="py-3 px-4">
                                     <span class="fw-bold" style="font-family: monospace; font-size: 0.95rem;">

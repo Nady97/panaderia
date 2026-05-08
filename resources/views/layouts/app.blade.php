@@ -49,15 +49,16 @@
 
 <body>
 
-<aside class="sidebar shadow-sm">
+<aside class="sidebar">
     <div class="sidebar-brand">
         <h5 class="d-flex align-items-center justify-content-start gap-2 mb-0">
-            <div class="d-flex align-items-center justify-content-center rounded" style="width: 36px; height: 36px; background: var(--gold-light); color: var(--bg-sidebar);">
+            <div class="d-flex align-items-center justify-content-center rounded" 
+            style="width: 36px; height: 36px; background: var(--gold-light); color: var(--bg-sidebar);">
                 <i class="bi bi-box-seam" style="font-size: 1.1rem;"></i>
             </div>
-            <span class="ms-1 fw-bold">Gestión</span>
+            <span class="ms-1">Gestión</span>
         </h5>
-        <small class="mt-2 d-block" style="color: var(--sidebar-text-secondary); opacity: 0.8;">Panel Administrativo</small>
+        <small class="mt-2" style="color: var(--sidebar-text-secondary); opacity: 0.8;">Panel Administrativo</small>
     </div>
     
     <ul class="nav-menu">
@@ -67,7 +68,7 @@
             </a>
         </li>
 
-        <div class="sidebar-heading">Inventario</div>
+        <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Inventario</div>
         <li class="nav-item">
             <a href="{{ url('/productos') }}" class="nav-link {{ request()->is('productos*') ? 'active' : '' }}">
                 <i class="bi bi-box"></i> <span>Productos</span>
@@ -89,7 +90,7 @@
             </a>
         </li>
         
-        <div class="sidebar-heading">Administración</div>
+        <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Administración</div>
         <li class="nav-item">
             <a href="{{ url('/proveedores') }}" class="nav-link {{ request()->is('proveedores*') ? 'active' : '' }}">
                 <i class="bi bi-truck"></i> <span>Proveedores</span>
@@ -101,7 +102,7 @@
             </a>
         </li>
 
-        <div class="sidebar-heading">Cuenta</div>
+        <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Cuenta</div>
         <li class="nav-item">
             <a href="{{ url('/perfil') }}" class="nav-link {{ request()->is('perfil') ? 'active' : '' }}">
                 <i class="bi bi-person"></i> <span>Mi Perfil</span>
@@ -109,10 +110,10 @@
         </li>
     </ul>
     
-    <div class="sidebar-footer border-top border-border-color">
+    <div class="sidebar-footer">
         <form method="POST" action="{{ url('/logout') }}">
             @csrf
-            <button type="submit" class="logout-btn w-100 d-flex align-items-center justify-content-center gap-2">
+            <button type="submit" class="logout-btn">
                 <i class="bi bi-box-arrow-left"></i> <span>Cerrar Sesión</span>
             </button>
         </form>
@@ -130,17 +131,12 @@
 </main>
 
 <script>
-    // MEJORA 3: Sistema Global de Notificaciones UX (SweetAlert2)
-    // Extraemos la información generada en el Backend (Ej. with('success', '...'))
     window.ServerData = {
         success: @json(session('success')),
         error: @json(session('error')),
         hasErrors: @json($errors->any() ? true : false)
     };
 </script>
-
-<!-- Importamos SweetAlert2 para Notificaciones Profesionales -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Botón de modo oscuro nativo -->
 <button class="theme-toggle" id="themeToggle" title="Cambiar Apariencia">
@@ -149,51 +145,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- MEJORA 2: Carga de Javascript Modular y Optimizada -->
-<!-- Script Base General -->
 @stack('scripts')
-<!-- Script Específico de la Vista (Si existe) mediante Vite -->
-@if(isset($page_js))
-    @vite(['resources/js/' . $page_js])
-@endif
-
-<script>
-    // Lógica Global para lanzar alertas UX (SweetAlert) instantáneas al usuario
-    document.addEventListener("DOMContentLoaded", () => {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-
-        if (window.ServerData.success) {
-            Toast.fire({ icon: 'success', title: window.ServerData.success });
-        }
-        if (window.ServerData.error) {
-            Toast.fire({ icon: 'error', title: window.ServerData.error });
-        }
-        if (window.ServerData.hasErrors) {
-            Toast.fire({ icon: 'warning', title: 'Por favor, corrige los errores del formulario.' });
-        }
-    });
-
-    // Pequeño script para el botn de modo oscuro
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark-mode');
-            const isDark = document.documentElement.classList.contains('dark-mode');
-            document.documentElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-    }
-</script>
 
 </body>
 </html>

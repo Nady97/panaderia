@@ -109,7 +109,7 @@
         <div class="card-body p-4">
             <form class="row g-3 align-items-end" id="filterForm">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold mb-2 text-main" style="font-size: 0.9rem;">
+                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">
                         <i class="bi bi-search me-1"></i> Filtrar Productos
                     </label>
                     <div class="input-group input-group-modern">
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold mb-2 text-main" style="font-size: 0.9rem;">Filtrar por Stock</label>
+                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">Filtrar por Stock</label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-funnel"></i></span>
                         <select id="filterStock" class="form-select">
@@ -144,33 +144,22 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                 <thead class="border-bottom-modern border-2">
                     <tr>
-                        <th class="py-3 px-4 text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">#</th>
-                        <th class="py-3 px-4 text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Imagen</th>
-                        <th class="py-3 px-4 text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Producto</th>
-                        <th class="py-3 px-4 text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Precio</th>
-                        <th class="py-3 px-4 text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Stock</th>
-                        <th class="py-3 px-4 text-center text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Estado</th>
-                        <th class="py-3 px-4 text-end text-muted" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Acciones</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">#</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Producto</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Precio</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Stock</th>
+                        <th class="py-3 px-4 text-center" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado</th>
+                        <th class="py-3 px-4 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
                     </tr>
                 </thead>
                 <tbody >
                     @forelse($productos as $index => $producto)
-                    <tr class="producto-fila border-bottom-modern" style="transition: background 0.2s;"
+                    <tr class="producto-fila" class="border-bottom-modern" style="transition: background 0.2s;"
                         data-stock="{{ $producto->stock }}" 
                         data-nombre="{{ strtolower($producto->nombre) }}" data-precio="{{ $producto->precio_venta }}" data-itera="{{ $loop->iteration }}"
-                        data-stock-minimo="{{ $producto->stock_minimo ?? 5 }}"
                         data-estado="{{ $producto->estado }}">
                         
                         <td class="py-3 px-4">{{ $loop->iteration }}</td>
-                        <td class="py-3 px-4">
-                            <div class="d-flex align-items-center justify-content-center rounded-3 overflow-hidden" style="width: 56px; height: 56px; background: var(--bg-input); border: 1px solid var(--border-color);">
-                                @if($producto->imagen)
-                                    <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: contain; background: var(--bg-card); padding: 4px;">
-                                @else
-                                    <i class="bi bi-image text-muted fs-4"></i>
-                                @endif
-                            </div>
-                        </td>
                         <td class="py-3 px-4">
                             <span class="fw-medium text-main">
                                 {{ $producto->nombre }}
@@ -219,7 +208,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="p-0 border-0">
+                        <td colspan="6" class="p-0 border-0">
                             <x-empty-state 
                                 icon="bi-box-seam" 
                                 title="No hay productos registrados" 
@@ -243,3 +232,7 @@
 @push('scripts')
     @vite(['resources/js/productos.js'])
 @endpush
+
+
+
+

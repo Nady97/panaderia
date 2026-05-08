@@ -125,7 +125,7 @@
                                 default => 'secondary'
                             };
                         @endphp
-                        <x-badge type="{{ $rolColorClass }}" class="badge-lg-compact">
+                        <x-badge type="{{ $rolColorClass }}" style="font-size: 0.95rem; padding: 8px 16px;">
                             {!! $rolIcono !!} {{ $nombreRol }}
                         </x-badge>
                     </div>

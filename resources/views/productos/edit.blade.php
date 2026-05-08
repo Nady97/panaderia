@@ -40,7 +40,7 @@
         @endif
 
         <div class="card-body p-4 p-md-5">
-            <form method="POST" action="{{ route('productos.update', $producto->id) }}" id="formEditarProducto" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('productos.update', $producto->id) }}" id="formEditarProducto">
                 @csrf
                 @method('PUT')
 
@@ -52,21 +52,37 @@
                 <div class="row g-4 mb-5">
                     <!-- Campo: Nombre del producto -->
                     <div class="col-md-6">
-                        <!-- MEJORA: Implementando Componente x-input para consistencia UI/UX -->
-                        <x-input name="nombre" label="Nombre del Pan o Producto" required="true" icon='<i class="bi bi-cup-hot"></i>' value="{{ old('nombre', $producto->nombre) }}" placeholder="Ej: Pan Francés Molde..." />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Nombre del Pan o Producto <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('nombre') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-cup-hot"></i></span>
+                            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" required value="{{ old('nombre', $producto->nombre) }}" placeholder="Ej: Pan Francés Molde..." autocomplete="off">
+                        </div>
+                        @error('nombre')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Campo: Categoría -->
                     <div class="col-md-6">
-                        <!-- MEJORA: Implementando el nuevo Componente x-select para estructurar Dropdowns -->
-                        <x-select name="categoria_id" label="Familia o Categoría" icon='<i class="bi bi-tags"></i>'>
-                            <option value="">-- Sin Categoría --</option>
-                            @foreach ($categorias as $categoria)
-                                <option value="{{ $categoria->id }}" {{ old('categoria_id', $producto->categoria_id) == $categoria->id ? 'selected' : '' }}>
-                                    {{ $categoria->nombre }}
-                                </option>
-                            @endforeach
-                        </x-select>
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Familia o Categoría
+                        </label>
+                        <div class="input-group input-group-modern @error('categoria_id') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-tags"></i></span>
+                            <select name="categoria_id" class="form-select @error('categoria_id') is-invalid @enderror">
+                                <option value="">-- Sin Categoría --</option>
+                                @foreach ($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}" {{ old('categoria_id', $producto->categoria_id) == $categoria->id ? 'selected' : '' }}>
+                                        {{ $categoria->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('categoria_id')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -78,12 +94,30 @@
                 <div class="row g-4 mb-5">
                     <!-- Precio Costo -->
                     <div class="col-md-6">
-                        <x-input type="number" step="0.01" name="precio_costo" label="Precio de Producción (Costo)" icon='<span class="text-secondary fw-bold">Bs.</span>' value="{{ old('precio_costo', $producto->precio_costo) }}" placeholder="0.00" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Precio de Producción (Costo)
+                        </label>
+                        <div class="input-group input-group-modern @error('precio_costo') is-invalid @enderror">
+                            <span class="input-group-text text-secondary fw-bold">Bs.</span>
+                            <input type="number" step="0.01" name="precio_costo" class="form-control @error('precio_costo') is-invalid @enderror" value="{{ old('precio_costo', $producto->precio_costo) }}" placeholder="0.00">
+                        </div>
+                        @error('precio_costo')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Precio Venta -->
                     <div class="col-md-6">
-                        <x-input type="number" step="0.01" name="precio_venta" label="Precio Público (Venta)" required="true" icon='<span class="text-success fw-bold">Bs.</span>' value="{{ old('precio_venta', $producto->precio_venta) }}" placeholder="0.00" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Precio Público (Venta) <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('precio_venta') is-invalid @enderror">
+                            <span class="input-group-text text-success fw-bold">Bs.</span>
+                            <input type="number" step="0.01" name="precio_venta" class="form-control @error('precio_venta') is-invalid @enderror" required value="{{ old('precio_venta', $producto->precio_venta) }}" placeholder="0.00">
+                        </div>
+                        @error('precio_venta')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -95,47 +129,49 @@
                 <div class="row g-4 mb-4">
                     <!-- Stock Actual -->
                     <div class="col-md-4">
-                        <x-input type="number" step="0.01" name="stock" label="Stock Físico Actual" required="true" icon='<i class="bi bi-boxes"></i>' value="{{ old('stock', $producto->stock) }}" />
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Stock Físico Actual <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('stock') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                            <input type="number" step="0.01" name="stock" class="form-control @error('stock') is-invalid @enderror" required value="{{ old('stock', $producto->stock) }}">
+                        </div>
+                        @error('stock')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Stock Mínimo -->
                     <div class="col-md-4">
-                        <x-input type="number" step="0.01" name="stock_minimo" label="Alerta de Stock Mínimo" icon='<i class="bi bi-exclamation-triangle text-warning"></i>' value="{{ old('stock_minimo', $producto->stock_minimo) }}" />
-                        <div class="form-text text-muted" style="margin-top: -15px;"><i class="bi bi-lightbulb me-1"></i> Notificará cuando queden pocas unidades.</div>
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Alerta de Stock Mínimo
+                        </label>
+                        <div class="input-group input-group-modern @error('stock_minimo') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-exclamation-triangle text-warning"></i></span>
+                            <input type="number" step="0.01" name="stock_minimo" class="form-control @error('stock_minimo') is-invalid @enderror" value="{{ old('stock_minimo', $producto->stock_minimo) }}">
+                        </div>
+                        <div class="form-text mt-1 text-muted"><i class="bi bi-lightbulb me-1"></i> Notificará cuando queden pocas unidades.</div>
+                        @error('stock_minimo')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
 					
                     <!-- Estado del Producto -->
                     <div class="col-md-4">
-                        <x-select name="estado" label="Estado del Producto" required="true" icon='<i class="bi bi-toggle-on"></i>'>
-                            <option value="activo" {{ old('estado', $producto->estado) == 'activo' ? 'selected' : '' }}>Activo (En Venta)</option>
-                            <option value="agotado" {{ old('estado', $producto->estado) == 'agotado' ? 'selected' : '' }}>Agotado (Sin Stock)</option>
-                            <option value="descontinuado" {{ old('estado', $producto->estado) == 'descontinuado' ? 'selected' : '' }}>Descontinuado (Oculto)</option>
-                        </x-select>
-                    </div>
-                </div>
-
-                <!-- Sección: Imagen -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center pt-3 border-top text-main">
-                    <i class="bi bi-image me-2 text-muted"></i> Imagen del Producto
-                </h5>
-
-                <div class="row g-4 mb-4 align-items-end">
-                    <div class="col-md-6">
-                        <x-input type="file" name="imagen" label="Actualizar Fotografía" icon='<i class="bi bi-upload"></i>' accept="image/*" />
-                        <div class="form-text mt-1 text-muted"><i class="bi bi-image me-1"></i> Si no subes una nueva imagen, se conserva la actual.</div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="p-3 rounded border" style="background: var(--bg-input); border-color: var(--border-color) !important;">
-                            <span class="d-block text-muted small text-uppercase fw-bold mb-2">Imagen actual</span>
-                            @if($producto->imagen)
-                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid rounded" style="max-height: 120px; object-fit: contain; background: var(--bg-card); width: 100%; padding: 8px;">
-                            @else
-                                <div class="text-center text-muted py-4">
-                                    <i class="bi bi-image fs-1 d-block mb-2"></i>
-                                    Sin imagen
-                                </div>
-                            @endif
+                        <label class="form-label fw-semibold mb-2 text-main">
+                            Estado del Producto <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-modern @error('estado') is-invalid @enderror">
+                            <span class="input-group-text"><i class="bi bi-toggle-on"></i></span>
+                            <select name="estado" class="form-select @error('estado') is-invalid @enderror" required>
+                                <option value="activo" {{ old('estado', $producto->estado) == 'activo' ? 'selected' : '' }}>Activo (En Venta)</option>
+                                <option value="agotado" {{ old('estado', $producto->estado) == 'agotado' ? 'selected' : '' }}>Agotado (Sin Stock)</option>
+                                <option value="descontinuado" {{ old('estado', $producto->estado) == 'descontinuado' ? 'selected' : '' }}>Descontinuado (Oculto)</option>
+                            </select>
                         </div>
+                        @error('estado')
+                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 

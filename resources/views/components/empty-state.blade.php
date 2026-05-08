@@ -14,7 +14,7 @@
     </div>
     
     <h4 class="empty-state-title fw-bold mb-2">{{ $title }}</h4>
-    <p class="empty-state-desc mb-4 mx-auto max-w-400">
+    <p class="empty-state-desc mb-4 mx-auto" style="max-width: 400px;">
         {{ $description }}
     </p>
 
