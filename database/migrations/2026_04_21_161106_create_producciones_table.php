@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         // 1. Creamos la estructura básica SIN la llave foránea inicial
-        Schema::create('producciones', function (Blueprint $table) {
+        Schema::createIfNotExists('producciones', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
 
