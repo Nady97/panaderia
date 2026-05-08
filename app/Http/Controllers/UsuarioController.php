@@ -1,0 +1,173 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Usuario;
+use App\Models\Rol;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
+class UsuarioController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = Usuario::with('rol');
+
+        // Búsqueda por nombre, email o código
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('codigo', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtro por Rol
+        if ($request->filled('rol_id') && $request->rol_id !== 'all') {
+            $query->where('rol_id', $request->rol_id);
+        }
+
+        $usuarios = $query->paginate(10)->withQueryString();
+
+        $roles = Rol::all();
+        $totalUsuarios = Usuario::count();
+
+        $conteoPorRolId = Usuario::select('rol_id', DB::raw('count(*) as total'))
+            ->groupBy('rol_id')
+            ->pluck('total', 'rol_id');
+
+        $totalAdministradores = 0;
+        $totalCajeros = 0;
+        $totalPanaderos = 0;
+        $totalProveedores = 0;
+        $totalClientes = 0;
+        $totalPorRol = [];
+
+        foreach ($roles as $rol) {
+            $cantidad = $conteoPorRolId->get($rol->id, 0);
+
+            if ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') {
+                $cantidad = \App\Models\Proveedor::count();
+            }
+
+            $totalPorRol[$rol->slug] = $cantidad;
+
+            switch ($rol->nombre) {
+                case 'Administrador': $totalAdministradores = $cantidad; break;
+                case 'Cajero': $totalCajeros = $cantidad; break;
+                case 'Cocinero / Panadero': $totalPanaderos = $cantidad; break;
+                case 'Proveedor': $totalProveedores = $cantidad; break;
+                case 'Cliente': $totalClientes = $cantidad; break;
+            }
+        }
+
+        return view('usuarios.index', compact(
+            'usuarios', 'totalUsuarios', 'totalAdministradores',
+            'totalCajeros', 'totalPanaderos', 'totalProveedores',
+            'totalClientes', 'roles', 'totalPorRol'
+        ));
+    }
+
+    public function show($codigo)
+    {
+        $usuario = Usuario::with('rol')->where('codigo', $codigo)->firstOrFail();
+        return view('usuarios.show', compact('usuario'));
+    }
+
+    public function create()
+    {
+        $roles = Rol::all();
+        return view('usuarios.create', compact('roles'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'codigo' => 'required|string|unique:usuarios',
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios',
+            'password' => 'required|min:6',
+            'telefono' => 'nullable|string|max:20',
+            'direccion' => 'nullable|string|max:255',
+            'sexo' => 'nullable|in:M,F',
+            'rol_id' => 'required|exists:roles,id',
+        ]);
+
+        Usuario::create([
+            'codigo' => $request->codigo,
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'telefono' => $request->telefono,
+            'direccion' => $request->direccion,
+            'sexo' => $request->sexo,
+            'rol_id' => $request->rol_id,
+        ]);
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente');
+    }
+
+    public function edit($codigo)
+    {
+        $usuarioActual = auth()->user();
+        if (!$usuarioActual->rol || $usuarioActual->rol->nombre !== 'Administrador') {
+            return redirect()->route('usuarios.index')->with('error', 'Acceso denegado: Solo los administradores pueden editar usuarios.');
+        }
+
+        $usuario = Usuario::with('rol')->where('codigo', $codigo)->firstOrFail();
+        $roles = Rol::all();
+
+        return view('usuarios.edit', compact('usuario', 'roles'));
+    }
+
+    public function update(Request $request, $codigo)
+    {
+        $usuario = Usuario::where('codigo', $codigo)->firstOrFail();
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email,' . $codigo . ',codigo',
+            'telefono' => 'nullable|string|max:20',
+            'direccion' => 'nullable|string|max:255',
+            'sexo' => 'nullable|in:M,F',
+            'rol_id' => 'required|exists:roles,id',
+            'password' => 'nullable|min:6',
+        ]);
+
+        $usuario->update([
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'direccion' => $request->direccion,
+            'sexo' => $request->sexo,
+            'rol_id' => $request->rol_id,
+        ]);
+
+        if ($request->filled('password')) {
+            $usuario->password = Hash::make($request->password);
+            $usuario->save();
+        }
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente');
+    }
+
+    public function destroy($codigo)
+    {
+        $usuarioActual = auth()->user();
+
+        if (!$usuarioActual->rol || $usuarioActual->rol->nombre !== 'Administrador') {
+            return redirect()->route('usuarios.index')->with('error', 'Acceso denegado: Solo los administradores pueden eliminar usuarios.');
+        }
+
+        if ($usuarioActual->codigo === $codigo) {
+            return redirect()->route('usuarios.index')->with('error', 'No puedes eliminar tu propia cuenta activamente.');
+        }
+
+        $usuario = Usuario::where('codigo', $codigo)->firstOrFail();
+        $usuario->delete();
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente');
+    }
+}
