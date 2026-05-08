@@ -1,5 +1,6 @@
-@extends('layouts.app')
 
+@extends('layouts.app')
+<script src="https://cdn.tailwindcss.com"></script>
 @section('content')
 <div class="dashboard-container">
     <!-- Encabezado con saludo -->
