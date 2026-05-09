@@ -1,103 +1,127 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5">
-    <x-card>
-        <div class="p-4 flex flex-wrap items-center justify-between gap-4">
+<div class="dashboard-container">
+    <!-- Encabezado de Productos -->
+    <x-card class="mb-4">
+        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-                <h2 class="text-xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-                    <i class="bi bi-box-seam text-[var(--gold-dark)]"></i> Gestion de Productos
-                </h2>
-                <p class="text-sm text-[var(--text-muted)]">Bienvenida, <strong>{{ auth()->user()->nombre ?? 'Usuario' }}</strong></p>
+                <h2 class="fw-bold mb-1 text-main"><i class="bi bi-box-seam me-2 text-gold"></i> Gestión de Productos</h2>
+                <p class="mb-0 text-muted">Bienvenida, <strong>{{ auth()->user()->nombre ?? 'Usuario' }}</strong></p>
             </div>
-            <div class="flex items-center gap-3">
-                <div class="text-right">
-                    <p class="text-lg font-bold text-[var(--text-primary)]">{{ $productos->count() }}</p>
-                    <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Total Productos</p>
-                </div>
-                <a href="{{ url('/productos/create') }}" class="inline-flex items-center gap-2 rounded-xl bg-[var(--btn-bg)] px-4 py-2.5 text-sm font-semibold text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]">
-                    <i class="bi bi-plus-circle"></i> Nuevo Producto
+            <div>
+                        <h3 class="fw-bold mb-0 text-main">{{ $productos->count() }}</h3>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Productos</p>
+                    </div>
+            <div class="d-flex gap-3 align-items-center flex-wrap">
+                <a href="{{ url('/productos/create') }}" class="btn btn-primary-panaderia text-nowrap">
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
                 </a>
             </div>
         </div>
     </x-card>
 
-    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        <x-card class="h-full">
-            <div class="p-4 flex items-center gap-3">
-                <div class="h-12 w-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
-                    <i class="bi bi-check-circle text-xl"></i>
-                </div>
-                <div>
-                    <p class="text-lg font-bold text-[var(--text-primary)]">{{ $productos->where('estado', 'activo')->count() }}</p>
-                    <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Productos Activos</p>
-                </div>
-            </div>
-        </x-card>
-        <x-card class="h-full">
-            <div class="p-4 flex items-center gap-3">
-                <div class="h-12 w-12 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
-                    <i class="bi bi-exclamation-triangle text-xl"></i>
-                </div>
-                <div>
-                    @php
-                        $stockBajo = $productos->filter(function($p) {
-                            $minimo = (float)$p->stock_minimo > 0 ? (float)$p->stock_minimo : 5;
-                            return (float)$p->stock <= $minimo && (float)$p->stock > 0;
-                        })->count();
-                    @endphp
-                    <p class="text-lg font-bold text-[var(--text-primary)]">{{ $stockBajo }}</p>
-                    <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Stock Bajo</p>
-                </div>
-            </div>
-        </x-card>
-        <x-card class="h-full">
-            <div class="p-4 flex items-center gap-3">
-                <div class="h-12 w-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
-                    <i class="bi bi-x-circle text-xl"></i>
-                </div>
-                <div>
-                    @php
-                        $agotados = $productos->where('stock', 0)->count();
-                    @endphp
-                    <p class="text-lg font-bold text-[var(--text-primary)]">{{ $agotados }}</p>
-                    <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Agotados</p>
-                </div>
-            </div>
-        </x-card>
-        <x-card class="h-full">
-            <div class="p-4 flex items-center gap-3">
-                <div class="h-12 w-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
-                    <i class="bi bi-x-circle text-xl"></i>
-                </div>
-                <div>
-                    @php
-                        $descontinuados = $productos->where('estado', 'descontinuado')->count();
-                    @endphp
-                    <p class="text-lg font-bold text-[var(--text-primary)]">{{ $descontinuados }}</p>
-                    <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Descontinuados</p>
-                </div>
-            </div>
-        </x-card>
-    </div>
-
-    <x-card>
-        <div class="p-4">
-            <form class="grid gap-4 md:grid-cols-12 items-end" id="filterForm">
-                <div class="md:col-span-6">
-                    <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">
-                        <i class="bi bi-search mr-1"></i> Filtrar Productos
-                    </label>
-                    <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
-                        <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-box"></i></span>
-                        <input type="text" id="searchInput" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" placeholder="Escribe el nombre del producto...">
+    <!-- Tarjetas de resumen -->
+    <div class="row g-3 mb-4">
+        <!--
+        <div class="col-md-3 col-sm-6">
+            <x-card class="h-100 d-flex align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="p-3 me-3" style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; color: var(--gold-dark);">
+                        <i class="bi bi-box-seam fs-2"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0 text-main">{{ $productos->count() }}</h3>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Productos</p>
                     </div>
                 </div>
-                <div class="md:col-span-4">
-                    <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Filtrar por Stock</label>
-                    <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
-                        <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-funnel"></i></span>
-                        <select id="filterStock" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none">
+            </x-card>
+        </div>
+    -->
+        <div class="col-md-3 col-sm-6">
+            <x-card class="h-100 d-flex align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="p-3 me-3" style="background: rgba(16, 185, 129, 0.1); border-radius: 12px; color: var(--success);">
+                        <i class="bi bi-check-circle fs-2"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0 text-main">{{ $productos->where('estado', 'activo')->count() }}</h3>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Productos Activos</p>
+                    </div>
+                </div>
+            </x-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <x-card class="h-100 d-flex align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="p-3 me-3" style="background: rgba(245, 158, 11, 0.1); border-radius: 12px; color: #f59e0b;">
+                        <i class="bi bi-exclamation-triangle fs-2"></i>
+                    </div>
+                    <div>
+                        @php
+                            $stockBajo = $productos->filter(function($p) {
+                                $minimo = (float)$p->stock_minimo > 0 ? (float)$p->stock_minimo : 5;
+                                return (float)$p->stock <= $minimo && (float)$p->stock > 0;
+                            })->count();
+                        @endphp
+                        <h3 class="fw-bold mb-0 text-main">{{ $stockBajo }}</h3>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Stock Bajo</p>
+                    </div>
+                </div>
+            </x-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <x-card class="h-100 d-flex align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="p-3 me-3" style="background: rgba(220, 38, 38, 0.1); border-radius: 12px; color: var(--danger);">
+                        <i class="bi bi-x-circle fs-2"></i>
+                    </div>
+                    <div>
+                        @php
+                            $agotados = $productos->where('stock', 0)->count();
+                        @endphp
+                        <h3 class="fw-bold mb-0 text-main">{{ $agotados }}</h3>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Agotados</p>
+                    </div>
+                </div>
+            </x-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <x-card class="h-100 d-flex align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="p-3 me-3" style="background: rgba(220, 38, 38, 0.1); border-radius: 12px; color: var(--danger);">
+                        <i class="bi bi-x-circle fs-2"></i>
+                    </div>
+                    <div>
+                        @php
+                            $descontinuados = $productos->where('estado', 'descontinuado')->count();
+                        @endphp
+                        <h3 class="fw-bold mb-0 text-main">{{ $descontinuados }}</h3>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Descontinuados</p>
+                    </div>
+                </div>
+            </x-card>
+        </div>
+    </div>
+
+    <!-- Barra de Búsqueda y Filtros -->
+    <x-card class="mb-4">
+        <div class="card-body p-4">
+            <form class="row g-3 align-items-end" id="filterForm">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">
+                        <i class="bi bi-search me-1"></i> Filtrar Productos
+                    </label>
+                    <div class="input-group input-group-modern">
+                        <span class="input-group-text"><i class="bi bi-box"></i></span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Escribe el nombre del producto...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">Filtrar por Stock</label>
+                    <div class="input-group input-group-modern">
+                        <span class="input-group-text"><i class="bi bi-funnel"></i></span>
+                        <select id="filterStock" class="form-select">
                             <option value="all">Todos los productos</option>
                             <option value="active">Solo activos</option>
                             <option value="low">Stock bajo</option>
@@ -105,92 +129,110 @@
                         </select>
                     </div>
                 </div>
-                <div class="md:col-span-2 flex gap-2">
-                    <button type="button" class="inline-flex w-full items-center justify-center rounded-xl bg-[var(--btn-bg)] px-3 py-2 text-sm font-semibold text-[var(--btn-text)] hover:bg-[var(--btn-hover)]" id="searchBtn"><i class="bi bi-search"></i></button>
-                    <button type="button" class="inline-flex w-full items-center justify-center rounded-xl border border-[var(--border-color)] px-3 py-2 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-input)]" onclick="location.reload()" title="Refrescar"><i class="bi bi-arrow-repeat"></i></button>
+                <div class="col-md-2 text-end d-flex gap-2">
+                    <button type="button" class="btn btn-gold-panaderia w-100" id="searchBtn"><i class="bi bi-search"></i></button>
+                    <button type="button" class="btn btn-light-panaderia w-100" onclick="location.reload()" title="Refrescar"><i class="bi bi-arrow-repeat"></i></button>
                 </div>
             </form>
         </div>
     </x-card>
 
+    <!-- Tabla Principal de Productos -->
     <x-card>
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-[var(--text-primary)]">
-                <thead class="border-b border-[var(--border-color)] text-xs uppercase tracking-wide text-[var(--text-muted)]">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-main">
+                <thead class="border-bottom-modern border-2">
                     <tr>
-                        <th class="px-4 py-3 text-left">#</th>
-                        <th class="px-4 py-3 text-left">Producto</th>
-                        <th class="px-4 py-3 text-left">Precio</th>
-                        <th class="px-4 py-3 text-left">Stock</th>
-                        <th class="px-4 py-3 text-center">Estado</th>
-                        <th class="px-4 py-3 text-right">Acciones</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">#</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Producto</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Precio</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Stock</th>
+                        <th class="py-3 px-4 text-center" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado</th>
+                        <th class="py-3 px-4 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-[var(--border-color)]">
-                    @forelse($productos as $producto)
-                        <tr class="producto-fila" data-stock="{{ $producto->stock }}" data-nombre="{{ strtolower($producto->nombre) }}" data-precio="{{ $producto->precio_venta }}" data-itera="{{ $loop->iteration }}" data-estado="{{ $producto->estado }}">
-                            <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-3 font-medium">{{ $producto->nombre }}</td>
-                            <td class="px-4 py-3">Bs {{ number_format($producto->precio_venta, 2) }}</td>
-                            <td class="px-4 py-3">
-                                @php
-                                    $minimo = (float)$producto->stock_minimo > 0 ? (float)$producto->stock_minimo : 5;
-                                @endphp
-                                @if((float)$producto->stock <= 0)
-                                    <x-badge type="danger" title="Minimo: {{ $minimo }} uds"><i class="bi bi-x-circle mr-1"></i> {{ $producto->stock }}</x-badge>
-                                @elseif((float)$producto->stock <= $minimo)
-                                    <x-badge type="warning" title="Minimo: {{ $minimo }} uds"><i class="bi bi-exclamation-triangle mr-1"></i> {{ $producto->stock }}</x-badge>
-                                @else
-                                    <x-badge type="success" title="Minimo: {{ $minimo }} uds"><i class="bi bi-check-circle mr-1"></i> {{ $producto->stock }}</x-badge>
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-center">
-                                @if($producto->estado == 'activo')
-                                    <x-badge type="success">Activo</x-badge>
-                                @elseif($producto->estado == 'agotado')
-                                    <x-badge type="danger">Agotado</x-badge>
-                                @else
-                                    <x-badge type="secondary">Descontinuado</x-badge>
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <a href="{{ route('productos.show', $producto->id) }}" class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-green-50 text-green-700 hover:bg-green-100" title="Ver Detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a href="{{ route('productos.edit', $producto->id) }}" class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-yellow-50 text-yellow-700 hover:bg-yellow-100" title="Editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="form-delete" data-confirm-text="¿Esta seguro de que desea eliminar el producto {{ $producto->nombre }}?">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 text-red-700 hover:bg-red-100" title="Eliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                <tbody >
+                    @forelse($productos as $index => $producto)
+                    <tr class="producto-fila" class="border-bottom-modern" style="transition: background 0.2s;"
+                        data-stock="{{ $producto->stock }}" 
+                        data-nombre="{{ strtolower($producto->nombre) }}" data-precio="{{ $producto->precio_venta }}" data-itera="{{ $loop->iteration }}"
+                        data-estado="{{ $producto->estado }}">
+                        
+                        <td class="py-3 px-4">{{ $loop->iteration }}</td>
+                        <td class="py-3 px-4">
+                            <span class="fw-medium text-main">
+                                {{ $producto->nombre }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4">Bs {{ number_format($producto->precio_venta, 2) }}</td>
+                        <td class="py-3 px-4">
+                            @php
+                                $minimo = (float)$producto->stock_minimo > 0 ? (float)$producto->stock_minimo : 5;
+                            @endphp
+                            <!-- Estado de Stock con Componente Badge -->
+                            @if((float)$producto->stock <= 0)
+                                <x-badge type="danger" title="Mínimo: {{ $minimo }} uds"><i class="bi bi-x-circle me-1"></i> {{ $producto->stock }}</x-badge>
+                            @elseif((float)$producto->stock <= $minimo)
+                                <x-badge type="warning" title="Mínimo: {{ $minimo }} uds"><i class="bi bi-exclamation-triangle me-1"></i> {{ $producto->stock }}</x-badge>
+                            @else
+                                <x-badge type="success" title="Mínimo: {{ $minimo }} uds"><i class="bi bi-check-circle me-1"></i> {{ $producto->stock }}</x-badge>
+                            @endif
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            @if($producto->estado == 'activo')
+                                <x-badge type="success">Activo</x-badge>
+                            @elseif($producto->estado == 'agotado')
+                                <x-badge type="danger">Agotado</x-badge>
+                            @else
+                                <x-badge type="secondary">Descontinuado</x-badge>
+                            @endif
+                        </td>
+                        <td class="py-3 px-4 text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm action-btn action-btn-success" title="Ver Detalles">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm action-btn action-btn-info" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline form-delete" data-confirm-text="¿Está seguro de que desea eliminar el producto {{$producto->nombre}}?">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm action-btn action-btn-danger" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" class="p-0">
-                                <x-empty-state
-                                    icon="bi-box-seam"
-                                    title="No hay productos registrados"
-                                    description="Aun no tienes productos en tu catalogo de panaderia."
-                                    buttonLabel="Agregar primer producto"
-                                    :buttonRoute="url('/productos/create')"
-                                />
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="6" class="p-0 border-0">
+                            <x-empty-state 
+                                icon="bi-box-seam" 
+                                title="No hay productos registrados" 
+                                description="Aún no tienes productos en tu catálogo de la panadería. Empieza a registrar tus productos aquí."
+                                buttonLabel="Agregar primer producto"
+                                :buttonRoute="url('/productos/create')" 
+                            />
+                        </td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+        </div>
     </x-card>
 </div>
+
+
 @endsection
 
 @push('scripts')
     @vite(['resources/js/productos.js'])
 @endpush
+
+
+
+

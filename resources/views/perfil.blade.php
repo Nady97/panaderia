@@ -1,114 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5 bg-[var(--bg-primary)]">
-
-    {{-- ENCABEZADO --}}
-    <x-card>
-        <div class="flex justify-between items-center flex-wrap gap-3 p-4">
+<div class="dashboard-container">
+    <!-- Encabezado -->
+    <x-card class="mb-3">
+        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-                <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2 text-[var(--text-primary)]">
-                    <i class="bi bi-person-circle text-[var(--gold-dark)]"></i>Mi Perfil
+                <h2 class="fw-bold mb-1 text-main">
+                    <i class="me-2 text-gold"></i>Mi Perfil
                 </h2>
-                <p class="text-sm text-[var(--text-muted)]">Gestiona tu información personal y configuración de cuenta</p>
+                <p class="mb-0 text-muted">Gestiona tu información personal y configuración de cuenta</p>
             </div>
-            <a href="{{ url('/dashboard') }}" 
-               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-color)] hover:bg-[var(--bg-input)] hover:border-[var(--gold-dark)]">
-                <i class="bi bi-arrow-left"></i> Volver al Dashboard
-            </a>
+            <div class="d-flex gap-3 align-items-center flex-wrap">
+                <a href="{{ url('/dashboard') }}" class="btn btn-light-panaderia text-nowrap">
+                    <i class="bi bi-arrow-left me-1"></i> Volver al Dashboard
+                </a>
+            </div>
         </div>
     </x-card>
 
-    {{-- MENSAJES --}}
+    <!-- Mensajes de éxito/error -->
     @if(session('success'))
         <x-alert type="success" class="mb-4">{{ session('success') }}</x-alert>
     @endif
+
     @if($errors->any())
         <x-alert type="error" class="mb-4">{{ $errors->first() }}</x-alert>
     @endif
 
-    {{-- CONTENIDO PRINCIPAL --}}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
-        {{-- COLUMNA IZQUIERDA: INFO DE CONTACTO --}}
-        <div class="lg:col-span-5">
-            <x-card>
-                <div class="p-4">
-                    {{-- Avatar y Nombre --}}
-                    <div class="text-center mb-5 pb-5 border-b border-[var(--border-color)]">
-                        <div class="w-36 h-36 rounded-full overflow-hidden mx-auto mb-4" 
-                             class="border-4 border-[var(--border-color)] shadow-[var(--shadow-md)]">
-                            @if($usuario->imagen)
-                                <img src="{{ asset('storage/' . $usuario->imagen) }}" alt="{{ $usuario->nombre }}" class="w-full h-full object-cover">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center text-4xl font-extrabold bg-[var(--bg-input)] text-[var(--text-muted)]">
-                                    {{ strtoupper(substr($usuario->nombre, 0, 1)) }}
-                                </div>
-                            @endif
+    <div class="row g-4">
+        <!-- Columna Izquierda: Información de Contacto -->
+        <div class="col-lg-5 mb-4 mb-md-0">
+            <x-card class="h-100" border-0 shadow-sm rounded-4>
+                <!-- Avatar y Nombre -->
+                <div class="text-center mb-4 pb-4 border-bottom border-border-color">
+                    <div class="avatar-profile">
+    @if($usuario->imagen)
+        <img 
+            src="{{ asset('storage/' . $usuario->imagen) }}" 
+            alt="{{ $usuario->nombre }}"
+        >
+    @else
+        {{ strtoupper(substr($usuario->nombre, 0, 1)) }}
+    @endif
+</div>
+                    <h4 class="fw-bold mb-1 text-main">{{ $usuario->nombre }}</h4>
+                    <x-badge type="warning" class="rounded-pill shadow-sm px-3 py-2 mt-2">
+                        <i class="bi bi-shield-check me-1"></i> {{ $rolNombre ?? 'Administrador' }}
+                    </x-badge>
+                </div>
+
+                <h5 class="fw-bold mb-4 text-main">
+                    <i class="bi bi-person-lines-fill me-2 text-gold"></i> Detalles de Contacto
+                </h5>
+                
+                <div class="d-flex flex-column gap-3">
+                    <div class="detail-box p-3 rounded">
+                        <div class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Correo electrónico</div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-medium text-main"><i class="bi bi-envelope me-2 text-muted"></i>{{ $usuario->email }}</span>
+                            <i class="bi bi-check-circle-fill text-success" title="Verificado"></i>
                         </div>
-                        <h3 class="text-xl font-extrabold mb-2 text-[var(--text-primary)]">{{ $usuario->nombre }}</h3>
-                        <x-badge type="warning" class="rounded-full px-4 py-1.5 text-sm font-semibold inline-flex items-center gap-1">
-                            <i class="bi bi-shield-check"></i> {{ $rolNombre ?? 'Administrador' }}
-                        </x-badge>
                     </div>
 
-                    <h4 class="text-lg font-bold mb-4 flex items-center gap-2 text-[var(--text-primary)]">
-                        <i class="bi bi-person-lines-fill text-[var(--gold-dark)]"></i> Detalles de Contacto
-                    </h4>
-                    
-                    <div class="space-y-2">
-                        {{-- Email --}}
-                        <div class="p-3.5 rounded-xl transition-all duration-200 hover:bg-[rgba(210,150,75,0.04)]">
-                            <p class="text-xs uppercase tracking-wider font-semibold mb-1 text-[var(--text-muted)]">Correo electrónico</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium flex items-center gap-2 text-[var(--text-primary)]">
-                                    <i class="bi bi-envelope text-[var(--text-muted)]"></i>{{ $usuario->email }}
-                                </span>
-                                <i class="bi bi-check-circle-fill text-green-600" title="Verificado"></i>
+                    <div class="detail-box p-3 rounded">
+                        <div class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Teléfono</div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-medium text-main">
+                                <i class="bi bi-telephone me-2 text-muted"></i>{{ $usuario->telefono ?? 'No registrado' }}
+                            </span>
+                            @if($usuario->telefono)
+                                <i class="bi bi-check-circle text-success" title="Confirmado"></i>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="detail-box p-3 rounded">
+                        <div class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Dirección</div>
+                        <div class="fw-medium text-main">
+                            <i class="bi bi-geo-alt me-2 text-muted"></i>{{ $usuario->direccion ?? 'No registrada' }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="detail-box p-3 rounded h-100">
+                                <div class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Miembro desde</div>
+                                <div class="fw-medium text-main">
+                                    <i class="bi bi-calendar-check me-2 text-muted"></i>{{ $usuario->created_at ? $usuario->created_at->format('d/m/Y') : date('d/m/Y') }}
+                                </div>
                             </div>
                         </div>
-
-                        {{-- Teléfono --}}
-                        <div class="p-3.5 rounded-xl transition-all duration-200 hover:bg-[rgba(210,150,75,0.04)]">
-                            <p class="text-xs uppercase tracking-wider font-semibold mb-1 text-[var(--text-muted)]">Teléfono</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium flex items-center gap-2 text-[var(--text-primary)]">
-                                    <i class="bi bi-telephone text-[var(--text-muted)]"></i>{{ $usuario->telefono ?? 'No registrado' }}
-                                </span>
-                                @if($usuario->telefono)
-                                    <i class="bi bi-check-circle text-green-600"></i>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- Dirección --}}
-                        <div class="p-3.5 rounded-xl transition-all duration-200 hover:bg-[rgba(210,150,75,0.04)]">
-                            <p class="text-xs uppercase tracking-wider font-semibold mb-1 text-[var(--text-muted)]">Dirección</p>
-                            <p class="text-sm font-medium flex items-center gap-2 text-[var(--text-primary)]">
-                                <i class="bi bi-geo-alt text-[var(--text-muted)]"></i>{{ $usuario->direccion ?? 'No registrada' }}
-                            </p>
-                        </div>
-
-                        {{-- Miembro desde + Sexo --}}
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="p-3.5 rounded-xl transition-all duration-200 hover:bg-[rgba(210,150,75,0.04)]">
-                                <p class="text-xs uppercase tracking-wider font-semibold mb-1 text-[var(--text-muted)]">Miembro desde</p>
-                                <p class="text-sm font-medium flex items-center gap-2 text-[var(--text-primary)]">
-                                    <i class="bi bi-calendar-check text-[var(--text-muted)]"></i>
-                                    {{ $usuario->created_at ? $usuario->created_at->format('d/m/Y') : date('d/m/Y') }}
-                                </p>
-                            </div>
-                            <div class="p-3.5 rounded-xl transition-all duration-200 hover:bg-[rgba(210,150,75,0.04)]">
-                                <p class="text-xs uppercase tracking-wider font-semibold mb-1 text-[var(--text-muted)]">Sexo</p>
-                                <p class="text-sm font-medium flex items-center gap-2 text-[var(--text-primary)]">
+                        <div class="col-6">
+                            <div class="detail-box p-3 rounded h-100">
+                                <div class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Sexo</div>
+                                <div class="fw-medium text-main">
                                     @if($usuario->sexo == 'M')
-                                        <i class="bi bi-gender-male text-[var(--text-muted)]"></i>Masculino
+                                        <i class="bi bi-gender-male me-2 text-muted"></i>Masculino
                                     @elseif($usuario->sexo == 'F')
-                                        <i class="bi bi-gender-female text-[var(--text-muted)]"></i>Femenino
+                                        <i class="bi bi-gender-female me-2 text-muted"></i>Femenino
                                     @else
-                                        <i class="bi bi-gender-ambiguous text-[var(--text-muted)]"></i>N/E
+                                        <i class="bi bi-gender-ambiguous me-2 text-muted"></i>N/E
                                     @endif
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,178 +110,172 @@
             </x-card>
         </div>
 
-        {{-- COLUMNA DERECHA: FORMULARIOS --}}
-        <div class="lg:col-span-7 space-y-5">
-            
-            {{-- EDITAR PERFIL --}}
-            <x-card>
-                <div class="p-4">
-                    <h4 class="text-lg font-bold mb-5 pb-3 flex items-center gap-2 text-[var(--text-primary)] border-b border-[var(--border-color)]">
-                        <i class="bi bi-pencil-square text-[var(--gold-dark)]"></i> Editar Perfil
-                    </h4>
-                    <form method="POST" action="{{ url('/perfil/update') }}" id="perfilForm" enctype="multipart/form-data" class="space-y-4">
+        <!-- Columna Derecha: Formularios -->
+        <div class="col-lg-7">
+            <!-- Editar Perfil -->
+            <x-card class="mb-4">
+                <h5 class="fw-bold mb-4 pb-3 text-main border-bottom-modern">
+                    <i class="bi bi-pencil-square me-2 text-gold"></i> Editar Perfil
+                </h5>
+                {{-- enctype agregado --}}
+                <form method="POST" action="{{ url('/perfil/update') }}" id="perfilForm" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    
+                    <div class="row g-3">
+                        {{-- Campo de imagen agregado --}}
+                        
+
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                Nombre completo <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $usuario->nombre) }}" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                Correo electrónico <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" name="email" class="form-control" value="{{ old('email', $usuario->email) }}" required>
+                            <div class="form-text mt-1" style="font-size: 0.8rem;">Usado para iniciar sesión.</div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                Teléfono
+                            </label>
+                            <input type="tel" name="telefono" class="form-control" value="{{ old('telefono', $usuario->telefono) }}" placeholder="Ej: +591 68824368">
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                Dirección
+                            </label>
+                            <input type="text" name="direccion" class="form-control" value="{{ old('direccion', $usuario->direccion) }}" placeholder="Calle, número, ciudad">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                Sexo
+                            </label>
+                            <select name="sexo" class="form-select">
+                                <option value="">Seleccionar</option>
+                                <option value="M" {{ old('sexo', $usuario->sexo) == 'M' ? 'selected' : '' }}>Masculino</option>
+                                <option value="F" {{ old('sexo', $usuario->sexo) == 'F' ? 'selected' : '' }}>Femenino</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                <i class="bi bi-camera me-1"></i> Imagen de perfil
+                            </label>
+                            <input type="file" name="imagen" class="form-control" accept="image/jpeg,image/png,image/jpg,image/webp">
+                            <div class="form-text mt-1" style="font-size: 0.75rem;">JPG, PNG o WEBP. Máximo 2 MB.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-3 mt-4 pt-4 border-top-modern">
+                        <button type="button" class="btn btn-light-panaderia" onclick="document.getElementById('perfilForm').reset()">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Restablecer
+                        </button>
+                        <button type="submit" class="btn btn-gold-panaderia">
+                            <i class="bi bi-save me-1"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </x-card>
+
+            <!-- Cambiar Contraseña (Desplegable) -->
+            <x-card class="mb-4">
+                <div data-bs-toggle="collapse" data-bs-target="#collapsePassword" aria-expanded="{{ $errors->has('password') || $errors->has('current_password') ? 'true' : 'false' }}" aria-controls="collapsePassword" style="cursor: pointer;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0 text-main">
+                            <i class="bi bi-shield-lock me-2 text-gold"></i> Cambiar Contraseña
+                        </h5>
+                        <div class="d-flex align-items-center">
+                            <x-badge type="warning" class="me-3">Recomendado</x-badge>
+                            <i class="bi bi-chevron-down text-muted" style="transition: transform 0.3s;" id="iconPassword"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="collapsePassword" class="collapse {{ $errors->has('password') || $errors->has('current_password') ? 'show' : '' }} mt-4 pt-3 border-top-modern">
+                    <form method="POST" action="{{ url('/perfil/password') }}">
                         @csrf
                         @method('PUT')
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                            {{-- Nombre --}}
-                            <div class="md:col-span-12">
-                                <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">
-                                    Nombre completo <span class="text-red-600">*</span>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                    Contraseña actual <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="nombre" value="{{ old('nombre', $usuario->nombre) }}" required
-                                       class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
+                                <input type="password" name="current_password" class="form-control" placeholder="••••••••" required>
+                                <div class="form-text mt-1" style="font-size: 0.8rem;">Requerida para autorizar el cambio.</div>
                             </div>
-
-                            {{-- Email --}}
-                            <div class="md:col-span-6">
-                                <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">
-                                    Correo electrónico <span class="text-red-600">*</span>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                    Nueva contraseña <span class="text-danger">*</span>
                                 </label>
-                                <input type="email" name="email" value="{{ old('email', $usuario->email) }}" required
-                                       class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                                <p class="text-xs mt-1 text-[var(--text-muted)]">Usado para iniciar sesión.</p>
+                                <input type="password" name="password" id="newPassword" class="form-control" placeholder="••••••••" required>
+                                <div class="form-text mt-1" style="font-size: 0.8rem;">Mínimo 6 caracteres.</div>
                             </div>
-
-                            {{-- Teléfono --}}
-                            <div class="md:col-span-6">
-                                    <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">Teléfono</label>
-                                <input type="tel" name="telefono" value="{{ old('telefono', $usuario->telefono) }}" placeholder="Ej: +591 68824368"
-                                        class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                            </div>
-
-                            {{-- Dirección --}}
-                            <div class="md:col-span-8">
-                                    <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">Dirección</label>
-                                <input type="text" name="direccion" value="{{ old('direccion', $usuario->direccion) }}" placeholder="Calle, número, ciudad"
-                                        class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                            </div>
-
-                            {{-- Sexo --}}
-                            <div class="md:col-span-4">
-                                <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">Sexo</label>
-                                <select name="sexo"
-                                    class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                                    <option value="">Seleccionar</option>
-                                    <option value="M" {{ old('sexo', $usuario->sexo) == 'M' ? 'selected' : '' }}>Masculino</option>
-                                    <option value="F" {{ old('sexo', $usuario->sexo) == 'F' ? 'selected' : '' }}>Femenino</option>
-                                </select>
-                            </div>
-
-                            {{-- Imagen --}}
-                            <div class="md:col-span-12">
-                                    <label class="block text-sm font-semibold mb-1.5 flex items-center gap-1 text-[var(--text-secondary)]">
-                                    <i class="bi bi-camera"></i> Imagen de perfil
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
+                                    Confirmar contraseña <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" name="imagen" accept="image/jpeg,image/png,image/jpg,image/webp"
-                                        class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-[var(--bg-card)] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[var(--text-secondary)]">
-                                    <p class="text-xs mt-1 text-[var(--text-muted)]">JPG, PNG o WEBP. Máximo 2 MB.</p>
+                                <input type="password" name="password_confirmation" id="confirmPassword" class="form-control" placeholder="••••••••" required>
                             </div>
                         </div>
                         
-                        {{-- Botones --}}
-                        <div class="flex justify-end gap-3 pt-4 border-t border-[var(--border-color)]">
-                            <button type="button" onclick="document.getElementById('perfilForm').reset()"
-                                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border border-[var(--border-color)] text-[var(--text-secondary)] hover:bg-[var(--bg-input)] hover:border-[var(--gold-dark)]">
-                                <i class="bi bi-arrow-counterclockwise"></i> Restablecer
-                            </button>
-                            <button type="submit"
-                                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 bg-[var(--btn-bg)] text-[var(--btn-text)] hover:bg-[var(--btn-hover)] hover:shadow-[0_8px_25px_rgba(129,87,45,0.35)]">
-                                <i class="bi bi-save"></i> Guardar Cambios
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-gold-panaderia w-100 w-md-auto">
+                                <i class="bi bi-key me-1"></i> Actualizar Contraseña
                             </button>
                         </div>
                     </form>
                 </div>
             </x-card>
 
-            {{-- CAMBIAR CONTRASEÑA --}}
-            <x-card>
-                <div class="p-4">
-                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleCollapse('collapsePassword', 'iconPassword')">
-                        <h4 class="text-lg font-bold flex items-center gap-2 text-[var(--text-primary)]">
-                            <i class="bi bi-shield-lock text-[var(--gold-dark)]"></i> Cambiar Contraseña
-                        </h4>
-                        <div class="flex items-center gap-3">
-                            <x-badge type="warning" class="text-xs px-3 py-1 rounded-full font-semibold">Recomendado</x-badge>
-                            <i class="bi bi-chevron-down text-lg transition-transform duration-300 text-[var(--text-muted)]" id="iconPassword"></i>
-                        </div>
-                    </div>
-
-                    <div id="collapsePassword" class="mt-4 pt-4 border-t border-[var(--border-color)] {{ $errors->has('password') || $errors->has('current_password') ? '' : 'hidden' }}">
-                        <form method="POST" action="{{ url('/perfil/password') }}" class="space-y-4">
-                            @csrf
-                            @method('PUT')
-                            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                                <div class="md:col-span-12">
-                                    <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">
-                                        Contraseña actual <span class="text-red-600">*</span>
-                                    </label>
-                                    <input type="password" name="current_password" required placeholder="••••••••"
-                                           class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                                </div>
-                                <div class="md:col-span-6">
-                                    <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">
-                                        Nueva contraseña <span class="text-red-600">*</span>
-                                    </label>
-                                    <input type="password" name="password" required placeholder="••••••••"
-                                           class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                                    <p class="text-xs mt-1 text-[var(--text-muted)]">Mínimo 6 caracteres.</p>
-                                </div>
-                                <div class="md:col-span-6">
-                                    <label class="block text-sm font-semibold mb-1.5 text-[var(--text-secondary)]">
-                                        Confirmar contraseña <span class="text-red-600">*</span>
-                                    </label>
-                                    <input type="password" name="password_confirmation" required placeholder="••••••••"
-                                           class="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[rgba(242,166,69,0.1)]">
-                                </div>
-                            </div>
-                            <div class="flex justify-end">
-                                <button type="submit"
-                                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 w-full md:w-auto bg-[var(--btn-bg)] text-[var(--btn-text)] hover:bg-[var(--btn-hover)]">
-                                    <i class="bi bi-key"></i> Actualizar Contraseña
-                                </button>
-                            </div>
-                        </form>
+            <!-- Zona de Peligro (Desplegable) -->
+            <x-card class="border-danger" style="border: 1px solid rgba(76, 7, 15, 0.3) !important;">
+                <div data-bs-toggle="collapse" data-bs-target="#collapseDanger" 
+                aria-expanded="{{ $errors->has('deletion_password') ? 'true' : 'false' }}" 
+                aria-controls="collapseDanger" style="cursor: pointer;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0 text-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i> Zona de Peligro
+                        </h5>
+                        <i class="bi bi-chevron-down text-danger" style="transition: transform 0.3s;" id="iconDanger"></i>
                     </div>
                 </div>
-            </x-card>
-
-            {{-- ZONA DE PELIGRO --}}
-            <x-card>
-                <div class="p-4 border border-[rgba(212,107,94,0.3)] rounded-xl">
-                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleCollapse('collapseDanger', 'iconDanger')">
-                        <h4 class="text-lg font-bold flex items-center gap-2 text-[var(--danger)]">
-                            <i class="bi bi-exclamation-triangle"></i> Zona de Peligro
-                        </h4>
-                        <i class="bi bi-chevron-down text-lg transition-transform duration-300 text-[var(--danger)]" id="iconDanger"></i>
+                
+                <div id="collapseDanger" class="collapse {{ $errors->has('deletion_password') ? 'show' : '' }} mt-4 pt-3" style="border-top: 1px solid rgba(220, 53, 69, 0.1);">
+                    <div class="p-3 mb-4 rounded" style="background: rgba(220, 53, 69, 0.05); border-left: 4px solid #4b0910;">
+                        <p class="mb-0 text-danger" style="font-size: 0.95rem;">
+                            <strong>⚠️ Esta acción no se puede deshacer.</strong> Eliminará permanentemente tu cuenta y todos los datos asociados.
+                        </p>
                     </div>
-
-                    <div id="collapseDanger" class="mt-4 pt-4 border-t border-[rgba(212,107,94,0.15)] {{ $errors->has('deletion_password') ? '' : 'hidden' }}">
-                        <div class="p-4 rounded-xl mb-4 flex items-start gap-3 bg-[rgba(212,107,94,0.06)] border-l-4 border-[var(--danger)]">
-                            <i class="bi bi-exclamation-triangle-fill text-xl flex-shrink-0 text-[var(--danger)]"></i>
-                            <p class="text-sm font-medium text-[var(--danger)]">
-                                <strong>Esta acción no se puede deshacer.</strong> Eliminará permanentemente tu cuenta y todos los datos asociados.
-                            </p>
+                    
+                    @if($errors->has('deletion_password'))
+                        <div class="alert alert-danger py-2 px-3 mb-3" style="font-size: 0.85rem;">
+                            {{ $errors->first('deletion_password') }}
                         </div>
+                    @endif
 
-                        <form action="{{ url('/perfil/delete') }}" method="POST" 
-                              onsubmit="return confirm('¿Estás SEGURO de eliminar TU PROPIA cuenta? Perderás acceso y podrías romper registros históricos.')" 
-                              class="space-y-4">
-                            @csrf
-                            @method('DELETE')
-                            <div>
-                                <label class="block text-sm font-semibold mb-1.5 text-[var(--danger)]">
-                                    Confirma tu contraseña para continuar:
-                                </label>
-                                <input type="password" name="password" required placeholder="Tu contraseña actual"
-                                       class="w-full rounded-xl border border-[rgba(212,107,94,0.4)] bg-[var(--bg-input)] py-3 px-4 text-sm text-[var(--text-primary)] outline-none transition-all duration-300 focus:border-[var(--danger)] focus:ring-2 focus:ring-[rgba(212,107,94,0.2)]">
-                            </div>
-                            <button type="submit"
-                                    class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 bg-[var(--danger)] text-white hover:shadow-[0_8px_25px_rgba(212,107,94,0.4)]">
-                                <i class="bi bi-trash"></i> Eliminar mi Cuenta Permanentemente
-                            </button>
-                        </form>
-                    </div>
+                    <form action="{{ url('/perfil/delete') }}" method="POST" onsubmit="return confirm('¿Estás SEGURO de eliminar TU PROPIA cuenta? Perderás acceso y podrías romper registros históricos.')">
+                        @csrf
+                        @method('DELETE')
+                        <div class="mb-3">
+                            <label class="form-label text-danger fw-bold" style="font-size: 0.9rem;">
+                                Confirma tu contraseña para continuar:
+                            </label>
+                            <input type="password" name="password" class="form-control" style="border-color: rgba(79, 9, 16, 0.5);" placeholder="Tu contraseña actual" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-trash me-1"></i> Eliminar mi Cuenta Permanentemente
+                        </button>
+                    </form>
                 </div>
             </x-card>
         </div>
@@ -295,28 +283,27 @@
 </div>
 
 <script>
-    function toggleCollapse(collapseId, iconId) {
-        const el = document.getElementById(collapseId);
-        const icon = document.getElementById(iconId);
-        const isHidden = el.classList.contains('hidden');
-        
-        if (isHidden) {
-            el.classList.remove('hidden');
-            icon.style.transform = 'rotate(180deg)';
-        } else {
-            el.classList.add('hidden');
-            icon.style.transform = 'rotate(0deg)';
-        }
-    }
-    
-    // Inicializar íconos
+    // Rotar iconos en colapsables
     document.addEventListener('DOMContentLoaded', function() {
-        if (!document.getElementById('collapsePassword').classList.contains('hidden')) {
-            document.getElementById('iconPassword').style.transform = 'rotate(180deg)';
-        }
-        if (!document.getElementById('collapseDanger').classList.contains('hidden')) {
-            document.getElementById('iconDanger').style.transform = 'rotate(180deg)';
-        }
+        ['Password', 'Danger'].forEach(function(item) {
+            const collapseElement = document.getElementById('collapse' + item);
+            const iconElement = document.getElementById('icon' + item);
+            
+            if (collapseElement && iconElement) {
+                // Rotar inicialmente si está abierto
+                if (collapseElement.classList.contains('show')) {
+                    iconElement.style.transform = 'rotate(180deg)';
+                }
+                
+                collapseElement.addEventListener('show.bs.collapse', function () {
+                    iconElement.style.transform = 'rotate(180deg)';
+                });
+                
+                collapseElement.addEventListener('hide.bs.collapse', function () {
+                    iconElement.style.transform = 'rotate(0deg)';
+                });
+            }
+        });
     });
 </script>
 @endsection
@@ -324,3 +311,21 @@
 @push('scripts')
     @vite(['resources/js/perfil.js'])
 @endpush
+<style>
+.avatar-profile {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 0.5px solid #504607;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.avatar-profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+}
+</style>

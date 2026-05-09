@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* ============================================
+   GLOBAL - Variables, Reset y Diseño Nativo
+   ============================================ */
+
 /* MODO CLARO - Paleta "Pan Francés" (Colores nítidos, cálidos y apetitosos) */
 :root {
     /* Colores principales - Corteza del pan */

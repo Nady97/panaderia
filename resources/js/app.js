@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         background: 'var(--bg-card)',
         color: 'var(--text-primary)',
         customClass: {
-            popup: 'rounded-xl shadow border border-gray-200'
+            popup: 'rounded-4 shadow-sm border border-light-subtle'
         },
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 background: 'var(--bg-card)',
                 color: 'var(--text-primary)',
                 customClass: {
-                    popup: 'rounded-xl shadow border border-gray-200',
-                    confirmButton: 'inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700',
-                    cancelButton: 'inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50'
+                    popup: 'rounded-4 shadow-sm border border-light-subtle',
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-light-panaderia me-2'
                 },
                 buttonsStyling: false,
                 reverseButtons: true

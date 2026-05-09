@@ -1,3 +1,7 @@
+/**
+ * PRODUCTOS - Control Interactivo Minimalista
+ */
+
 // Se ejecuta al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
 
