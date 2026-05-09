@@ -1,0 +1,243 @@
+@import "tailwindcss";
+/* MODO CLARO - Paleta "Pan Francés" (Colores nítidos, cálidos y apetitosos) */
+:root {
+    /* Colores principales - Corteza del pan */
+    --primary-brown: #643617; /* Corteza tostada */
+    --primary-dark: #332821;  /* Corteza profunda */
+    --secondary-brown: #A0643C;
+    
+    /* Colores dorados/miel - Brillo de la corteza */
+    --gold-light: #F2A645;
+    --gold-dark: #cc7826;     /* Dorado intenso al horno */
+    --btn-bg: #81572d;
+    --btn-hover: #b06219;
+    --btn-text: #ffffff;
+    
+    /* Colores de fondo - Miga del pan (Blanco cálido suave) */
+    --bg-primary: #FCF9F2;    /* Fondo base nitido */
+    --bg-secondary: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-input: #F6F1E5;      /* Inputs un tono ligeramente beige */
+    --bg-sidebar: #24140B;    /* Sidebar oscuro cálido */
+    
+    /* Textos Generales del modo Claro */
+    --text-primary: #2C1B10;  /* Texto marrón casi negro */
+    --text-secondary: #523724;/* Texto secundario cálido */
+    --text-muted: #6E513D;    /* Apagado pero con buen contraste */
+    --text-light: #8B6E59;    /* Para placeholders o guías */
+    
+    /* Variables exclusivas para el Sidebar */
+    --sidebar-text-primary: #FDE8D0;
+    --sidebar-text-secondary: #D4A87C;
+    --sidebar-text-muted: #A67D56;
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.06);
+
+    /* Bordes y sombras - Delicados y tostados */
+    --border-color: rgba(186, 105, 34, 0.18);
+    --border-color-focus: #F2A645;
+    --shadow-sm: 0 3px 10px rgba(92, 45, 14, 0.05);
+    --shadow-md: 0 8px 25px rgba(92, 45, 14, 0.08);
+    --shadow-lg: 0 15px 40px rgba(92, 45, 14, 0.12);
+
+    /* Semánticos adaptados */
+    --success: #2A7B4F;
+    --warning: #E8951E;
+    --danger: #CF3B3B;
+    --info: #357BA6;
+
+    /* Adaptación a Bootstrap */
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+}
+
+/* MODO OSCURO - Paleta "Pan Francés en Horno de Leña" */
+.dark-mode, [data-bs-theme="dark"] {
+    /* Fondos - Masa madre profunda */
+    --bg-primary: #1A110B;        /* Fondo principal, más profundo */
+    --bg-secondary: #241812;      /* Contenedores secundarios */
+    --bg-card: #2C1E15;           /* Tarjetas, ligero relieve */
+    --bg-input: #36251B;          /* Inputs, un poco más claro para contraste */
+    --bg-sidebar: #0F0906;        /* Sidebar más oscuro, jerarquía clara */
+    
+    /* Textos - Migajón tostado */
+    --text-primary: #FEF6EC;      /* Blanco cálido para máximo contraste */
+    --text-secondary: #E5CBB0;    /* Texto secundario, buena legibilidad */
+    --text-muted: #C4A085;        /* Metadatos y ayudas visuales */
+    --text-light: #F2DEC9;        /* Texto sobre fondos oscuros */
+    
+    /* Sidebar específico */
+    --sidebar-text-primary: #FEF6EC;
+    --sidebar-text-secondary: #E5CBB0;
+    --sidebar-text-muted: #B89376;
+    --sidebar-hover-bg: rgba(255, 215, 175, 0.06); /* Hover más cálido */
+    --sidebar-active-bg: rgba(230, 143, 66, 0.12);
+    --sidebar-active-border: #E68F42;
+    
+    /* Acentos - Miel caramelizada */
+    --primary-brown: #E88C3A;      /* Naranja tostado, vibrante pero contenido */
+    --primary-dark: #F2A651;       /* Hover / focus más brillante */
+    --primary-light: #FBCB8C;      /* Acentos suaves */
+    --accent-gold: #D4A34B;        /* Dorado para destacados especiales */
+    --accent-crust: #C0753A;       /* Color "corteza" para bordes/separadores */
+    
+    /* Botones - Pan recién horneado */
+    --btn-bg: #E88C3A;
+    --btn-hover: #F09F52;
+    --btn-active: #D47D2E;
+    --btn-text: #1A110B;
+    --btn-secondary-bg: #3D2A1E;
+    --btn-secondary-hover: #4F3829;
+    --btn-secondary-text: #F2DEC9;
+    
+    /* Estados - Levadura viva */
+    --success: #6B8C5C;            /* Verde musgo, natural */
+    --warning: #E8A23A;            /* Ámbar cálido */
+    --danger: #D46B5E;             /* Rojo terracota suave */
+    --info: #7C9EB3;               /* Azul grisáceo como semillas de amapola */
+    
+    /* Bordes y divisores */
+    --border-color: rgba(230, 143, 66, 0.18);
+    --border-color-focus: #E88C3A;
+    --border-card: rgba(196, 160, 133, 0.12);
+    --border-input: #4A3528;
+    
+    /* Sombras - Horno profundo */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+    --shadow-glow: 0 0 20px rgba(230, 143, 66, 0.15);
+    --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(230, 143, 66, 0.2);
+    
+    /* Integración Bootstrap */
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+    --bs-card-bg: var(--bg-card);
+    --bs-card-border-color: var(--border-card);
+    --bs-border-color: var(--border-color);
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text-primary);
+    --bs-table-border-color: var(--border-color);
+    --bs-input-bg: var(--bg-input);
+    --bs-input-border-color: var(--border-input);
+    --bs-input-color: var(--text-primary);
+    --bs-input-focus-border-color: var(--border-color-focus);
+    --bs-input-focus-box-shadow: 0 0 0 0.25rem rgba(230, 143, 66, 0.15);
+    --bs-dropdown-bg: var(--bg-card);
+    --bs-dropdown-border-color: var(--border-color);
+    --bs-dropdown-link-color: var(--text-secondary);
+    --bs-dropdown-link-hover-bg: var(--sidebar-hover-bg);
+    --bs-dropdown-link-hover-color: var(--text-primary);
+    --bs-modal-bg: var(--bg-secondary);
+    --bs-modal-border-color: var(--border-color);
+    --bs-pagination-bg: var(--bg-card);
+    --bs-pagination-border-color: var(--border-color);
+    --bs-pagination-color: var(--text-secondary);
+    --bs-pagination-hover-bg: var(--sidebar-hover-bg);
+    --bs-pagination-hover-color: var(--text-primary);
+    --bs-pagination-active-bg: var(--primary-brown);
+    --bs-pagination-active-border-color: var(--primary-brown);
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Mejoras para Tablas Nativas */
+.table {
+    border-color: var(--border-color) !important;
+}
+.table th, .table td {
+    color: var(--text-primary) !important;
+    background-color: transparent !important;
+    border-color: var(--border-color) !important;
+    vertical-align: middle;
+}
+.table thead th {
+    color: var(--text-secondary) !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background-color: rgba(0,0,0,0.02) !important;
+}
+.dark-mode .table thead th {
+    background-color: rgba(255,255,255,0.02) !important;
+}
+
+.table-hover tbody tr:hover td {
+    background-color: rgba(0,0,0,0.03) !important;
+}
+.dark-mode .table-hover tbody tr:hover td {
+    background-color: rgba(255,255,255,0.03) !important;
+}
+
+/* Scrollbar refinado */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+    background: var(--border-color); 
+    border-radius: 10px; 
+}
+.dark-mode ::-webkit-scrollbar-thumb { 
+    background: var(--text-muted); 
+}
+
+/* ============================================
+   BOTÓN THEME TOGGLE (Modo Oscuro/Claro)
+   ============================================ */
+.theme-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--primary-brown);
+    color: var(--btn-text, #fff);
+    border: none;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 9999; /* Para que siempre esté por encima de todo */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    background-color: var(--primary-dark);
+}
+
+.text-gold-panaderia { color: var(--gold-light) !important; }
+.text-gold-dark { color: var(--gold-dark) !important; }
+
+
+/* --- Utilidades de Color Personalizadas --- */
+.text-main { color: var(--text-primary) !important; }
+.text-gold { color: var(--gold-dark) !important; }
+.text-brown { color: var(--primary-brown) !important; }
+.bg-soft-gold { background: rgba(212, 175, 55, 0.15) !important; }
+.bg-soft-green { background: rgba(40, 167, 69, 0.15) !important; }
+.bg-soft-brown { background: rgba(93, 64, 55, 0.15) !important; }
+.bg-soft-blue { background: rgba(23, 162, 184, 0.15) !important; }
+.bg-soft-warning { background: rgba(255, 193, 7, 0.1) !important; }
+.bg-soft-danger { background: rgba(220, 53, 69, 0.1) !important; }
+.border-soft-warning { border-color: #ffc107 !important; }
+.border-soft-danger { border-color: #dc3545 !important; }
+
+
+.bg-main { background-color: var(--primary-brown) !important; color: var(--btn-text) !important; }
+.border-main { border-color: var(--border-color) !important; }

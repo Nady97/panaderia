@@ -7,6 +7,9 @@
     <title>Panadería Artesanal</title>
     @vite(['resources/css/global.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+
 </head>
 <body style="background-color: var(--bg-primary); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
     

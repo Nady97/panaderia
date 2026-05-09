@@ -1,0 +1,128 @@
+/* =========================================
+   UTILITARIAS - Clases de uso rápido
+   ========================================= */
+
+/* TIPOGRAFÍA - Jerarquía Primaria/Secundaria */
+.text-primary-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+.text-secondary-heading {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+
+.text-tertiary-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0em;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+.text-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+}
+
+.text-caption {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+}
+
+/* Espaciado */
+.gap-3 {
+    gap: 1rem;
+}
+
+.gap-4 {
+    gap: 1.25rem;
+}
+
+.gap-5 {
+    gap: 1.5 rem;
+}
+
+/* Flexbox */
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Texto */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Bordes */
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.border-left-accent {
+    border-left: 4px solid var(--gold-dark) !important;
+}
+
+/* Fondos utilitarios */
+.bg-soft-warning {
+    background: rgba(232, 149, 30, 0.1) !important;
+}
+
+.bg-soft-danger {
+    background: rgba(207, 59, 59, 0.1) !important;
+}
+
+.bg-soft-success {
+    background: rgba(42, 123, 79, 0.1) !important;
+}
+
+.bg-soft-gold {
+    background: rgba(204, 120, 38, 0.1) !important;
+}
+
+/* Misc UI */
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+.transition-bg {
+    transition: background-color 0.2s ease-in-out !important;
+}
+
+.w-40px {
+    width: 40px !important;
+}
+
+.h-40px {
+    height: 40px !important;
+}
+
+.max-w-400 {
+    max-width: 400px !important;
+}

@@ -1,0 +1,57 @@
+/* Estilos mínimos: Apoyándonos en Bootstrap 5 para el Layout */
+        body { margin: 0; background: var(--bg-primary); }
+        
+        .login-showcase {
+            background: linear-gradient(135deg, rgba(45, 31, 26, 0.85) 0%, rgba(26, 15, 10, 0.95) 100%), 
+                        url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072') center/cover;
+        }
+
+        .login-panel { background: var(--bg-card); }
+        .text-gold { color: var(--text-gold, #cda75f); }
+
+        /* Formulario adaptado al Dark Mode / Tema Global */
+        .form-control-custom {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-left: none; /* Se quita el borde izquierdo para empalmar con el icono */
+        }
+        
+        .form-control-custom:focus {
+            background-color: var(--bg-card);
+            border-color: var(--text-gold, #cda75f);
+            box-shadow: none; /* Quitamos sombra por defecto de bootstrap al focus */
+            color: var(--text-primary);
+        }
+
+        .form-control-custom::placeholder { color: var(--text-light); }
+
+        /* Iconos del input */
+        .input-group-text-custom {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            color: var(--text-light);
+        }
+
+        /* Iluminar icono y borde al enfocar el input */
+        .input-group:focus-within .input-group-text-custom,
+        .input-group:focus-within .form-control-custom {
+            border-color: var(--text-gold, #cda75f);
+        }
+        .input-group:focus-within .input-group-text-custom {
+            color: var(--text-gold, #cda75f);
+        }
+
+        /* Botón de acceso */
+        .btn-login {
+            background-color: var(--btn-bg, #8a5a44);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background-color: var(--btn-hover, #6d4635);
+            transform: translateY(-2px);
+            color: white;
+        }

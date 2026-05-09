@@ -57,7 +57,7 @@
                         @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Categoria</label>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Familia o Categoria</label>
                         <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
                             <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-tags"></i></span>
                             <select name="categoria_id" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none">

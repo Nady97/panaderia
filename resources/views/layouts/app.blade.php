@@ -8,12 +8,18 @@
 
     <!-- Bootstrap + Iconos (CDN)
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Vite: Tailwind -->
     @vite([
         'resources/css/global.css'
     ])
+
+
+@section('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+
+@endsection
 
     <style>
         html { visibility: hidden; }
@@ -146,5 +152,7 @@
     ])
 
     @stack('scripts')
+
+
 </body>
 </html>
