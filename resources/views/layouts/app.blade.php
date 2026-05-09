@@ -12,11 +12,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
     @vite([
-        'resources/js/app.js',
-        'resources/css/global.css',
-        'resources/css/components.css',
-        'resources/css/sidebar.css',
-    ])
+    'resources/css/global.css',
+    'resources/css/components.css',
+    'resources/css/sidebar.css',
+    'resources/css/login.css',
+    'resources/js/app.js',
+])
 
     <style>
         /* Anti FOUC (Flash of Unstyled Content) para Modo Oscuro */
@@ -145,6 +146,15 @@
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+@stack('scripts')
+@vite([
+    'resources/js/dashboard.js',
+    'resources/js/productos.js',
+    'resources/js/categorias.js',
+    'resources/js/perfil.js',
+    'resources/js/usuarios.js',
+])
 
 @stack('scripts')
 
