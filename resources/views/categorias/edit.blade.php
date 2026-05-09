@@ -1,126 +1,107 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="dashboard-container">
-    <!-- Encabezado de Edición de Categoría -->
-    <x-card class="mb-4">
-        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+<div class="space-y-5">
+    <x-card>
+        <div class="p-4 flex flex-wrap items-center justify-between gap-4">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <h2 class="fw-bold mb-0 text-main">
-                        <i class="bi bi-pencil-square me-2 text-gold"></i>Editar Categoría
+                <div class="flex items-center gap-2 mb-1">
+                    <h2 class="text-xl font-bold text-[var(--text-primary)] flex items-center gap-2">
+                        <i class="bi bi-pencil-square text-[var(--gold-dark)]"></i> Editar Categoria
                     </h2>
-                    <span class="badge bg-light text-warning border border-warning border-opacity-25 rounded-pill px-3">Modo Edición</span>
+                    <x-badge type="warning" class="px-3">Modo Edicion</x-badge>
                 </div>
-                <p class="mb-0 text-muted">Actualiza los datos o el estado de la categoría "{{ $categoria->nombre }}"</p>
+                <p class="text-sm text-[var(--text-muted)]">Actualiza los datos de "{{ $categoria->nombre }}"</p>
             </div>
-            <div class="d-flex gap-3 align-items-center flex-wrap">
-                <a href="{{ route('categorias.index') }}" class="btn btn-light-panaderia text-nowrap">
-                    <i class="bi bi-arrow-left me-1"></i> Regresar al Directorio
-                </a>
-            </div>
+            <a href="{{ route('categorias.index') }}" class="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] px-4 py-2 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-input)]">
+                <i class="bi bi-arrow-left"></i> Regresar al Directorio
+            </a>
         </div>
     </x-card>
 
-    <!-- Tarjeta Principal del Formulario -->
     <x-card>
-        <!-- Manejo Global de Errores de Validación -->
-        @if ($errors->any())
-            <div class="alert alert-danger-modern mb-4">
-                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
-                <div class="w-100">
-                    <h6 class="fw-bold mb-2">Se encontraron los siguientes problemas:</h6>
-                    <ul class="mb-0 ps-3">
-                        @foreach ($errors->all() as $error)
-                            <li class="mb-1">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
+        <div class="p-4 md:p-6 space-y-6">
+            @if ($errors->any())
+                <x-alert type="error">
+                    <div class="space-y-2">
+                        <p class="font-semibold">Se encontraron los siguientes problemas:</p>
+                        <ul class="list-disc pl-4">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </x-alert>
+            @endif
 
-        <div class="card-body p-4 p-md-5">
-            <form action="{{ route('categorias.update', $categoria->id) }}" method="POST" id="formEditarCategoria">
+            <form action="{{ route('categorias.update', $categoria->id) }}" method="POST" id="formEditarCategoria" class="space-y-6">
                 @csrf
                 @method('PUT')
 
-                <!-- Sección: Información Básica -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center text-main">
-                    <i class="bi bi-info-circle me-2 text-muted"></i> Información Básica
-                </h5>
+                <div>
+                    <h5 class="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
+                        <i class="bi bi-info-circle text-[var(--text-muted)]"></i> Informacion Basica
+                    </h5>
+                </div>
 
-                <div class="row g-4 mb-5">
-                    <!-- Campo: Nombre de la Categoría -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Nombre de la Colección <span class="text-danger">*</span>
-                        </label>
-                        <div class="input-group input-group-modern @error('nombre') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-fonts"></i></span>
-                            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre', $categoria->nombre) }}" required autocomplete="off">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Nombre de la Coleccion <span class="text-red-600">*</span></label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-fonts"></i></span>
+                            <input type="text" name="nombre" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" value="{{ old('nombre', $categoria->nombre) }}" required autocomplete="off">
                         </div>
                         @error('nombre')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <!-- Campo: Slug (Identificador URL) -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            URL Amigable
-                        </label>
-                        <div class="input-group input-group-modern @error('slug') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                            <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug', $categoria->slug) }}">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">URL Amigable</label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-link-45deg"></i></span>
+                            <input type="text" name="slug" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" value="{{ old('slug', $categoria->slug) }}">
                         </div>
                         @error('slug')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Sección: Detalles Extendidos -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center pt-3 border-top-modern text-main">
-                    <i class="bi bi-justify-left me-2 text-muted"></i> Detalles Extendidos
-                </h5>
+                <div>
+                    <h5 class="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2 border-t border-[var(--border-color)] pt-4">
+                        <i class="bi bi-justify-left text-[var(--text-muted)]"></i> Detalles Extendidos
+                    </h5>
+                </div>
 
-                <div class="row g-4 mb-4">
-                    <!-- Campo: Descripción -->
-                    <div class="col-12">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Descripción o Notas Adicionales
-                        </label>
-                        <div class="input-group input-group-modern @error('descripcion') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-card-text"></i></span>
-                            <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" rows="3">{{ old('descripcion', $categoria->descripcion) }}</textarea>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Descripcion o Notas Adicionales</label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-start px-3 pt-2 text-[var(--text-muted)]"><i class="bi bi-card-text"></i></span>
+                            <textarea name="descripcion" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" rows="3">{{ old('descripcion', $categoria->descripcion) }}</textarea>
                         </div>
                         @error('descripcion')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Campo: Estado Operativo Toggle -->
-                    <div class="col-12 mt-4">
-                        <div class="detail-box p-3">
-                            <div class="form-check form-switch d-flex align-items-center m-0 p-0">
-                                <label class="form-check-label fw-semibold me-auto text-main" for="activo">
-                                    <i class="bi bi-power text-muted me-2"></i>Estado de la Categoría
-                                </label>
-                                <!-- Switch modernizado -->
-                                <input class="form-check-input ms-3 mt-0" type="checkbox" role="switch" id="activo" name="activo" value="1" {{ old('activo', $categoria->activo) ? 'checked' : '' }} style="width: 3rem; height: 1.5rem; cursor: pointer;">
-                            </div>
+                    <div class="rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] p-4">
+                        <div class="flex items-center justify-between">
+                            <label class="text-sm font-semibold text-[var(--text-secondary)] flex items-center gap-2" for="activo">
+                                <i class="bi bi-power text-[var(--text-muted)]"></i> Estado de la Categoria
+                            </label>
+                            <input class="h-5 w-5 accent-[var(--btn-bg)]" type="checkbox" id="activo" name="activo" value="1" {{ old('activo', $categoria->activo) ? 'checked' : '' }}>
                         </div>
-                        <div class="form-text mt-2 ms-1 text-muted"><i class="bi bi-info-circle me-1"></i>Si desactiva esta categoría, sus productos asociados podrían perder visibilidad en los catálogos públicos.</div>
+                        <p class="mt-2 text-xs text-[var(--text-muted)]"><i class="bi bi-info-circle mr-1"></i>Si desactiva esta categoria, sus productos podrian perder visibilidad.</p>
                     </div>
                 </div>
 
-                <!-- Botonera de Acción -->
-                <div class="d-flex justify-content-end gap-3 mt-5 pt-4 border-top-modern">
-                    <button type="button" class="btn btn-light-panaderia" onclick="window.history.back()">
-                        <i class="bi bi-x-circle me-2"></i>Cancelar Cambios
+                <div class="flex justify-end gap-3 border-t border-[var(--border-color)] pt-4">
+                    <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] px-4 py-2 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-input)]" onclick="window.history.back()">
+                        <i class="bi bi-x-circle"></i> Cancelar Cambios
                     </button>
-                    <button type="submit" class="btn btn-warning" style="border-radius: 10px; font-weight: 600; padding: 0.6rem 1.5rem; color: #fff;">
-                        <i class="bi bi-save me-2"></i>Actualizar Datos
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-yellow-500 px-4 py-2 text-sm font-semibold text-white hover:bg-yellow-600">
+                        <i class="bi bi-save"></i> Actualizar Datos
                     </button>
                 </div>
             </form>

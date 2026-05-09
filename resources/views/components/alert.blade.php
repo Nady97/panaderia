@@ -7,17 +7,20 @@
         'info' => 'bi-info-circle-fill',
         default => 'bi-check-circle-fill'
     };
-    
+
     $alertClass = match($type) {
-        'success' => 'alert-success-modern bg-success-subtle text-success border border-success',
-        'error', 'danger' => 'alert-danger-modern bg-danger-subtle text-danger border border-danger',
-        'warning' => 'alert-warning-modern bg-warning-subtle text-warning border border-warning',
-        'info' => 'alert-info-modern bg-warning bg-opacity-10 text-gold border border-warning border-opacity-25',
-        default => 'alert-success-modern bg-success-subtle text-success border border-success'
+        'success' => 'bg-green-50 text-green-700 border border-green-200',
+        'error', 'danger' => 'bg-red-50 text-red-700 border border-red-200',
+        'warning' => 'bg-yellow-50 text-yellow-800 border border-yellow-200',
+        'info' => 'bg-blue-50 text-blue-700 border border-blue-200',
+        default => 'bg-green-50 text-green-700 border border-green-200'
     };
 @endphp
-<div {{ $attributes->merge(['class' => 'alert alert-modern ' . $alertClass . ' alert-dismissible fade show']) }} role="alert" style="border-radius: 12px; font-weight: 500;">
-    <i class="bi {{ $icon }} me-2"></i>{{ $slot }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div {{ $attributes->merge(['class' => 'flex items-start gap-2 rounded-xl px-4 py-3 text-sm font-medium ' . $alertClass]) }} role="alert" data-alert>
+    <i class="bi {{ $icon }} mt-0.5"></i>
+    <div class="flex-1">{{ $slot }}</div>
+    <button type="button" class="ml-3 text-gray-500 hover:text-gray-700" aria-label="Close" onclick="this.closest('[data-alert]').remove()">
+        <i class="bi bi-x-lg"></i>
+    </button>
 </div>
 

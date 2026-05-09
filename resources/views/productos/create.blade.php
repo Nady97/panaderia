@@ -1,77 +1,67 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="dashboard-container">
-    <!-- Encabezado de Creación de Producto -->
-    <x-card class="mb-4">
-        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+<div class="space-y-5">
+    <x-card>
+        <div class="p-4 flex flex-wrap items-center justify-between gap-4">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <h2 class="fw-bold mb-0 text-main">
-                        <i class="bi bi-box-seam me-2 text-gold"></i>Registro de Producto
+                <div class="flex items-center gap-2 mb-1">
+                    <h2 class="text-xl font-bold text-[var(--text-primary)] flex items-center gap-2">
+                        <i class="bi bi-box-seam text-[var(--gold-dark)]"></i> Registro de Producto
                     </h2>
-                    <x-badge type="primary" class="rounded-pill border border-primary border-opacity-25 px-3 bg-opacity-10 text-main">Nuevo Registro</x-badge>
+                    <x-badge type="primary" class="px-3">Nuevo Registro</x-badge>
                 </div>
-                <p class="mb-0 text-secondary">Agregue un nuevo pan o artículo al catálogo de operaciones</p>
+                <p class="text-sm text-[var(--text-secondary)]">Agregue un nuevo pan o articulo al catalogo de operaciones</p>
             </div>
-            <div class="d-flex gap-3 align-items-center flex-wrap">
-                <a href="{{ route('productos.index') }}" class="btn btn-light-panaderia text-nowrap">
-                    <i class="bi bi-arrow-left me-1"></i> Regresar al Directorio
-                </a>
-            </div>
+            <a href="{{ route('productos.index') }}" class="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] px-4 py-2 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-input)]">
+                <i class="bi bi-arrow-left"></i> Regresar al Directorio
+            </a>
         </div>
     </x-card>
 
-    <!-- Tarjeta Principal del Formulario -->
     <x-card>
-        <!-- Manejo Global de Errores -->
-        @if ($errors->any())
-            <div class="alert alert-danger alert-danger-modern border-0 d-flex align-items-start p-4 mb-4">
-                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
-                <div class="w-100">
-                    <h6 class="fw-bold mb-2">Se encontraron problemas en la validación:</h6>
-                    <ul class="mb-0 ps-3">
-                        @foreach ($errors->all() as $error)
-                            <li class="mb-1">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
+        <div class="p-4 md:p-6 space-y-6">
+            @if ($errors->any())
+                <x-alert type="error">
+                    <div class="space-y-2">
+                        <p class="font-semibold">Se encontraron problemas en la validacion:</p>
+                        <ul class="list-disc pl-4">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </x-alert>
+            @endif
 
-        <div class="card-body p-4 p-md-5">
-            <form method="POST" action="{{ route('productos.store') }}" id="formCrearProducto">
+            <form method="POST" action="{{ route('productos.store') }}" id="formCrearProducto" class="space-y-6">
                 @csrf
 
-                <!-- Sección: Identificación y Clasificación -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center text-main">
-                    <i class="bi bi-info-circle me-2 text-muted"></i> Identificación y Clasificación
-                </h5>
+                <div>
+                    <h5 class="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
+                        <i class="bi bi-info-circle text-[var(--text-muted)]"></i> Identificacion y Clasificacion
+                    </h5>
+                </div>
 
-                <div class="row g-4 mb-5">
-                    <!-- Campo: Nombre del producto -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Nombre del Pan o Producto <span class="text-danger">*</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">
+                            Nombre del Pan o Producto <span class="text-red-600">*</span>
                         </label>
-                        <div class="input-group input-group-modern @error('nombre') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-cup-hot"></i></span>
-                            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" required value="{{ old('nombre') }}" placeholder="Ej: Pan Francés Molde..." autocomplete="off">
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-cup-hot"></i></span>
+                            <input type="text" name="nombre" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" required value="{{ old('nombre') }}" placeholder="Ej: Pan Frances Molde..." autocomplete="off">
                         </div>
                         @error('nombre')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <!-- Campo: Categoría -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Familia o Categoría
-                        </label>
-                        <div class="input-group input-group-modern @error('categoria_id') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-tags"></i></span>
-                            <select name="categoria_id" class="form-select @error('categoria_id') is-invalid @enderror">
-                                <option value="">-- Seleccionar Categoría (Opcional) --</option>
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Categoria</label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-tags"></i></span>
+                            <select name="categoria_id" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none">
+                                <option value="">-- Seleccionar Categoria (Opcional) --</option>
                                 @foreach ($categorias as $categoria)
                                     <option value="{{ $categoria->id }}" {{ old('categoria_id', request('categoria_id')) == $categoria->id ? 'selected' : '' }}>
                                         {{ $categoria->nombre }}
@@ -80,89 +70,76 @@
                             </select>
                         </div>
                         @error('categoria_id')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Sección: Finanzas -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center pt-3 border-top text-main">
-                    <i class="bi bi-currency-dollar me-2 text-muted"></i> Costos y Valoración Firme
-                </h5>
+                <div>
+                    <h5 class="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2 border-t border-[var(--border-color)] pt-4">
+                        <i class="bi bi-currency-dollar text-[var(--text-muted)]"></i> Costos y Valoracion
+                    </h5>
+                </div>
 
-                <div class="row g-4 mb-5">
-                    <!-- Precio Costo -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Precio de Producción (Costo)
-                        </label>
-                        <div class="input-group input-group-modern @error('precio_costo') is-invalid @enderror">
-                            <span class="input-group-text text-secondary fw-bold">Bs.</span>
-                            <input type="number" step="0.01" name="precio_costo" class="form-control @error('precio_costo') is-invalid @enderror" value="{{ old('precio_costo') }}" placeholder="0.00">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Precio de Produccion (Costo)</label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-[var(--text-muted)]">Bs.</span>
+                            <input type="number" step="0.01" name="precio_costo" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" value="{{ old('precio_costo') }}" placeholder="0.00">
                         </div>
                         @error('precio_costo')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <!-- Precio Venta -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Precio Público (Venta) <span class="text-danger">*</span>
-                        </label>
-                        <div class="input-group input-group-modern @error('precio_venta') is-invalid @enderror">
-                            <span class="input-group-text text-success fw-bold">Bs.</span>
-                            <input type="number" step="0.01" name="precio_venta" class="form-control @error('precio_venta') is-invalid @enderror" required value="{{ old('precio_venta') }}" placeholder="0.00">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Precio Publico (Venta) <span class="text-red-600">*</span></label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-green-600">Bs.</span>
+                            <input type="number" step="0.01" name="precio_venta" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" required value="{{ old('precio_venta') }}" placeholder="0.00">
                         </div>
                         @error('precio_venta')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Sección: Operativa y Logística -->
-                <h5 class="fw-bold mb-4 d-flex align-items-center pt-3 border-top text-main">
-                    <i class="bi bi-truck me-2 text-muted"></i> Operativa de Almacén
-                </h5>
+                <div>
+                    <h5 class="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2 border-t border-[var(--border-color)] pt-4">
+                        <i class="bi bi-truck text-[var(--text-muted)]"></i> Operativa de Almacen
+                    </h5>
+                </div>
 
-                <div class="row g-4 mb-4">
-                    <!-- Stock Inicial -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Stock Físico Inicial <span class="text-danger">*</span>
-                        </label>
-                        <div class="input-group input-group-modern @error('stock') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-boxes"></i></span>
-                            <input type="number" step="0.01" name="stock" class="form-control @error('stock') is-invalid @enderror" required value="{{ old('stock') }}" placeholder="Unidades actuales">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Stock Fisico Inicial <span class="text-red-600">*</span></label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-[var(--text-muted)]"><i class="bi bi-boxes"></i></span>
+                            <input type="number" step="0.01" name="stock" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" required value="{{ old('stock') }}" placeholder="Unidades actuales">
                         </div>
                         @error('stock')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <!-- Stock Mínimo -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold mb-2 text-main">
-                            Alerta de Stock Mínimo
-                        </label>
-                        <div class="input-group input-group-modern @error('stock_minimo') is-invalid @enderror">
-                            <span class="input-group-text"><i class="bi bi-exclamation-triangle text-warning"></i></span>
-                            <input type="number" step="0.01" name="stock_minimo" class="form-control @error('stock_minimo') is-invalid @enderror" value="{{ old('stock_minimo', 5) }}">
+                    <div>
+                        <label class="block text-sm font-semibold text-[var(--text-secondary)] mb-2">Alerta de Stock Minimo</label>
+                        <div class="flex items-stretch rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)]">
+                            <span class="flex items-center px-3 text-yellow-600"><i class="bi bi-exclamation-triangle"></i></span>
+                            <input type="number" step="0.01" name="stock_minimo" class="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none" value="{{ old('stock_minimo', 5) }}">
                         </div>
-                        <div class="form-text mt-1 text-muted"><i class="bi bi-lightbulb me-1"></i> Notificará cuando queden pocas unidades.</div>
+                        <p class="mt-1 text-xs text-[var(--text-muted)]"><i class="bi bi-lightbulb mr-1"></i> Notificara cuando queden pocas unidades.</p>
                         @error('stock_minimo')
-                            <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                            <p class="mt-1 text-xs text-red-600"><i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Botonera de Acción -->
-                <div class="d-flex justify-content-end gap-3 mt-5 pt-4" style="border-top: 1px solid var(--border-color);">
-                    <button type="button" class="btn btn-light-panaderia" onclick="window.history.back()">
-                        <i class="bi bi-x-circle me-2"></i>Cancelar
+                <div class="flex justify-end gap-3 border-t border-[var(--border-color)] pt-4">
+                    <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] px-4 py-2 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-input)]" onclick="window.history.back()">
+                        <i class="bi bi-x-circle"></i> Cancelar
                     </button>
-                    <button type="submit" class="btn btn-primary-panaderia">
-                        <i class="bi bi-cloud-arrow-up me-2"></i>Guardar e Ingresar Producto
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-[var(--btn-bg)] px-4 py-2 text-sm font-semibold text-[var(--btn-text)] hover:bg-[var(--btn-hover)]">
+                        <i class="bi bi-cloud-arrow-up"></i> Guardar e Ingresar Producto
                     </button>
                 </div>
             </form>
@@ -174,4 +151,3 @@
 @push('scripts')
     @vite(['resources/js/productos.js'])
 @endpush
-

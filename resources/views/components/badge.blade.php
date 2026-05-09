@@ -2,28 +2,28 @@
 @php
     $badgeClass = '';
     $text = '';
-    
+
     // Si viene la prop 'active' (true/false)
     if ($active !== null) {
-        $badgeClass = $active ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle';
+        $badgeClass = $active ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200';
         $text = $active ? 'Activo' : 'Inactivo';
-    } 
+    }
     // Si viene la prop nueva 'type' (success, warning, danger, info, etc)
     elseif ($type !== null) {
         $badgeClass = match($type) {
-            'success' => 'bg-success-subtle text-success border border-success-subtle',
-            'warning' => 'bg-warning-subtle text-warning border border-warning-subtle',
-            'danger' => 'bg-danger-subtle text-danger border border-danger-subtle',
-            'info' => 'bg-warning bg-opacity-10 text-gold border border-warning border-opacity-25',
-            'primary' => 'bg-main bg-opacity-10 text-main border border-main border-opacity-25',
-            'gold' => 'bg-warning text-dark border border-warning', // Gold fallback
-            default => 'bg-secondary-subtle text-secondary border border-secondary-subtle'
+            'success' => 'bg-green-50 text-green-700 border border-green-200',
+            'warning' => 'bg-yellow-50 text-yellow-800 border border-yellow-200',
+            'danger' => 'bg-red-50 text-red-700 border border-red-200',
+            'info' => 'bg-blue-50 text-blue-700 border border-blue-200',
+            'primary' => 'bg-[var(--bg-input)] text-[var(--text-primary)] border border-[var(--border-color)]',
+            'gold' => 'bg-yellow-400 text-gray-900 border border-yellow-500',
+            default => 'bg-gray-100 text-gray-600 border border-gray-200'
         };
     } else {
-        $badgeClass = 'bg-secondary-subtle text-secondary border border-secondary-subtle';
+        $badgeClass = 'bg-gray-100 text-gray-600 border border-gray-200';
     }
 @endphp
-<span {{ $attributes->merge(['class' => 'badge rounded-pill ' . $badgeClass]) }}>
+<span {{ $attributes->merge(['class' => 'inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold ' . $badgeClass]) }}>
     {{ $slot->isEmpty() ? $text : $slot }}
 </span>
 

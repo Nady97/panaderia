@@ -1,15 +1,6 @@
 {
-  "resources/css/components.css": {
-    "file": "assets/components-DCGdpbeP.css",
-    "src": "resources/css/components.css",
-    "isEntry": true,
-    "name": "components",
-    "names": [
-      "components.css"
-    ]
-  },
   "resources/css/global.css": {
-    "file": "assets/global-CKPVfUAZ.css",
+    "file": "assets/global-Bf3ZRYP0.css",
     "src": "resources/css/global.css",
     "isEntry": true,
     "name": "global",
@@ -17,26 +8,8 @@
       "global.css"
     ]
   },
-  "resources/css/login.css": {
-    "file": "assets/login-RPCxXPld.css",
-    "src": "resources/css/login.css",
-    "isEntry": true,
-    "name": "login",
-    "names": [
-      "login.css"
-    ]
-  },
-  "resources/css/sidebar.css": {
-    "file": "assets/sidebar-DeCsSMxc.css",
-    "src": "resources/css/sidebar.css",
-    "isEntry": true,
-    "name": "sidebar",
-    "names": [
-      "sidebar.css"
-    ]
-  },
   "resources/js/app.js": {
-    "file": "assets/app-BfIodFEZ.js",
+    "file": "assets/app-CCAFWsmc.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
@@ -63,6 +36,12 @@
     "file": "assets/productos-C9orK7iS.js",
     "name": "productos",
     "src": "resources/js/productos.js",
+    "isEntry": true
+  },
+  "resources/js/recetas.js": {
+    "file": "assets/recetas-l0sNRNKZ.js",
+    "name": "recetas",
+    "src": "resources/js/recetas.js",
     "isEntry": true
   },
   "resources/js/usuarios.js": {

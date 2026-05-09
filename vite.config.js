@@ -10,15 +10,13 @@ export default defineConfig({
             // Agrega aquí todos los archivos CSS y JS que quieras compilar
             input: [
                 'resources/css/global.css',
-                'resources/css/components.css',
-                'resources/css/sidebar.css',
-                'resources/css/login.css',
                 'resources/js/app.js',
                 'resources/js/perfil.js',
                 'resources/js/usuarios.js',
                 'resources/js/dashboard.js',
                 'resources/js/productos.js',
                 'resources/js/categorias.js',
+                'resources/js/recetas.js',
 
             ],
             refresh: true,

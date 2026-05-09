@@ -6,31 +6,37 @@
     'icon' => null,
 ])
 
+@php
+    $wrapperBase = 'flex items-stretch rounded border';
+    $wrapperClass = $errors->has($name) ? $wrapperBase . ' border-red-300' : $wrapperBase . ' border-gray-300';
+    $selectClass = 'block w-full px-3 py-2 text-sm bg-transparent focus:outline-none focus:ring-2 focus:ring-yellow-400';
+@endphp
+
 <div class="mb-4">
-    <label for="{{ $name }}" class="form-label fw-semibold mb-2 text-main">
-        {{ $label }} 
-        @if($required) <span class="text-danger">*</span> @endif
+    <label for="{{ $name }}" class="block mb-2 text-sm font-semibold text-[var(--text-primary)]">
+        {{ $label }}
+        @if($required) <span class="text-red-600">*</span> @endif
     </label>
-    
-    <div class="input-group input-group-modern @error($name) is-invalid @enderror">
+
+    <div class="{{ $wrapperClass }}">
         @if($icon)
-            <span class="input-group-text">{!! $icon !!}</span>
+            <span class="inline-flex items-center px-3 text-gray-500 bg-[var(--bg-primary)]">{!! $icon !!}</span>
         @endif
-        
-        <select 
-            class="form-select @error($name) is-invalid @enderror" 
-            id="{{ $name }}" 
-            name="{{ $name }}" 
+
+        <select
+            class="{{ $selectClass }}"
+            id="{{ $name }}"
+            name="{{ $name }}"
             {{ $required ? 'required' : '' }}
             {{ $attributes }}
         >
             {{ $slot }}
         </select>
     </div>
-    
+
     @error($name)
-        <div class="invalid-feedback d-block mt-1">
-            <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
-        </div>
+        <p class="mt-1 text-xs text-red-600">
+            <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
+        </p>
     @enderror
 </div>

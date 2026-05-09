@@ -5,25 +5,25 @@
     'emptyMessage' => 'No hay registros disponibles'
 ])
 
-<div class="table-responsive">
-    <table class="table table-hover align-middle mb-0">
-        <thead>
+<div class="overflow-x-auto">
+    <table class="min-w-full text-sm">
+        <thead class="border-b border-gray-200 text-xs uppercase tracking-wide text-gray-500">
             <tr>
                 @foreach($columns as $column)
-                    <th class="py-3 px-4 text-muted text-uppercase fw-semibold small">
+                    <th class="py-3 px-4 text-left font-semibold">
                         {{ $column['label'] }}
                     </th>
                 @endforeach
                 @if($actions)
-                    <th class="py-3 px-4 text-end text-muted text-uppercase fw-semibold small">
+                    <th class="py-3 px-4 text-right font-semibold">
                         Acciones
                     </th>
                 @endif
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-100">
             @forelse($rows as $row)
-                <tr>
+                <tr class="hover:bg-gray-50">
                     @foreach($columns as $key => $column)
                         <td class="py-3 px-4">
                             @if(isset($column['render']))
@@ -34,7 +34,7 @@
                         </td>
                     @endforeach
                     @if($actions)
-                        <td class="py-3 px-4 text-end">
+                        <td class="py-3 px-4 text-right">
                             {{ $actionsSlot ?? '' }}
                         </td>
                     @endif
