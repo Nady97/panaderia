@@ -1,0 +1,90 @@
+/* =========================================
+   LAYOUTS - Estructuras de Página Consistentes
+   ========================================= */
+
+/* Contenedor principal del dashboard */
+.dashboard-container {
+    padding: 0.5rem 0;
+    max-width: none;
+    margin: 0 auto;
+}
+
+/* Grid de KPIs - SIEMPRE 4 columnas en desktop */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Grid de 2 columnas para paneles */
+.panel-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Grid de 3 columnas */
+.panel-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Sección de tabla */
+.table-section {
+    background: var(--bg-card);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.table-section:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.table-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table-header h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .panel-grid-2,
+    .panel-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-container {
+        padding: 0.35rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .dashboard-container {
+        padding: 0.25rem 0;
+    }
+}

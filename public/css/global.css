@@ -1,10 +1,6 @@
-/* Cambiar ESTO: */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* POR ESTO (Tailwind v4): */
-@import "tailwindcss";
 /* MODO CLARO - Paleta "Pan Francés" (Colores nítidos, cálidos y apetitosos) */
 :root {
     /* Colores principales - Corteza del pan */
