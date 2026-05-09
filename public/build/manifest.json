@@ -1,0 +1,74 @@
+{
+  "resources/css/components.css": {
+    "file": "assets/components-DCGdpbeP.css",
+    "src": "resources/css/components.css",
+    "isEntry": true,
+    "name": "components",
+    "names": [
+      "components.css"
+    ]
+  },
+  "resources/css/global.css": {
+    "file": "assets/global-BudDh6mv.css",
+    "src": "resources/css/global.css",
+    "isEntry": true,
+    "name": "global",
+    "names": [
+      "global.css"
+    ]
+  },
+  "resources/css/login.css": {
+    "file": "assets/login-RPCxXPld.css",
+    "src": "resources/css/login.css",
+    "isEntry": true,
+    "name": "login",
+    "names": [
+      "login.css"
+    ]
+  },
+  "resources/css/sidebar.css": {
+    "file": "assets/sidebar-DeCsSMxc.css",
+    "src": "resources/css/sidebar.css",
+    "isEntry": true,
+    "name": "sidebar",
+    "names": [
+      "sidebar.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BfIodFEZ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/categorias.js": {
+    "file": "assets/categorias-93U4T9cs.js",
+    "name": "categorias",
+    "src": "resources/js/categorias.js",
+    "isEntry": true
+  },
+  "resources/js/dashboard.js": {
+    "file": "assets/dashboard-BM3FN9zH.js",
+    "name": "dashboard",
+    "src": "resources/js/dashboard.js",
+    "isEntry": true
+  },
+  "resources/js/perfil.js": {
+    "file": "assets/perfil-D5HUUsZr.js",
+    "name": "perfil",
+    "src": "resources/js/perfil.js",
+    "isEntry": true
+  },
+  "resources/js/productos.js": {
+    "file": "assets/productos-C9orK7iS.js",
+    "name": "productos",
+    "src": "resources/js/productos.js",
+    "isEntry": true
+  },
+  "resources/js/usuarios.js": {
+    "file": "assets/usuarios-nh3KuU9z.js",
+    "name": "usuarios",
+    "src": "resources/js/usuarios.js",
+    "isEntry": true
+  }
+}
