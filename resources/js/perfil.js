@@ -1,7 +1,13 @@
+/**
+ * PERFIL DE USUARIO 
+ * Funcionalidades: Validación de contraseña, foto de perfil, toasts, modales, etc.
+ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    // ============================================
     // ⚠️ VERIFICAR SI ESTAMOS EN LA PÁGINA DE PERFIL
+    // ============================================
     const isProfilePage = document.querySelector('#perfilForm, #collapsePassword, #collapseDanger, form[action*="/perfil/"]');
 
     if (!isProfilePage) {
@@ -9,7 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    // ============================================
     // 1. VALIDACIÓN DE CONTRASEÑA EN TIEMPO REAL
+    // ============================================
     const newPassword = document.getElementById('newPassword');
     const confirmPassword = document.getElementById('confirmPassword');
     const passwordStrength = document.getElementById('passwordStrength');
@@ -71,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (confirmPassword) confirmPassword.addEventListener('input', checkPasswordMatch);
     }
 
+    // ============================================
     // 2. LOADING STATE EN BOTONES
+    // ============================================
     function setLoading(btn, isLoading, customText = 'Procesando...') {
         if (!btn) return;
 
@@ -88,7 +98,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // ============================================
     // 3. MANEJO DE FORMULARIOS
+    // ============================================
     const perfilForm = document.getElementById('perfilForm');
     const passwordForm = document.querySelector('#collapsePassword form[action*="/perfil/password"]');
 
@@ -120,7 +132,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ============================================
     // 4. TOAST NOTIFICATIONS
+    // ============================================
     window.showToast = function (message, type = 'success', duration = 3000) {
         const existingToast = document.querySelector('.toast-notification');
         if (existingToast) existingToast.remove();
@@ -146,7 +160,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }, duration);
     };
 
+    // ============================================
     // 5. MODAL DE CONFIRMACIÓN
+    // ============================================
     let modalCallback = null;
 
     window.showModal = function (message, callback, title = 'Confirmar acción') {
@@ -193,7 +209,9 @@ document.addEventListener('DOMContentLoaded', function () {
         );
     };
 
+    // ============================================
     // 6. AUTO-OCULTAR ALERTAS
+    // ============================================
     const alerts = document.querySelectorAll('.alert-custom, .alert');
     alerts.forEach(alert => {
         setTimeout(() => {
@@ -204,7 +222,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 5000);
     });
 
+    // ============================================
     // 7. COPIA AL PORTAPAPELES
+    // ============================================
     document.querySelectorAll('.info-value, .copyable').forEach(el => {
         const text = el.innerText;
         if (text && !text.includes('No registrado') && !text.includes('No registrada')) {
@@ -225,7 +245,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // ============================================
     // 8. ANIMACIÓN DE ENTRADA
+    // ============================================
     const animateCards = () => {
         document.querySelectorAll('.info-card, .form-card, .activity-panel').forEach((card, i) => {
             if (!card.hasAttribute('data-animated')) {
@@ -243,7 +265,9 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     animateCards();
 
+    // ============================================
     // 9. PREVISUALIZACIÓN DE FOTO DE PERFIL
+    // ============================================
     const avatarInput = document.querySelector('input[name="imagen"]');
     const avatarPreview = document.getElementById('avatarPreview');
     const avatarCircle = document.querySelector('.avatar-circle');
@@ -302,7 +326,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ============================================
     // 10. VALIDACIÓN DE EMAIL
+    // ============================================
     const emailInput = document.querySelector('input[name="email"]');
     if (emailInput) {
         const validateEmail = () => {
@@ -333,7 +359,9 @@ document.addEventListener('DOMContentLoaded', function () {
         emailInput.addEventListener('blur', validateEmail);
     }
 
+    // ============================================
     // 11. MOSTRAR/OCULTAR CONTRASEÑA
+    // ============================================
     document.querySelectorAll('.password-toggle').forEach(toggle => {
         toggle.addEventListener('click', function () {
             const targetId = this.getAttribute('data-target');
@@ -350,7 +378,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // ============================================
     // 12. BOTÓN DE MODO OSCURO
+    // ============================================
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
@@ -378,7 +408,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// ============================================
 // FUNCIÓN PARA RESETEAR FORMULARIO
+// ============================================
 function resetForm(form) {
     if (!form) return;
 
@@ -414,7 +446,10 @@ function resetForm(form) {
         showToast('Formulario restablecido', 'info', 1500);
     }
 }
+
+// ============================================
 // ESTILOS ADICIONALES
+// ============================================
 
 document.head.appendChild(style);
 
