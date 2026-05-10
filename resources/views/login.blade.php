@@ -11,7 +11,7 @@
 </head>
 <body class="dark-mode d-flex flex-column vh-100">
 
-    <div class="container-fluid flex-grow-1 d-flex p-0 m-0">
+    <div class="container-fluid  d-flex p-0 m-0">
         <div class="row g-0 w-100">
             
             <!-- Panel Izquierdo: Showcase -->
@@ -76,6 +76,8 @@
 
                     <div class="text-center mt-5 pt-4 text-secondary opacity-75 small" style="border-top: 1px solid var(--border-color);">
                         <i class="bi bi-shield-check text-gold"></i> Software de Gestión ERP<br>
+                        <i class="bi bi-shield-check text-gold"></i> Usuario: nadycarvajal@gmail.com<br>
+                        <i class="bi bi-shield-check text-gold"></i> Contraseña: NADIA123<br>
                         &copy; {{ date('Y') }} Panadería Artesanal
                     </div>
                 </div>
@@ -83,7 +85,6 @@
 
         </div>
     </div>
-
 </body>
 </html>
 

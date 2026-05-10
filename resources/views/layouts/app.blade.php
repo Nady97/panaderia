@@ -120,8 +120,24 @@
     </div>
 </aside>
 
+<div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
 <main class="main-content">
     <div class="container-fluid p-0">
+        <div class="mobile-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Abrir menu">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="d-flex align-items-center gap-2 text-main">
+                <i class="bi bi-box-seam text-gold"></i>
+                <span class="fw-semibold">Panel Administrativo</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="sidebar-toggle" id="sidebarClose" type="button" aria-label="Cerrar menu">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
 
 
         <div class="animate-fade-in">

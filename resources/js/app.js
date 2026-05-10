@@ -72,6 +72,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
+    // --- SIDEBAR OFFCANVAS (Mobile) ---
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    const openSidebar = () => {
+        if (!sidebar) return;
+        sidebar.classList.add('is-open');
+        if (sidebarBackdrop) sidebarBackdrop.classList.add('is-visible');
+        document.body.classList.add('sidebar-open');
+    };
+
+    const closeSidebar = () => {
+        if (!sidebar) return;
+        sidebar.classList.remove('is-open');
+        if (sidebarBackdrop) sidebarBackdrop.classList.remove('is-visible');
+        document.body.classList.remove('sidebar-open');
+    };
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', openSidebar);
+    }
+
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', closeSidebar);
+    }
+
+    if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', closeSidebar);
+    }
+
+    if (sidebar) {
+        sidebar.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target && target.closest('a.nav-link')) {
+                closeSidebar();
+            }
+        });
+    }
+
     // Función auxiliar para actualizar el ícono
     const updateThemeIcon = (isDark) => {
         if (themeIcon) {
