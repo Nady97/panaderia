@@ -27,7 +27,7 @@
     ]
   },
   "resources/css/sidebar.css": {
-    "file": "assets/sidebar-DeCsSMxc.css",
+    "file": "assets/sidebar-AzPvwLph.css",
     "src": "resources/css/sidebar.css",
     "isEntry": true,
     "name": "sidebar",
@@ -36,7 +36,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BfIodFEZ.js",
+    "file": "assets/app-ChjpX1hQ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
