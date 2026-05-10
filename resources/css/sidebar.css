@@ -19,20 +19,35 @@
 }
 
 /* Scrollbar sutil para el sidebar */
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
-.dark-mode .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.dark-mode .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+}
 
 .sidebar-brand {
     text-align: left;
     padding: 24px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
 }
-.dark-mode .sidebar-brand { border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+.dark-mode .sidebar-brand {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 .sidebar-brand h5 {
     color: var(--sidebar-text-primary);
@@ -48,15 +63,15 @@
     font-weight: 500;
 }
 
-.nav-menu { 
-    list-style: none; 
-    padding: 0 12px; 
-    margin: 0; 
+.nav-menu {
+    list-style: none;
+    padding: 0 12px;
+    margin: 0;
     flex-grow: 1;
 }
 
-.nav-item { 
-    margin: 2px 0; 
+.nav-item {
+    margin: 2px 0;
 }
 
 .nav-link {
@@ -72,20 +87,23 @@
     font-weight: 500;
 }
 
-.nav-link i { 
-    font-size: 1.15rem; 
-    width: 24px; 
+.nav-link i {
+    font-size: 1.15rem;
+    width: 24px;
     display: flex;
     justify-content: center;
     color: var(--sidebar-text-muted);
     transition: color 0.2s ease;
 }
 
-.nav-link:hover { 
-    background: var(--sidebar-hover-bg); 
-    color: var(--sidebar-text-primary); 
+.nav-link:hover {
+    background: var(--sidebar-hover-bg);
+    color: var(--sidebar-text-primary);
 }
-.dark-mode .nav-link:hover { background: var(--sidebar-hover-bg); }
+
+.dark-mode .nav-link:hover {
+    background: var(--sidebar-hover-bg);
+}
 
 .nav-link:hover i {
     color: var(--sidebar-text-primary);
@@ -97,7 +115,9 @@
     font-weight: 600;
 }
 
-.dark-mode .nav-link.active { background: var(--sidebar-hover-bg); }
+.dark-mode .nav-link.active {
+    background: var(--sidebar-hover-bg);
+}
 
 .nav-link.active i {
     color: var(--text-primary);
@@ -132,8 +152,8 @@
     font-size: 0.9rem;
 }
 
-.logout-btn:hover { 
-    background: rgba(220, 38, 38, 0.08); 
+.logout-btn:hover {
+    background: rgba(220, 38, 38, 0.08);
 }
 
 /* Espaciado del contenido principal */
@@ -173,17 +193,46 @@ body.sidebar-open {
         transform: translateX(0);
     }
 
-    .sidebar-brand { padding: 20px; align-items: flex-start; }
-    .sidebar-brand h5, .sidebar-brand small, .nav-link span, .logout-btn span { display: inline; }
+    .sidebar-brand {
+        padding: 20px;
+        align-items: flex-start;
+    }
 
-    .nav-menu { padding: 0 16px; }
-    .nav-link { justify-content: flex-start; padding: 10px 12px; }
-    .nav-link i { margin: 0; font-size: 1.15rem; }
+    .sidebar-brand h5,
+    .sidebar-brand small,
+    .nav-link span,
+    .logout-btn span {
+        display: inline;
+    }
 
-    .sidebar-footer { padding: 16px; }
-    .logout-btn { justify-content: flex-start; padding: 10px 12px; }
+    .nav-menu {
+        padding: 0 16px;
+    }
 
-    .main-content { margin-left: 0; width: 100%; padding: 16px 12px; }
+    .nav-link {
+        justify-content: flex-start;
+        padding: 10px 12px;
+    }
+
+    .nav-link i {
+        margin: 0;
+        font-size: 1.15rem;
+    }
+
+    .sidebar-footer {
+        padding: 16px;
+    }
+
+    .logout-btn {
+        justify-content: flex-start;
+        padding: 10px 12px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 16px 12px;
+    }
 
     .sidebar-backdrop {
         display: block;
@@ -234,13 +283,19 @@ body.sidebar-open {
         justify-content: center;
     }
 
-    .sidebar-toggle i { font-size: 1.2rem; }
+    .sidebar-toggle i {
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .sidebar { width: 260px; }
+    .sidebar {
+        width: 260px;
+    }
 }
 
 @media (max-width: 576px) {
-    .sidebar { width: 240px; }
+    .sidebar {
+        width: 240px;
+    }
 }

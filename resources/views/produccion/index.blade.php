@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endpush@extends('layouts.app')
+@endpush
 
 @section('content')
 <div class="dashboard-container p-4 animate-fade-in">
