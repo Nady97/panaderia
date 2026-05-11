@@ -85,17 +85,36 @@ class Usuario extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+      public function permisosDirectos()
+    {
+        return $this->belongsToMany(
+            \App\Models\Permiso::class, 
+            'usuario_permiso', 
+            'usuario_codigo', 
+            'permiso_id',
+            'codigo',
+            'id'
+        )->withTimestamps();
+    }
 
     /**
      * Verifica si el usuario tiene un permiso especifico por slug
      */
-    public function hasPermission(string $permissionSlug): bool
+       public function hasPermission(string $permissionSlug): bool
     {
         if (!$this->rol) {
             return false;
         }
 
-        return $this->rol->permisos()->where('slug', $permissionSlug)->exists();
+        // Primero verificar permisos del rol
+        $tienePorRol = $this->rol->permisos()->where('slug', $permissionSlug)->exists();
+        
+        if ($tienePorRol) {
+            return true;
+        }
+
+        // Luego verificar permisos directos del usuario
+        return $this->permisosDirectos()->where('slug', $permissionSlug)->exists();
     }
 
     protected $hidden = [

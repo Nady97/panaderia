@@ -117,7 +117,7 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                     <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small" class="text-muted">Receta / Producto</th>
+                            <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small" class="text-muted">Recetas</th>
                             <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small" class="text-muted">Métricas</th>
                             <th class="py-3 px-4 text-center" class="text-muted text-uppercase fw-semibold small" class="text-muted">Estado Operativo</th>
                             <th class="py-3 px-4 text-end" class="text-muted text-uppercase fw-semibold small" class="text-muted">Acciones</th>
@@ -126,18 +126,18 @@
                     <tbody >
                         @forelse($recetas as $receta)
                         <tr class="border-bottom-modern" style="transition: background 0.2s;">
-                            <td class="py-3 px-4">
+                            <td class="py-3 scroll-px-3">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="p-2 rounded d-flex align-items-center justify-content-center" class="detail-box icon-box">
-                                        <i class="bi bi-journal-check" class="fs-5"></i>
-                                    </div>
+                                     <!-- <div class="p-2 rounded d-flex align-items-center justify-content-center" class="detail-box icon-box">
+                                      <i class="bi bi-journal-check" class="fs-5"></i> 
+                                    </div>-->
                                     <div>
                                         <div class="fw-bold text-main fs-6">
                                             <a href="{{ route('recetas.show', $receta->id) }}" class="text-decoration-none text-main" class="receta-link">{{ $receta->nombre }}</a>
                                         </div>
-                                        <div class="small text-muted">
-                                            <i class="bi bi-box-seam me-1"></i>Para: {{ $receta->producto ? $receta->producto->nombre : 'Sin producto asignado' }}
-                                        </div>
+                                      <!--  <div class="small text-muted">
+                                            </i>Para: {{ $receta->producto ? $receta->producto->nombre : 'Sin producto asignado' }}
+                                        </div> -->
                                     </div>
                                 </div>
                             </td>

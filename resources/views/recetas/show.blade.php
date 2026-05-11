@@ -4,10 +4,10 @@
 <div class="dashboard-container">
     <!-- Header -->
     <x-card class="mb-4">
-        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="p-4 d-flex justify-content-between  flex-wrap gap-3">
             <div class="d-flex align-items-center gap-3">
-                <div class="detail-box icon-box-lg bg-main text-gold rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-journal-richtext fs-4"></i>
+                <div class="t-flex align-items-center justify-content-center text-gold">
+                    <i class="bi bi-journal-richtext fs-1"></i>
                 </div>
                 <div>
                     <h2 class="fw-bold mb-1 text-main">Detalle de Receta</h2>
@@ -34,8 +34,8 @@
             <x-card class="h-100">
                 <div class="card-body p-4">
                     <div class="text-center mb-4 pb-4 border-bottom border-color">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-main rounded-circle mb-3 border border-4 shadow-m receta-avatar">
-                            <i class="bi bi-journal-text text-gold" class="display-4"></i>
+                        <div class="d-inline-flex align-items-center justify-content-center  mb-3 ">
+                            <i class="bi bi-journal-text text-gold fs-2" class="display-4"></i>
                         </div>
                         <h4 class="fw-bold text-main mb-1">{{ $receta->nombre }}</h4>
                         
@@ -101,9 +101,9 @@
                         <div class="row g-3">
                             @foreach($receta->insumos as $insumo)
                             <div class="col-md-6 col-lg-4">
-                                <div class="detail-box d-flex align-items-center p-3 rounded bg-input border-modern transition-fast">
-                                    <div class="icon-box-sm me-3 text-gold d-flex align-items-center justify-content-center bg-card rounded-circle border-modern">
-                                        <i class="bi bi-tag-fill small"></i>
+                                <div class="detail-box d-flex align-items-center p-3 rounded -modern transition-fast">
+                                    <div class="me-3 text-gold d-flex align-items-center justify-content-center ">
+                                        <i class="bi bi-tag-fill fs-6"></i>
                                     </div>
                                     <div>
                                         <div class="detail-label text-muted small text-uppercase mb-1 fw-bold">{{ $insumo->nombre }}</div>
