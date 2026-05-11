@@ -20,12 +20,12 @@
     </x-card>
 
     <!-- Tarjetas de resumen (Globales) -->
-    <div class="row g-3 mb-4">
+    <div class="row g-2 mb-2">
         <div class="col-md-4 col-sm-12">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; color: var(--gold-dark);">
-                        <i class="bi bi-tags fs-2"></i>
+                    <div class="p-3 me-3" style="color: var(--gold-dark);">
+                        <i class="bi bi-tags kpi-icon"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $totalCategorias ?? 0 }}</h3>
@@ -35,10 +35,10 @@
             </x-card>
         </div>
         <div class="col-md-4 col-sm-6">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="background: rgba(16, 185, 129, 0.1); border-radius: 12px; color: var(--success);">
-                        <i class="bi bi-check-circle fs-2"></i>
+                    <div class="p-3 me-3" style="color: var(--success);">
+                        <i class="bi bi-check-circle kpi-icon"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $categoriasActivas ?? 0 }}</h3>
@@ -48,10 +48,10 @@
             </x-card>
         </div>
         <div class="col-md-4 col-sm-6">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="background: rgba(100, 116, 139, 0.1); border-radius: 12px; color: #64748b;">
-                        <i class="bi bi-x-circle fs-2"></i>
+                    <div class="p-3 me-3" style="color: #64748b;">
+                        <i class="bi bi-x-circle kpi-icon"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $categoriasInactivas ?? 0 }}</h3>

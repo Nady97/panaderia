@@ -20,7 +20,7 @@
     </x-card>
 
     <!-- Tarjetas de resumen -->
-    <div class="row g-3 mb-4">
+    <div class="row g-2 mb-2">
         @foreach($roles->sortBy(fn($r) => ($r->slug === 'proveedor' || strtolower($r->nombre) === 'proveedor') ? 1 : 0) as $key => $rol)
         <!-- Excluir rol 'Cliente' de las tarjetas de resumen -->
         @if($rol->slug !== 'cliente' && strtolower($rol->nombre) !== 'cliente')
@@ -28,10 +28,10 @@
             @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
             <a href="{{ url('/proveedores') }}" class="text-decoration-none">
             @endif
-            <x-card class="h-100 bg-transparent-hover {{ ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') ? 'border-primary' : '' }}">
+            <x-card class="h-100 bg-transparent-hover kpi-card {{ ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') ? 'border-primary' : '' }}">
                 <div class="d-flex align-items-center gap-3 w-100">
-                    <div class="p-3 rounded-circle" style="background: rgba(193, 144, 91, 0.1); color: var(--gold-dark);">
-                        {!! $rol->icono ?? '<i class="bi bi-person" style="font-size: 1.5rem;"></i>' !!}
+                    <div class="p-3 rounded-circle kpi-icon-wrapper" style="color: var(--gold-dark);">
+                        {!! $rol->icono ?? '<i class="bi bi-person kpi-icon"></i>' !!}
                     </div>
                     <div>
                         <h3 class="mb-0 fw-bold text-main">{{ $totalPorRol[$rol->slug] ?? 0 }}</h3>

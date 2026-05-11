@@ -18,17 +18,17 @@
     </x-card>
 
     <!-- Tarjetas de estadísticas -->
-    <div class="row g-3 mb-3">
+    <div class="row g-2 mb-2">
         <!-- Productos -->
         <div class="col-md-3">
-            <x-card class="h-100 stat-card-elegant">
+            <x-card class="h-100 stat-card-elegant kpi-card">
                 <div class="d-flex align-items-center">
-                    <div class="stat-icon-wrapper bg-soft-gold me-3">
-                        <i class="bi bi-box-seam text-gold"></i>
+                    <div class="stat-icon-wrapper me-3 text-gold">
+                        <i class="bi bi-box-seam kpi-icon"></i>
                     </div>
                     <div>
-                        <p class="stat-label-elegant">Productos</p>
                         <h3 class="stat-value-elegant">{{ $totalProductos ?? 0 }}</h3>
+                        <p class="stat-label-elegant">Productos</p>
                     </div>
                 </div>
             </x-card>
@@ -36,14 +36,14 @@
         
         <!-- Ventas -->
         <div class="col-md-3">
-            <x-card class="h-100 stat-card-elegant">
+            <x-card class="h-100 stat-card-elegant kpi-card">
                 <div class="d-flex align-items-center">
-                    <div class="stat-icon-wrapper bg-soft-green me-3">
-                        <i class="bi bi-cart-check text-success"></i>
+                    <div class="stat-icon-wrapper me-3 text-success">
+                        <i class="bi bi-cart-check kpi-icon"></i>
                     </div>
                     <div>
-                        <p class="stat-label-elegant">Ventas</p>
                         <h3 class="stat-value-elegant">{{ $totalVentas ?? 0 }}</h3>
+                        <p class="stat-label-elegant">Ventas</p>
                     </div>
                 </div>
             </x-card>
@@ -51,14 +51,14 @@
         
         <!-- Producción -->
         <div class="col-md-3">
-            <x-card class="h-100 stat-card-elegant">
+            <x-card class="h-100 stat-card-elegant kpi-card">
                 <div class="d-flex align-items-center">
-                    <div class="stat-icon-wrapper bg-soft-brown me-3">
-                        <i class="bi bi-cup-hot text-brown"></i>
+                    <div class="stat-icon-wrapper me-3 text-brown">
+                        <i class="bi bi-cup-hot kpi-icon"></i>
                     </div>
                     <div>
-                        <p class="stat-label-elegant">Producción</p>
                         <h3 class="stat-value-elegant">{{ $totalProduccion ?? 0 }}</h3>
+                        <p class="stat-label-elegant">Producción</p>
                     </div>
                 </div>
             </x-card>
@@ -66,14 +66,14 @@
         
         <!-- Inventario -->
         <div class="col-md-3">
-            <x-card class="h-100 stat-card-elegant">
+            <x-card class="h-100 stat-card-elegant kpi-card">
                 <div class="d-flex align-items-center">
-                    <div class="stat-icon-wrapper bg-soft-gold me-3">
-                        <i class="bi bi-currency-dollar text-gold"></i>
+                    <div class="stat-icon-wrapper me-3 text-gold">
+                        <i class="bi bi-currency-dollar kpi-icon"></i>
                     </div>
                     <div>
-                        <p class="stat-label-elegant">Inventario</p>
                         <h3 class="stat-value-elegant-monetary">Bs {{ number_format($valorInventario ?? 0, 2) }}</h3>
+                        <p class="stat-label-elegant">Inventario</p>
                     </div>
                 </div>
             </x-card>
@@ -155,6 +155,78 @@
                             <i class="bi bi-pie-chart me-2 text-gold"></i>Resumen del Inventario
                         </h5>
                     </div>
+
+                    @php
+                        $stockTotalValue = $stockTotal ?? 0;
+                        $totalProductosValue = $totalProductos ?? 0;
+                        $precioPromedioValue = $precioPromedio ?? 0;
+                        $stockBajoValue = $productosStockBajo ?? 0;
+                        $agotadosValue = $productosAgotados ?? 0;
+                        $saludableValue = max(0, $totalProductosValue - $stockBajoValue - $agotadosValue);
+
+                        $donutTotal = max(1, $saludableValue + $stockBajoValue + $agotadosValue);
+                        $saludablePct = round(($saludableValue / $donutTotal) * 100, 1);
+                        $stockBajoPct = round(($stockBajoValue / $donutTotal) * 100, 1);
+                        $agotadosPct = round(($agotadosValue / $donutTotal) * 100, 1);
+                    @endphp
+
+                    <div class="inventory-donut-wrap mb-3">
+                        <div class="inventory-donut" style="--saludable: {{ $saludablePct }}; --stockbajo: {{ $stockBajoPct }}; --agotados: {{ $agotadosPct }};">
+                            <div class="inventory-donut-center">
+                                <span class="donut-label">Productos</span>
+                                <span class="donut-value">{{ $totalProductosValue }}</span>
+                            </div>
+                        </div>
+                        <div class="inventory-donut-legend">
+                            <div class="legend-item">
+                                <span class="legend-swatch saludable"></span>
+                                <div>
+                                    <span class="legend-title">Stock saludable</span>
+                                    <span class="legend-value">{{ $saludableValue }}</span>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-swatch bajo"></span>
+                                <div>
+                                    <span class="legend-title">Stock bajo</span>
+                                    <span class="legend-value">{{ $stockBajoValue }}</span>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-swatch agotados"></span>
+                                <div>
+                                    <span class="legend-title">Agotados</span>
+                                    <span class="legend-value">{{ $agotadosValue }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inventory-highlight">
+                        <div class="highlight-item">
+                            <i class="bi bi-star-fill text-gold"></i>
+                            <div>
+                                <span class="highlight-title">Producto estrella</span>
+                                <span class="highlight-value">{{ $productoEstrella ?? 'Pendiente de datos' }}</span>
+                            </div>
+                        </div>
+                        {{--
+                        <div class="highlight-item">
+                            <i class="bi bi-fire text-brown"></i>
+                            <div>
+                                <span class="highlight-title">Mas elaborado</span>
+                                <span class="highlight-value">{{ $productoMasElaborado ?? 'Pendiente de datos' }}</span>
+                            </div>
+                        </div>
+                        --}}
+                        <div class="highlight-item">
+                            <i class="bi bi-journal-text text-success"></i>
+                            <div>
+                                <span class="highlight-title">Receta mas usada</span>
+                                <span class="highlight-value">{{ $recetaMasUsada ?? 'Pendiente de datos' }}</span>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!--
                     <div class="inventory-value-card mb-3">
@@ -162,6 +234,7 @@
                         <div class="inventory-value">Bs {{ number_format($valorInventario ?? 0, 2) }}</div>
                     </div> -->
                     
+                    {{--
                     <div class="d-flex flex-column gap-2">
                         <div class="inventory-detail-item">
                             <div class="detail-icon bg-soft-gold">
@@ -169,7 +242,7 @@
                             </div>
                             <div class="detail-info">
                                 <span class="detail-label">Unidades en stock</span>
-                                <span class="detail-value">{{ $stockTotal ?? 0 }}</span>
+                                <span class="detail-value">{{ $stockTotalValue }}</span>
                             </div>
                         </div>
                         
@@ -179,7 +252,7 @@
                             </div>
                             <div class="detail-info">
                                 <span class="detail-label">Precio promedio</span>
-                                <span class="detail-value">Bs {{ number_format($precioPromedio ?? 0, 2) }}</span>
+                                <span class="detail-value">Bs {{ number_format($precioPromedioValue, 2) }}</span>
                             </div>
                         </div>
                         
@@ -189,10 +262,11 @@
                             </div>
                             <div class="detail-info">
                                 <span class="detail-label">Total productos distintos</span>
-                                <span class="detail-value">{{ $totalProductos ?? 0 }}</span>
+                                <span class="detail-value">{{ $totalProductosValue }}</span>
                             </div>
                         </div>
                     </div>
+                    --}}
                 </div>
             </x-card>
         </div>
@@ -276,11 +350,6 @@
     /* transition: all 0.25s ease !important; */
 }
 
-.stat-card-elegant:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: var(--shadow-md) !important;
-    border-color: var(--gold-dark) !important;
-}
 
 /* Icono de estadística */
 .stat-icon-wrapper {
@@ -296,31 +365,31 @@
 
 /* Etiqueta elegante */
 .stat-label-elegant {
-    font-size: 0.7rem !important;
+    font-size: 0.78rem !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.8px !important;
-    color: var(--text-muted) !important;
-    margin-bottom: 0.25rem !important;
-    font-weight: 600 !important;
+    letter-spacing: 0.12em !important;
+    color: var(--text-secondary) !important;
+    margin: 0.2rem 0 0 !important;
+    font-weight: 500 !important;
 }
 
 /* Valor elegante */
 .stat-value-elegant {
-    font-size: 1.75rem !important;
+    font-size: 1.9rem !important;
     font-weight: 700 !important;
     line-height: 1.2 !important;
     color: var(--text-primary) !important;
     margin-bottom: 0 !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: -0.01em !important;
 }
 
 .stat-value-elegant-monetary {
-    font-size: 1.35rem !important;
+    font-size: 1.55rem !important;
     font-weight: 700 !important;
     line-height: 1.2 !important;
     color: var(--text-primary) !important;
     margin-bottom: 0 !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: -0.01em !important;
 }
 
 /* Alertas elegantes */
@@ -476,6 +545,141 @@
 }
 
 .detail-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.detail-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Donut de resumen */
+.inventory-donut-wrap {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.inventory-donut {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            rgba(16, 185, 129, 0.9) 0 calc(var(--saludable) * 1%),
+            rgba(245, 158, 11, 0.9) 0 calc((var(--saludable) + var(--stockbajo)) * 1%),
+            rgba(239, 68, 68, 0.9) 0 100%
+        );
+    display: grid;
+    place-items: center;
+    box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.9);
+}
+
+.inventory-donut-center {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+}
+
+.donut-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.donut-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.inventory-donut-legend {
+    display: grid;
+    gap: 10px;
+}
+
+.legend-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    display: inline-block;
+}
+
+.legend-swatch.saludable {
+    background: rgba(16, 185, 129, 0.9);
+}
+
+.legend-swatch.bajo {
+    background: rgba(245, 158, 11, 0.9);
+}
+
+.legend-swatch.agotados {
+    background: rgba(239, 68, 68, 0.9);
+}
+
+.legend-title {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.legend-value {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.inventory-highlight {
+    display: grid;
+    gap: 8px;
+}
+
+.highlight-item {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: rgba(210, 150, 75, 0.03);
+}
+
+.highlight-title {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.highlight-value {
+    display: block;
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-primary);

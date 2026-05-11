@@ -20,12 +20,12 @@
     </x-card>
 
     <!-- Tarjetas de resumen -->
-    <div class="row g-3 mb-4">
+    <div class="row g-2 mb-2">
         <div class="col-md-3 col-sm-6">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" class="bg-success bg-opacity-10 text-success rounded-3">
-                        <i class="bi bi-journal-check fs-2"></i>
+                    <div class="p-3 me-3 kpi-icon-wrapper text-success">
+                        <i class="bi bi-journal-check"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $recetasActivas ?? 0 }}</h3>
@@ -35,10 +35,10 @@
             </x-card>
         </div>
         <div class="col-md-3 col-sm-6">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" class="bg-warning bg-opacity-10 text-warning rounded-3">
-                        <i class="bi bi-pencil-square fs-2"></i>
+                    <div class="p-3 me-3 kpi-icon-wrapper text-warning">
+                        <i class="bi bi-pencil-square"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $recetasBorrador ?? 0 }}</h3>
@@ -48,10 +48,10 @@
             </x-card>
         </div>
         <div class="col-md-3 col-sm-6">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" class="bg-danger bg-opacity-10 text-danger rounded-3">
-                        <i class="bi bi-journal-x fs-2"></i>
+                    <div class="p-3 me-3 kpi-icon-wrapper text-danger">
+                        <i class="bi bi-journal-x"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $recetasObsoletas ?? 0 }}</h3>
@@ -61,10 +61,10 @@
             </x-card>
         </div>
         <div class="col-md-3 col-sm-6">
-            <x-card class="h-100 d-flex align-items-center bg-transparent-hover border-primary">
+            <x-card class="h-100 d-flex align-items-center bg-transparent-hover border-primary kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" class="bg-warning bg-opacity-10 text-warning rounded-3">
-                        <i class="bi bi-collection fs-2"></i>
+                    <div class="p-3 me-3 kpi-icon-wrapper text-warning">
+                        <i class="bi bi-collection"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $totalRecetas ?? 0 }}</h3>
