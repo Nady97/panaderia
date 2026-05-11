@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\Rol;
+use App\Models\BitacoraAcceso;
+use App\Models\BitacoraCambio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -17,10 +19,10 @@ class UsuarioController extends Controller
         // Búsqueda por nombre, email o código
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nombre', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('codigo', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('codigo', 'like', "%{$search}%");
             });
         }
 
@@ -55,25 +57,73 @@ class UsuarioController extends Controller
             $totalPorRol[$rol->slug] = $cantidad;
 
             switch ($rol->nombre) {
-                case 'Administrador': $totalAdministradores = $cantidad; break;
-                case 'Cajero': $totalCajeros = $cantidad; break;
-                case 'Cocinero / Panadero': $totalPanaderos = $cantidad; break;
-                case 'Proveedor': $totalProveedores = $cantidad; break;
-                case 'Cliente': $totalClientes = $cantidad; break;
+                case 'Administrador':
+                    $totalAdministradores = $cantidad;
+                    break;
+                case 'Cajero':
+                    $totalCajeros = $cantidad;
+                    break;
+                case 'Cocinero / Panadero':
+                    $totalPanaderos = $cantidad;
+                    break;
+                case 'Proveedor':
+                    $totalProveedores = $cantidad;
+                    break;
+                case 'Cliente':
+                    $totalClientes = $cantidad;
+                    break;
             }
         }
 
         return view('usuarios.index', compact(
-            'usuarios', 'totalUsuarios', 'totalAdministradores',
-            'totalCajeros', 'totalPanaderos', 'totalProveedores',
-            'totalClientes', 'roles', 'totalPorRol'
+            'usuarios',
+            'totalUsuarios',
+            'totalAdministradores',
+            'totalCajeros',
+            'totalPanaderos',
+            'totalProveedores',
+            'totalClientes',
+            'roles',
+            'totalPorRol'
         ));
     }
 
-    public function show($codigo)
+    public function show(string $codigo)
+    {
+        $usuario = Usuario::with('rol')->where('codigo',  $codigo)->firstOrFail();
+        return view('usuarios.show', compact('usuario'));
+    }
+
+    public function historial(string $codigo)
     {
         $usuario = Usuario::with('rol')->where('codigo', $codigo)->firstOrFail();
-        return view('usuarios.show', compact('usuario'));
+        $bitacoras = BitacoraAcceso::where('usuario_codigo', $usuario->codigo)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20, ['*'], 'accesos')
+            ->withQueryString();
+
+        $cambios = BitacoraCambio::where('usuario_codigo', $usuario->codigo)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20, ['*'], 'cambios')
+            ->withQueryString();
+
+        return view('usuarios.historial', compact('usuario', 'bitacoras', 'cambios'));
+    }
+
+    public function historialPdf( string $codigo)
+    {
+        $usuario = Usuario::with('rol')->where('codigo', $codigo)->firstOrFail();
+        $bitacoras = BitacoraAcceso::where('usuario_codigo', $usuario->codigo)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cambios = BitacoraCambio::where('usuario_codigo', $usuario->codigo)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pdf = app('dompdf.wrapper')->loadView('usuarios.historial-pdf', compact('usuario', 'bitacoras', 'cambios'));
+
+        return $pdf->download('historial-' . strtolower($usuario->codigo) . '.pdf');
     }
 
     public function create()
@@ -88,11 +138,13 @@ class UsuarioController extends Controller
             'codigo' => 'required|string|unique:usuarios',
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:usuarios',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             'telefono' => 'nullable|string|max:20',
             'direccion' => 'nullable|string|max:255',
             'sexo' => 'nullable|in:M,F',
             'rol_id' => 'required|exists:roles,id',
+        ], [
+            'password.regex' => 'La contrasena debe incluir al menos una mayuscula y un numero.',
         ]);
 
         Usuario::create([
@@ -109,7 +161,7 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente');
     }
 
-    public function edit($codigo)
+    public function edit( string $codigo)
     {
         $usuarioActual = auth()->user();
         if (!$usuarioActual->rol || $usuarioActual->rol->nombre !== 'Administrador') {
@@ -122,7 +174,7 @@ class UsuarioController extends Controller
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
-    public function update(Request $request, $codigo)
+    public function update(Request $request, string $codigo)
     {
         $usuario = Usuario::where('codigo', $codigo)->firstOrFail();
 
@@ -133,7 +185,9 @@ class UsuarioController extends Controller
             'direccion' => 'nullable|string|max:255',
             'sexo' => 'nullable|in:M,F',
             'rol_id' => 'required|exists:roles,id',
-            'password' => 'nullable|min:6',
+            'password' => 'nullable|min:6|confirmed|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
+        ], [
+            'password.regex' => 'La contrasena debe incluir al menos una mayuscula y un numero.',
         ]);
 
         $usuario->update([
@@ -153,7 +207,7 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente');
     }
 
-    public function destroy($codigo)
+    public function destroy(string $codigo)
     {
         $usuarioActual = auth()->user();
 

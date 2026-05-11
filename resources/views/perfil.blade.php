@@ -216,8 +216,8 @@
                                 <label class="form-label fw-bold text-main" style="font-size: 0.9rem;">
                                     Nueva contraseña <span class="text-danger">*</span>
                                 </label>
-                                <input type="password" name="password" id="newPassword" class="form-control" placeholder="••••••••" required>
-                                <div class="form-text mt-1" style="font-size: 0.8rem;">Mínimo 6 caracteres.</div>
+                                <input type="password" name="password" id="newPassword" class="form-control" placeholder="••••••••" pattern="(?=.*[A-Z])(?=.*\d).{6,}" title="Minimo 6 caracteres, una mayuscula y un numero" required>
+                                <div class="form-text mt-1" style="font-size: 0.8rem;">Minimo 6 caracteres, una mayuscula y un numero.</div>
                             </div>
                             
                             <div class="col-md-6">

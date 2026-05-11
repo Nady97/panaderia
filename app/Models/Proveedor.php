@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableChanges;
 
 class Proveedor extends Model
 {
-    use HasFactory;
+    use HasFactory, AuditableChanges;
 
     protected $table = 'proveedores';
     protected $primaryKey = 'codigo';

@@ -80,6 +80,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ url('/insumos') }}" class="nav-link {{ request()->is('insumos*') ? 'active' : '' }}">
+                <i class="bi bi-basket"></i> <span>Insumos</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ url('/recetas') }}" class="nav-link {{ request()->is('recetas*') ? 'active' : '' }}">
                 <i class="bi bi-journal-text"></i> <span>Recetas</span>
             </a>

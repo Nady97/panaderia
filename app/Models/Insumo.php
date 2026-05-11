@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableChanges;
 
 class Insumo extends Model
 {
+    use AuditableChanges;
     protected $table = 'insumos';
     public $timestamps = false; // Only updated_at exists, but easier to turn off if no created_at
 

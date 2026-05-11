@@ -68,7 +68,7 @@
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0 text-main">{{ $totalRecetas ?? 0 }}</h3>
-                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Fórmulas</p>
+                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Recetas</p>
                     </div>
                 </div>
             </x-card>

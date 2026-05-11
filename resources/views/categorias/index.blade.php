@@ -103,7 +103,7 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                 <thead class="border-bottom-modern border-2">
                     <tr>
-                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">#</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Nro</th>
                         <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Nombre y Detalle</th>
                         <th class="py-3 px-4 text-center" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Items Asociados</th>
                         <th class="py-3 px-4 text-center" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado Operativo</th>

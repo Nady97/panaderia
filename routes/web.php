@@ -65,6 +65,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('categorias', \App\Http\Controllers\CategoriaController::class);
 
     // ============================================
+    // INSUMOS
+    // ============================================
+    Route::resource('insumos', \App\Http\Controllers\InsumoController::class);
+
+    // ============================================
     // PROVEEDORES
     // ============================================
     Route::resource('proveedores', \App\Http\Controllers\ProveedorController::class);
@@ -79,6 +84,12 @@ Route::middleware(['auth'])->group(function () {
     // ============================================
     // USUARIOS (Protegido con Gate 'manage-users')
     // ============================================
+    Route::get('usuarios/{codigo}/historial', [UsuarioController::class, 'historial'])
+        ->name('usuarios.historial')
+        ->middleware('can:manage-users');
+    Route::get('usuarios/{codigo}/historial/pdf', [UsuarioController::class, 'historialPdf'])
+        ->name('usuarios.historial.pdf')
+        ->middleware('can:manage-users');
     Route::resource('usuarios', UsuarioController::class)
         ->parameters(['usuarios' => 'codigo'])
         ->middleware('can:manage-users');

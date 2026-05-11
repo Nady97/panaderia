@@ -14,8 +14,24 @@ class ProductoController extends Controller
     public function index()
     {
         // Optimización: Eager Loading de la relación categoría para evitar defecto de N+1 Consultas.
-        $productos = Producto::with('categoria')->get();
-        return view('productos.index', compact('productos'));
+        $productos = Producto::with('categoria')->paginate(10)->withQueryString();
+
+        $totalProductos = Producto::count();
+        $totalActivos = Producto::where('estado', 'activo')->count();
+        $agotados = Producto::where('stock', 0)->count();
+        $descontinuados = Producto::where('estado', 'descontinuado')->count();
+        $stockBajo = Producto::where('stock', '>', 0)
+            ->whereRaw('stock <= COALESCE(NULLIF(stock_minimo, 0), 5)')
+            ->count();
+
+        return view('productos.index', compact(
+            'productos',
+            'totalProductos',
+            'totalActivos',
+            'stockBajo',
+            'agotados',
+            'descontinuados'
+        ));
     }
     public function create()
     {

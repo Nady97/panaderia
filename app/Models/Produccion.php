@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableChanges;
 
 class Produccion extends Model
 {
-    use HasFactory;
+    use HasFactory, AuditableChanges;
 
     protected $table = 'producciones';
 

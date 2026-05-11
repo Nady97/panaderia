@@ -93,9 +93,10 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                     <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Código</th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Usuario</th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Contacto</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado / Ultima conexion</th>
+                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted"></th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Rol</th>
                             <th class="py-3 px-4 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
                         </tr>
@@ -123,11 +124,6 @@
                         @endphp
                         <tr class="border-bottom-modern" style="transition: background 0.2s;">
                             <td class="py-3 px-4">
-                                <span class="fw-bold" style=" font-family: monospace; font-size: 0.95rem;" class="text-muted">
-                                    {{ $usuario->codigo }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
                                         <i class="bi bi-person-fill" style="font-size: 1.2rem;"></i>
@@ -148,6 +144,24 @@
                                 </div>
                             </td>
                             <td class="py-3 px-4">
+                                @php
+                                    $esUsuarioActual = auth()->check() && auth()->user()->codigo === $usuario->codigo;
+                                    $estaActivo = $esUsuarioActual || ($usuario->last_login_at && (!$usuario->last_logout_at || $usuario->last_login_at->gt($usuario->last_logout_at)));
+                                @endphp
+                                @if($estaActivo)
+                                    <x-badge type="success"><i class="bi bi-circle-fill me-1"></i>Activo</x-badge>
+                                    <div class="small text-muted mt-1">
+                                        Desde: {{ $usuario->last_login_at ? $usuario->last_login_at->timezone('America/La_Paz')->format('d/m/Y h:i A') : 'Sin registro' }}
+                                    </div>
+                                @else
+                                    <x-badge type="secondary"><i class="bi bi-circle me-1"></i>Inactivo</x-badge>
+                                    <div class="small text-muted mt-1">
+                                        Salida: {{ $usuario->last_logout_at ? $usuario->last_logout_at->timezone('America/La_Paz')->format('d/m/Y h:i A') : ($usuario->last_login_at ? $usuario->last_login_at->timezone('America/La_Paz')->format('d/m/Y h:i A') : 'Sin registro') }}
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="py-3 px-4"></td>
+                            <td class="py-3 px-4">
                                 <x-badge type="{{ $rolColorClass }}">
                                     {!! $rolIcono !!} {{ $nombreRol }}
                                 </x-badge>
@@ -156,6 +170,9 @@
                                 <div class="d-flex justify-content-end gap-1">
                                     <a href="{{ route('usuarios.show', $usuario->codigo) }}" class="btn btn-sm btn-light border text-gold" title="Ver detalles">
                                         <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('usuarios.historial', $usuario->codigo) }}" class="btn btn-sm btn-light border text-secondary" title="Historial de acceso">
+                                        <i class="bi bi-clock-history"></i>
                                     </a>
                                     <a href="{{ route('usuarios.edit', $usuario->codigo) }}" class="btn btn-sm btn-light border text-main" title="Editar usuario">
                                         <i class="bi bi-pencil"></i>

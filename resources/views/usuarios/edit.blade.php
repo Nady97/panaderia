@@ -114,9 +114,9 @@
                     <label class="form-label fw-bold text-main">Nueva contraseña</label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-key"></i></span>
-                        <input type="password" name="password" class="form-control" placeholder="Dejar en blanco para conservar la actual">
+                        <input type="password" name="password" class="form-control" placeholder="Dejar en blanco para conservar la actual" pattern="(?=.*[A-Z])(?=.*\d).{6,}" title="Minimo 6 caracteres, una mayuscula y un numero">
                     </div>
-                    <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Mínimo 6 caracteres</small>
+                    <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Minimo 6 caracteres, una mayuscula y un numero</small>
                 </div>
 
                 <div class="col-md-6 flex-column">

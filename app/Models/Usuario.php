@@ -6,10 +6,11 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\AuditableChanges;
 
 class Usuario extends Authenticatable
 {
-    use HasFactory, Notifiable, CanResetPassword;
+    use HasFactory, Notifiable, CanResetPassword, AuditableChanges;
 
     protected $table = 'usuarios';
     protected $primaryKey = 'codigo';
@@ -29,19 +30,31 @@ class Usuario extends Authenticatable
         'direccion',
         'rol_id',
         'last_login_at',
+        'last_logout_at',
         'sexo',
         'imagen',
     ];
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
+        'last_logout_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+    ];
+
+    protected $auditExclude = [
+        'last_login_at',
+        'last_logout_at',
     ];
     // Relación con el modelo Rol
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'rol_id', 'id');
+    }
+
+    public function bitacorasAcceso()
+    {
+        return $this->hasMany(BitacoraAcceso::class, 'usuario_codigo', 'codigo');
     }
     // Relación con el modelo Venta (si es necesario)
     public function getRolNombreAtribute()

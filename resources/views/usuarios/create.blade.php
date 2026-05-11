@@ -63,9 +63,9 @@
                     <label class="form-label fw-bold text-main">Contraseña <span class="text-danger">*</span></label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" pattern="(?=.*[A-Z])(?=.*\d).{6,}" title="Minimo 6 caracteres, una mayuscula y un numero" required>
                     </div>
-                    <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Mínimo 6 caracteres</small>
+                    <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Minimo 6 caracteres, una mayuscula y un numero</small>
                     @error('password')
                         <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
                     @enderror

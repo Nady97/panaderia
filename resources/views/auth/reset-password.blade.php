@@ -36,8 +36,9 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text input-group-text-custom px-3"><i class="bi bi-lock"></i></span>
-                            <input type="password" name="password" class="form-control form-control-custom py-3" placeholder="Nueva contrasena" required>
+                            <input type="password" name="password" class="form-control form-control-custom py-3" placeholder="Nueva contrasena" pattern="(?=.*[A-Z])(?=.*\d).{6,}" title="Minimo 6 caracteres, una mayuscula y un numero" required>
                         </div>
+                        <div class="form-text text-muted mb-3">Minimo 6 caracteres, una mayuscula y un numero.</div>
 
                         <div class="input-group mb-4">
                             <span class="input-group-text input-group-text-custom px-3"><i class="bi bi-shield-check"></i></span>

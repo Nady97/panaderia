@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 use App\Models\Usuario;
+use App\Models\BitacoraAcceso;
 
 class AuthController extends Controller
 {
@@ -39,6 +40,7 @@ class AuthController extends Controller
     if (Auth::attempt($credentials, $request->boolean('remember'))) {
       $request->session()->regenerate();
       RateLimiter::clear($throttleKey);
+      $this->registrarAcceso(Auth::user(), 'login');
       return redirect()->intended('/dashboard');
     }
 
@@ -91,7 +93,9 @@ class AuthController extends Controller
     $request->validate([
       'token' => ['required'],
       'email' => ['required', 'email'],
-      'password' => ['required', 'confirmed', 'min:6'],
+      'password' => ['required', 'confirmed', 'min:6', 'regex:/^(?=.*[A-Z])(?=.*\d).+$/'],
+    ], [
+      'password.regex' => 'La contrasena debe incluir al menos una mayuscula y un numero.',
     ]);
 
     $status = Password::reset(
@@ -123,10 +127,41 @@ class AuthController extends Controller
 
   public function logout(Request $request)
   {
+    $usuario = Auth::user();
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
+    if ($usuario) {
+      $this->registrarAcceso($usuario, 'logout');
+    }
+
     return redirect('/');
+  }
+
+  private function registrarAcceso(?Usuario $usuario, string $accion): void
+  {
+    if (!$usuario) {
+      return;
+    }
+
+    $ipAddress = request() ? request()->ip() : null;
+    $userAgent = request() ? request()->userAgent() : null;
+
+    if ($accion === 'login') {
+      $usuario->forceFill(['last_login_at' => now()])->save();
+    }
+
+    if ($accion === 'logout') {
+      $usuario->forceFill(['last_logout_at' => now()])->save();
+    }
+
+    BitacoraAcceso::create([
+      'usuario_codigo' => $usuario->codigo,
+      'accion' => $accion,
+      'ip_address' => $ipAddress,
+      'user_agent' => $userAgent ? mb_substr($userAgent, 0, 255) : null,
+      'created_at' => now(),
+    ]);
   }
 }

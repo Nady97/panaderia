@@ -100,12 +100,13 @@ class ProfileController extends Controller
 
         $request->validate([
             'current_password' => 'required',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6|confirmed|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
         ], [
             'current_password.required' => 'La contraseña actual es obligatoria.',
             'password.required' => 'La nueva contraseña es obligatoria.',
             'password.min' => 'La nueva contraseña debe tener al menos 6 caracteres.',
             'password.confirmed' => 'La confirmación de la contraseña no coincide.',
+            'password.regex' => 'La contraseña debe incluir al menos una mayuscula y un numero.',
         ]);
 
         /** @var Usuario $usuario */

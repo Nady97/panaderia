@@ -117,7 +117,7 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                     <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small">Código</th>
+                            <!-- <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small">Código</th> -->
                             <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small">Empresa / Contacto</th>
                             <th class="py-3 px-4" class="text-muted text-uppercase fw-semibold small">Detalles</th>
                             <th class="py-3 px-4 text-center" class="text-muted text-uppercase fw-semibold small">Estado Operativo</th>
@@ -127,11 +127,13 @@
                     <tbody >
                         @forelse($proveedores as $proveedor)
                         <tr class="border-bottom-modern" style="transition: background 0.2s;">
+                            <!--
                             <td class="py-3 px-4">
                                 <span class="fw-bold font-monospace text-muted">
                                     {{ $proveedor->codigo }}
                                 </span>
                             </td>
+                            -->
                             <td class="py-3 px-4">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="p-2 rounded d-flex align-items-center justify-content-center" class="detail-box icon-box">

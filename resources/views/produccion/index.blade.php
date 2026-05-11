@@ -22,45 +22,34 @@
     <!-- Buscador Integrado y Filtros Server-Side -->
     <x-card class="mb-4">
         <div class="card-body p-4">
-            <form action="{{ route('produccion.index') }}" method="GET" class="row align-items-end g-3" id="serverFilterForm">
-                @if(request()->has('estado') && request('estado') != '')
-                    <input type="hidden" name="estado" value="{{ request('estado') }}">
-                @endif
-                <div class="col-md-7">
-                    <label class="form-label fw-bold mb-2 text-main" style="font-size: 0.9rem;">
-                        <i class="bi bi-search me-1"></i> Buscar Orden
+            <form action="{{ route('produccion.index') }}" method="GET" class="row g-3 align-items-end" id="serverFilterForm">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">
+                        <i class="bi bi-search me-1"></i> Buscar orden
                     </label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-arrow-repeat"></i></span>
-                        <input type="text" name="search" class="form-control" placeholder="Buscar por lote, producto o descripción..." value="{{ request('search') }}">
-                        <button type="submit" class="btn btn-gold-panaderia px-4"><i class="bi bi-search text-white"></i></button>
-                        @if(request()->has('search') || request()->has('estado'))
-                            <a href="{{ route('produccion.index') }}" class="btn btn-light-panaderia" title="Limpiar"><i class="bi bi-x-circle text-danger"></i></a>
-                        @endif
+                        <input type="text" name="search" class="form-control" placeholder="Buscar por producto o descripcion..." value="{{ request('search') }}">
                     </div>
                 </div>
-                <div class="col-md-5 text-md-end">
-                    <label class="form-label fw-bold mb-2 text-main text-start w-100 text-md-end" style="font-size: 0.9rem;">
-                        <i class="bi bi-funnel me-1"></i> Filtrar por Estado
-                    </label>
-                    <div class="btn-group w-100" role="group">
-                        <a href="{{ route('produccion.index', ['search' => request('search')]) }}" 
-                           class="btn {{ !request('estado') ? 'btn-primary-panaderia text-white bg-primary' : 'btn-outline-secondary' }}">
-                            Todos
-                        </a>
-                        <a href="{{ route('produccion.index', ['estado' => 'planificado', 'search' => request('search')]) }}" 
-                           class="btn {{ request('estado') == 'planificado' ? 'btn-primary-panaderia text-white bg-primary' : 'btn-outline-secondary' }}">
-                            Planificados
-                        </a>
-                        <a href="{{ route('produccion.index', ['estado' => 'en_proceso', 'search' => request('search')]) }}" 
-                           class="btn {{ request('estado') == 'en_proceso' ? 'btn-primary-panaderia text-white bg-primary' : 'btn-outline-secondary' }}">
-                            En proceso
-                        </a>
-                        <a href="{{ route('produccion.index', ['estado' => 'completado', 'search' => request('search')]) }}" 
-                           class="btn {{ request('estado') == 'completado' ? 'btn-primary-panaderia text-white bg-primary' : 'btn-outline-secondary' }}">
-                            Completados
-                        </a>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">Filtrar por estado</label>
+                    <div class="input-group input-group-modern">
+                        <span class="input-group-text"><i class="bi bi-funnel"></i></span>
+                        <select name="estado" class="form-select" onchange="this.form.submit()">
+                            <option value="" {{ !request('estado') ? 'selected' : '' }}>Todos los estados</option>
+                            <option value="planificado" {{ request('estado') == 'planificado' ? 'selected' : '' }}>Planificados</option>
+                            <option value="en_proceso" {{ request('estado') == 'en_proceso' ? 'selected' : '' }}>En proceso</option>
+                            <option value="completado" {{ request('estado') == 'completado' ? 'selected' : '' }}>Completados</option>
+                            <option value="fallido" {{ request('estado') == 'fallido' ? 'selected' : '' }}>Cancelados</option>
+                        </select>
                     </div>
+                </div>
+                <div class="col-md-2 text-end d-flex gap-2">
+                    <button type="submit" class="btn btn-gold-panaderia w-100"><i class="bi bi-search"></i></button>
+                    @if(request()->has('search') || request()->has('estado'))
+                        <a href="{{ route('produccion.index') }}" class="btn btn-light-panaderia w-100" title="Limpiar"><i class="bi bi-x-circle"></i></a>
+                    @endif
                 </div>
             </form>
         </div>
@@ -73,7 +62,7 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                     <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Lote</th>
+                            <!-- <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Lote</th> -->
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Producto</th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Cantidad</th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Fecha Programada</th>
@@ -85,6 +74,7 @@
                         @forelse($producciones as $produccion)
                             <tr class="border-bottom-modern" style="transition: background 0.2s;">
                                 {{-- Lote --}}
+                                <!--
                                 <td class="py-3 px-4">
                                     <span class="fw-bold" style="font-family: monospace; font-size: 0.95rem;">
                                         {{ $produccion->lote_codigo ?? '#' . $produccion->id }}
@@ -94,6 +84,7 @@
                                         <small class="text-muted">{{ Str::limit($produccion->descripcion, 30) }}</small>
                                     @endif
                                 </td>
+                                -->
                                 
                                 {{-- Producto --}}
                                 <td class="py-3 px-4">

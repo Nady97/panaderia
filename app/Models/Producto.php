@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableChanges;
 
 class Producto extends Model
 {
+    use AuditableChanges;
     protected $table = 'productos';
 
     protected $fillable = [

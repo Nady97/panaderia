@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\AuditableChanges;
 
 class Rol extends Model
 {
-    use HasFactory;
+    use HasFactory, AuditableChanges;
 
     protected $table = 'roles';
     protected $primaryKey = 'id';
@@ -24,7 +25,7 @@ class Rol extends Model
     {
         return $this->hasMany(Usuario::class, 'rol_id', 'id');
     }
-    
+
     //  Comenta esta línea si no existe el modelo Permiso
     // public function permisos()
     // {

@@ -16,6 +16,9 @@
                 <a href="{{ route('usuarios.edit', $usuario->codigo) }}" class="btn btn-gold-panaderia text-nowrap">
                     <i class="bi bi-pencil-square me-1"></i> Editar
                 </a>
+                <a href="{{ route('usuarios.historial', $usuario->codigo) }}" class="btn btn-light-panaderia text-nowrap">
+                    <i class="bi bi-clock-history me-1"></i> Historial
+                </a>
                 @endif
                 <a href="{{ route('usuarios.index') }}" class="btn btn-light-panaderia text-nowrap">
                     <i class="bi bi-arrow-left me-1"></i> Volver a la Lista

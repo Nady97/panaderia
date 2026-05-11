@@ -10,7 +10,7 @@
                 <p class="mb-0 text-muted">Bienvenida, <strong>{{ auth()->user()->nombre ?? 'Usuario' }}</strong></p>
             </div>
             <div>
-                        <h3 class="fw-bold mb-0 text-main">{{ $productos->count() }}</h3>
+                        <h3 class="fw-bold mb-0 text-main">{{ $totalProductos ?? 0 }}</h3>
                         <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Productos</p>
                     </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
@@ -45,7 +45,7 @@
                         <i class="bi bi-check-circle fs-2"></i>
                     </div>
                     <div>
-                        <h3 class="fw-bold mb-0 text-main">{{ $productos->where('estado', 'activo')->count() }}</h3>
+                        <h3 class="fw-bold mb-0 text-main">{{ $totalActivos ?? 0 }}</h3>
                         <p class="text-muted mb-0 small text-uppercase fw-semibold">Productos Activos</p>
                     </div>
                 </div>
@@ -58,13 +58,7 @@
                         <i class="bi bi-exclamation-triangle fs-2"></i>
                     </div>
                     <div>
-                        @php
-                            $stockBajo = $productos->filter(function($p) {
-                                $minimo = (float)$p->stock_minimo > 0 ? (float)$p->stock_minimo : 5;
-                                return (float)$p->stock <= $minimo && (float)$p->stock > 0;
-                            })->count();
-                        @endphp
-                        <h3 class="fw-bold mb-0 text-main">{{ $stockBajo }}</h3>
+                        <h3 class="fw-bold mb-0 text-main">{{ $stockBajo ?? 0 }}</h3>
                         <p class="text-muted mb-0 small text-uppercase fw-semibold">Stock Bajo</p>
                     </div>
                 </div>
@@ -77,10 +71,7 @@
                         <i class="bi bi-x-circle fs-2"></i>
                     </div>
                     <div>
-                        @php
-                            $agotados = $productos->where('stock', 0)->count();
-                        @endphp
-                        <h3 class="fw-bold mb-0 text-main">{{ $agotados }}</h3>
+                        <h3 class="fw-bold mb-0 text-main">{{ $agotados ?? 0 }}</h3>
                         <p class="text-muted mb-0 small text-uppercase fw-semibold">Agotados</p>
                     </div>
                 </div>
@@ -93,10 +84,7 @@
                         <i class="bi bi-x-circle fs-2"></i>
                     </div>
                     <div>
-                        @php
-                            $descontinuados = $productos->where('estado', 'descontinuado')->count();
-                        @endphp
-                        <h3 class="fw-bold mb-0 text-main">{{ $descontinuados }}</h3>
+                        <h3 class="fw-bold mb-0 text-main">{{ $descontinuados ?? 0 }}</h3>
                         <p class="text-muted mb-0 small text-uppercase fw-semibold">Descontinuados</p>
                     </div>
                 </div>
@@ -144,7 +132,7 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                 <thead class="border-bottom-modern border-2">
                     <tr>
-                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">#</th>
+                        <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Nro</th>
                         <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Producto</th>
                         <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Precio</th>
                         <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Stock</th>
@@ -190,16 +178,16 @@
                         </td>
                         <td class="py-3 px-4 text-end">
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm action-btn action-btn-success" title="Ver Detalles">
+                                <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm btn-light text-gold border" title="Ver Detalles">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm action-btn action-btn-info" title="Editar">
+                                <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm btn-light text-secondary border" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline form-delete" data-confirm-text="¿Está seguro de que desea eliminar el producto {{$producto->nombre}}?">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm action-btn action-btn-danger" title="Eliminar">
+                                    <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -222,6 +210,17 @@
                 </tbody>
             </table>
         </div>
+
+        @if($productos->hasPages())
+            <div class="d-flex justify-content-between align-items-center mt-4 px-4 pb-3 border-top pt-3" class="border-top-modern">
+                <div class="text-muted small">
+                    Mostrando de <span class="fw-bold">{{ $productos->firstItem() }}</span> a <span class="fw-bold">{{ $productos->lastItem() }}</span> de <span class="fw-bold">{{ $productos->total() }}</span> registros
+                </div>
+            </div>
+            <div class="px-4 pb-4 paginacion-personalizada">
+                {{ $productos->links() }}
+            </div>
+        @endif
         </div>
     </x-card>
 </div>
