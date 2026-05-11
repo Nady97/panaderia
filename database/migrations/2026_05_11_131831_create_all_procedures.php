@@ -5,19 +5,9 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Eliminar primero por si ya existen
         DB::unprepared("DROP PROCEDURE IF EXISTS actualizar_precio_producto");
-        DB::unprepared("DROP PROCEDURE IF EXISTS agregar_producto");
-        DB::unprepared("DROP PROCEDURE IF EXISTS eliminar_producto");
-        DB::unprepared("DROP PROCEDURE IF EXISTS generar_compra_producto");
-        DB::unprepared("DROP PROCEDURE IF EXISTS insertar_usuario");
-
-        // Crear procedimientos
         DB::unprepared("
             CREATE PROCEDURE actualizar_precio_producto(IN p_nombre VARCHAR(50), IN p_nuevo_precio DECIMAL(12,2))
             BEGIN
@@ -25,6 +15,7 @@ return new class extends Migration
             END
         ");
 
+        DB::unprepared("DROP PROCEDURE IF EXISTS agregar_producto");
         DB::unprepared("
             CREATE PROCEDURE agregar_producto(IN p_nombre VARCHAR(50), IN p_precio DECIMAL(12,2), IN p_categoria_id INTEGER, IN p_stock_minimo INTEGER)
             BEGIN
@@ -33,6 +24,7 @@ return new class extends Migration
             END
         ");
 
+        DB::unprepared("DROP PROCEDURE IF EXISTS eliminar_producto");
         DB::unprepared("
             CREATE PROCEDURE eliminar_producto(IN p_nombre VARCHAR(50))
             BEGIN
@@ -40,6 +32,7 @@ return new class extends Migration
             END
         ");
 
+        DB::unprepared("DROP PROCEDURE IF EXISTS generar_compra_producto");
         DB::unprepared("
             CREATE PROCEDURE generar_compra_producto(IN p_nota_compra_id INTEGER, IN p_producto_id INTEGER, IN p_cantidad INTEGER, IN p_precio DECIMAL(12,2))
             BEGIN
@@ -50,6 +43,7 @@ return new class extends Migration
             END
         ");
 
+        DB::unprepared("DROP PROCEDURE IF EXISTS insertar_usuario");
         DB::unprepared("
             CREATE PROCEDURE insertar_usuario(IN p_codigo VARCHAR(10), IN p_nombre VARCHAR(50), IN p_sexo CHAR(1), IN p_password VARCHAR(250), IN p_telefono VARCHAR(15), IN p_rol_id INTEGER)
             BEGIN
@@ -59,9 +53,6 @@ return new class extends Migration
         ");
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         DB::unprepared("DROP PROCEDURE IF EXISTS actualizar_precio_producto");
