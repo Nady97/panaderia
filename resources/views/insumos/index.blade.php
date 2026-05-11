@@ -108,8 +108,8 @@
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Insumo</th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Unidad</th>
                             <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Stock</th>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Minimo</th>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Costo Prom.</th>
+                            {{-- <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Minimo</th> --}}
+                            {{-- <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Costo Prom.</th> --}}
                             <th class="py-3 px-4 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
                         </tr>
                     </thead>
@@ -133,8 +133,8 @@
                                     <x-badge type="success"><i class="bi bi-check-circle me-1"></i>{{ $insumo->stock_actual }}</x-badge>
                                 @endif
                             </td>
-                            <td class="py-3 px-4">{{ $insumo->stock_minimo ?? '-' }}</td>
-                            <td class="py-3 px-4">Bs {{ number_format($insumo->precio_compra_promedio ?? 0, 2) }}</td>
+                            {{-- <td class="py-3 px-4">{{ $insumo->stock_minimo ?? '-' }}</td> --}}
+                            {{-- <td class="py-3 px-4">Bs {{ number_format($insumo->precio_compra_promedio ?? 0, 2) }}</td> --}}
                             <td class="py-3 px-4 text-end">
                                 <div class="d-flex justify-content-end gap-2">
                                     <a href="{{ route('insumos.show', $insumo->id) }}" class="btn btn-sm btn-light text-gold border" title="Ver Detalle">
