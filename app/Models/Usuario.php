@@ -86,6 +86,18 @@ class Usuario extends Authenticatable
         return $this->hasRole('admin');
     }
 
+    /**
+     * Verifica si el usuario tiene un permiso especifico por slug
+     */
+    public function hasPermission(string $permissionSlug): bool
+    {
+        if (!$this->rol) {
+            return false;
+        }
+
+        return $this->rol->permisos()->where('slug', $permissionSlug)->exists();
+    }
+
     protected $hidden = [
         'password',
         'remember_token',

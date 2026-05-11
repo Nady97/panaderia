@@ -23,34 +23,69 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         if (env('APP_ENV') === 'production') {
+        if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
-        
+
         Paginator::useBootstrapFive();
 
         // ----------------------------------------------------
         // DEFINICIÓN DE GATES Y PERMISOS (Punto 5 - Auditoría)
         // ----------------------------------------------------
 
-        // Acceso exclusivo para administradores
-        Gate::define('manage-users', function (Usuario $user) {
-            return $user->isAdmin();
-        });
+        $permissionGates = [
+            'manage-users',
+            'manage-inventory',
+            'manage-sales',
+            'manage-production',
+            'usuarios.view',
+            'usuarios.create',
+            'usuarios.edit',
+            'usuarios.delete',
+            'usuarios.historial',
+            'usuarios.reset-password',
+            'roles.view',
+            'roles.edit',
+            'productos.view',
+            'productos.create',
+            'productos.edit',
+            'productos.delete',
+            'categorias.view',
+            'categorias.create',
+            'categorias.edit',
+            'categorias.delete',
+            'insumos.view',
+            'insumos.create',
+            'insumos.edit',
+            'insumos.delete',
+            'recetas.view',
+            'recetas.create',
+            'recetas.edit',
+            'recetas.delete',
+            'recetas.manage-insumos',
+            'recetas.download',
+            'proveedores.view',
+            'proveedores.create',
+            'proveedores.edit',
+            'proveedores.delete',
+            'produccion.view',
+            'produccion.create',
+            'produccion.edit',
+            'produccion.delete',
+            'perfil.view',
+            'perfil.edit',
+            'perfil.password',
+            'perfil.delete',
+        ];
 
-        // Administrar inventario completo / catálogos
-        Gate::define('manage-inventory', function (Usuario $user) {
-            return $user->hasRole(['admin']);
-        });
+        foreach ($permissionGates as $gate) {
+            Gate::define($gate, function (Usuario $user) use ($gate) {
+                if (str_ends_with($gate, '.delete')) {
+                    return $user->isAdmin();
+                }
 
-        // Registrar y gestionar Ventas (Cajeros)
-        Gate::define('manage-sales', function (Usuario $user) {
-            return $user->hasRole(['admin', 'cajero']);
-        });
-
-        // Registrar y gestionar Producción (Panaderos)
-        Gate::define('manage-production', function (Usuario $user) {
-            return $user->hasRole(['admin', 'panadero']);
-        });
+                return $user->isAdmin() || $user->hasPermission($gate);
+            });
+        }
     }
 }

@@ -12,9 +12,16 @@
                 <p class="mb-0 text-muted">Administra los accesos y personal del sistema</p>
             </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
-                <a href="{{ route('usuarios.create') }}" class="btn btn-primary-panaderia text-nowrap">
-                    <i class="bi bi-person-plus-fill me-1"></i> Nuevo Usuario
-                </a>
+                @can('roles.view')
+                    <a href="{{ route('roles.index') }}" class="btn btn-light-panaderia text-nowrap">
+                        <i class="bi bi-shield-check me-1"></i> Roles y Permisos
+                    </a>
+                @endcan
+                @can('usuarios.create')
+                    <a href="{{ route('usuarios.create') }}" class="btn btn-primary-panaderia text-nowrap">
+                        <i class="bi bi-person-plus-fill me-1"></i> Nuevo Usuario
+                    </a>
+                @endcan
             </div>
         </div>
     </x-card>
@@ -93,12 +100,12 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                     <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Usuario</th>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Contacto</th>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado / Ultima conexion</th>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted"></th>
-                            <th class="py-3 px-4" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Rol</th>
-                            <th class="py-3 px-4 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
+                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Usuario</th>
+                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Contacto</th>
+                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado / Ultima conexion</th>
+                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted"></th>
+                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Rol</th>
+                            <th class="py-3 px-3 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
                         </tr>
                     </thead>
                     <tbody >
@@ -123,11 +130,11 @@
                             };
                         @endphp
                         <tr class="border-bottom-modern" style="transition: background 0.2s;">
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-2">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
+                                  <!--  <div class="p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
                                         <i class="bi bi-person-fill" style="font-size: 1.2rem;"></i>
-                                    </div>
+                                    </div> -->
                                     <div>
                                         <div class="fw-bold" style=" font-size: 1rem;" class="text-main">
                                             {{ $usuario->nombre }}
@@ -135,7 +142,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-2">
                                 <div class="d-flex flex-column gap-1">
                                     <span style="font-size: 0.9rem;"><i class="bi bi-envelope me-2 text-muted"></i>{{ $usuario->email }}</span>
                                     @if($usuario->telefono)
@@ -143,7 +150,7 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-2">
                                 @php
                                     $esUsuarioActual = auth()->check() && auth()->user()->codigo === $usuario->codigo;
                                     $estaActivo = $esUsuarioActual || ($usuario->last_login_at && (!$usuario->last_logout_at || $usuario->last_login_at->gt($usuario->last_logout_at)));
@@ -160,32 +167,50 @@
                                     </div>
                                 @endif
                             </td>
-                            <td class="py-3 px-4"></td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-2"></td>
+                            <td class="py-3 px-2">
                                 <x-badge type="{{ $rolColorClass }}">
                                     {!! $rolIcono !!} {{ $nombreRol }}
                                 </x-badge>
                             </td>
                             <td class="py-3 px-4 text-end">
                                 <div class="d-flex justify-content-end gap-1">
-                                    <a href="{{ route('usuarios.show', $usuario->codigo) }}" class="btn btn-sm btn-light border text-gold" title="Ver detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a href="{{ route('usuarios.historial', $usuario->codigo) }}" class="btn btn-sm btn-light border text-secondary" title="Historial de acceso">
-                                        <i class="bi bi-clock-history"></i>
-                                    </a>
-                                    <a href="{{ route('usuarios.edit', $usuario->codigo) }}" class="btn btn-sm btn-light border text-main" title="Editar usuario">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    @if(auth()->user()->rol && auth()->user()->rol->nombre === 'Administrador' && auth()->user()->codigo !== $usuario->codigo)
-                                    <form action="{{ route('usuarios.destroy', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0 form-delete" data-confirm-text="¿Está seguro de que desea eliminar al usuario {{$usuario->nombre}}?">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-light border text-danger" title="Eliminar usuario">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                    @endif
+                                    @can('usuarios.view')
+                                        <a href="{{ route('usuarios.show', $usuario->codigo) }}" class="btn btn-sm btn-light border text-gold" title="Ver detalles">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    @endcan
+                                    @can('usuarios.historial')
+                                        <a href="{{ route('usuarios.historial', $usuario->codigo) }}" class="btn btn-sm btn-light border text-secondary" title="Historial de acceso">
+                                            <i class="bi bi-clock-history"></i>
+                                        </a>
+                                    @endcan
+                                    @can('usuarios.edit')
+                                        <a href="{{ route('usuarios.edit', $usuario->codigo) }}" class="btn btn-sm btn-light border text-main" title="Editar usuario">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    @endcan
+                                    @can('usuarios.delete')
+                                        @if(auth()->user()->codigo !== $usuario->codigo)
+                                            <form action="{{ route('usuarios.destroy', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0 form-delete" data-confirm-text="¿Está seguro de que desea eliminar al usuario {{$usuario->nombre}}?">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-light border text-danger" title="Eliminar usuario">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endcan
+                                    @can('usuarios.reset-password')
+                                        @if(auth()->user()->codigo !== $usuario->codigo)
+                                            <form action="{{ route('usuarios.reset-password', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0" onsubmit="return confirm('¿Restablecer la contrasena de {{$usuario->nombre}}? Se generara una contrasena temporal.');">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-light border text-warning" title="Restablecer contrasena">
+                                                    <i class="bi bi-key"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
@@ -200,7 +225,9 @@
                                     @if(request()->has('search') || request()->has('rol_id'))
                                         <a href="{{ route('usuarios.index') }}" class="btn btn-outline-secondary mt-3">Limpiar filtros</a>
                                     @else
-                                        <a href="{{ route('usuarios.create') }}" class="btn btn-primary-panaderia mt-3 text-nowrap"><i class="bi bi-plus-lg me-1"></i>Crear primer Usuario</a>
+                                        @can('usuarios.create')
+                                            <a href="{{ route('usuarios.create') }}" class="btn btn-primary-panaderia mt-3 text-nowrap"><i class="bi bi-plus-lg me-1"></i>Crear primer Usuario</a>
+                                        @endcan
                                     @endif
                                 </x-empty-state>
                             </td>

@@ -15,9 +15,11 @@
                 </div>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-gold-panaderia text-nowrap">
-                    <i class="bi bi-pencil-square me-1"></i> Editar
-                </a>
+                @can('productos.edit')
+                    <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-gold-panaderia text-nowrap">
+                        <i class="bi bi-pencil-square me-1"></i> Editar
+                    </a>
+                @endcan
                 <a href="{{ route('productos.index') }}" class="btn btn-light-panaderia text-nowrap">
                     <i class="bi bi-arrow-left me-1"></i> Volver a la Lista
                 </a>

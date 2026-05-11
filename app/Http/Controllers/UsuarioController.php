@@ -9,6 +9,7 @@ use App\Models\BitacoraCambio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UsuarioController extends Controller
 {
@@ -110,7 +111,7 @@ class UsuarioController extends Controller
         return view('usuarios.historial', compact('usuario', 'bitacoras', 'cambios'));
     }
 
-    public function historialPdf( string $codigo)
+    public function historialPdf(string $codigo)
     {
         $usuario = Usuario::with('rol')->where('codigo', $codigo)->firstOrFail();
         $bitacoras = BitacoraAcceso::where('usuario_codigo', $usuario->codigo)
@@ -161,7 +162,7 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente');
     }
 
-    public function edit( string $codigo)
+    public function edit(string $codigo)
     {
         $usuarioActual = auth()->user();
         if (!$usuarioActual->rol || $usuarioActual->rol->nombre !== 'Administrador') {
@@ -223,5 +224,26 @@ class UsuarioController extends Controller
         $usuario->delete();
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente');
+    }
+
+    public function resetPassword(string $codigo)
+    {
+        $usuarioActual = auth()->user();
+
+        if ($usuarioActual->codigo === $codigo) {
+            return redirect()->route('usuarios.index')->with('error', 'No puedes restablecer tu propia contrasena.');
+        }
+
+        $usuario = Usuario::where('codigo', $codigo)->firstOrFail();
+
+        $tempPassword = Str::upper(Str::random(4)) . random_int(0, 9) . Str::lower(Str::random(5));
+
+        $usuario->password = Hash::make($tempPassword);
+        $usuario->remember_token = Str::random(60);
+        $usuario->save();
+
+        return redirect()
+            ->route('usuarios.index')
+            ->with('success', "Contrasena temporal para {$usuario->nombre}: {$tempPassword}");
     }
 }

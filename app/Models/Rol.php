@@ -17,7 +17,9 @@ class Rol extends Model
 
     protected $fillable = [
         'nombre',
+        'slug',
         'descripcion',
+        'activo',
     ];
 
     // Relación con usuarios
@@ -26,9 +28,9 @@ class Rol extends Model
         return $this->hasMany(Usuario::class, 'rol_id', 'id');
     }
 
-    //  Comenta esta línea si no existe el modelo Permiso
-    // public function permisos()
-    // {
-    //     return $this->belongsToMany(Permiso::class, 'permiso_rol', 'rol_id', 'permiso_id');
-    // }
+    public function permisos()
+    {
+        return $this->belongsToMany(Permiso::class, 'permiso_rol', 'rol_id', 'permiso_id')
+            ->withTimestamps();
+    }
 }

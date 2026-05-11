@@ -151,7 +151,7 @@
                             </td>
                             <td class="py-3 px-4">
                                 <div class="d-flex flex-column gap-1">
-                                    <span class="fs-6" title="NIT / ID Empresa"><i class="bi bi-credit-card-2-front me-2 text-muted"></i>{{ $proveedor->nit ?? 'S/N' }}</span>
+                                    <!--<span class="fs-6" title="NIT / ID Empresa"><i class="bi bi-credit-card-2-front me-2 text-muted"></i>{{ $proveedor->nit ?? 'S/N' }}</span>-->
                                     <span class="small"><i class="bi bi-telephone me-2 text-muted"></i>{{ $proveedor->telefono }}</span>
                                     @if($proveedor->email)
                                     <span class="small text-muted"><i class="bi bi-envelope me-2 text-muted"></i><a href="mailto:{{ $proveedor->email }}" class="text-decoration-none text-muted">{{ $proveedor->email }}</a></span>

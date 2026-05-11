@@ -113,6 +113,7 @@
         <!-- Columna Derecha: Formularios -->
         <div class="col-lg-7">
             <!-- Editar Perfil -->
+            @can('perfil.edit')
             <x-card class="mb-4">
                 <h5 class="fw-bold mb-4 pb-3 text-main border-bottom-modern">
                     <i class="bi bi-pencil-square me-2 text-gold"></i> Editar Perfil
@@ -184,8 +185,16 @@
                     </div>
                 </form>
             </x-card>
+            @else
+            <x-card class="mb-4">
+                <div class="p-3">
+                    <x-alert type="warning" class="mb-0">No tienes permisos para editar tu perfil.</x-alert>
+                </div>
+            </x-card>
+            @endcan
 
             <!-- Cambiar Contraseña (Desplegable) -->
+            @can('perfil.password')
             <x-card class="mb-4">
                 <div data-bs-toggle="collapse" data-bs-target="#collapsePassword" aria-expanded="{{ $errors->has('password') || $errors->has('current_password') ? 'true' : 'false' }}" aria-controls="collapsePassword" style="cursor: pointer;">
                     <div class="d-flex justify-content-between align-items-center">
@@ -236,8 +245,16 @@
                     </form>
                 </div>
             </x-card>
+            @else
+            <x-card class="mb-4">
+                <div class="p-3">
+                    <x-alert type="warning" class="mb-0">No tienes permisos para cambiar tu contraseña.</x-alert>
+                </div>
+            </x-card>
+            @endcan
 
             <!-- Zona de Peligro (Desplegable) -->
+            @can('perfil.delete')
             <x-card class="border-danger" style="border: 1px solid rgba(76, 7, 15, 0.3) !important;">
                 <div data-bs-toggle="collapse" data-bs-target="#collapseDanger" 
                 aria-expanded="{{ $errors->has('deletion_password') ? 'true' : 'false' }}" 
@@ -278,6 +295,7 @@
                     </form>
                 </div>
             </x-card>
+            @endcan
         </div>
     </div>
 </div>

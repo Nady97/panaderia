@@ -14,9 +14,11 @@
                         <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Productos</p>
                     </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
-                <a href="{{ url('/productos/create') }}" class="btn btn-primary-panaderia text-nowrap">
-                    <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
-                </a>
+                        @can('productos.create')
+                            <a href="{{ url('/productos/create') }}" class="btn btn-primary-panaderia text-nowrap">
+                                <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+                            </a>
+                        @endcan
             </div>
         </div>
     </x-card>
@@ -178,32 +180,46 @@
                         </td>
                         <td class="py-3 px-4 text-end">
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm btn-light text-gold border" title="Ver Detalles">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm btn-light text-secondary border" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline form-delete" data-confirm-text="¿Está seguro de que desea eliminar el producto {{$producto->nombre}}?">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                @can('productos.view')
+                                    <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm btn-light text-gold border" title="Ver Detalles">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                @endcan
+                                @can('productos.edit')
+                                    <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm btn-light text-secondary border" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                @endcan
+                                @can('productos.delete')
+                                    <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline form-delete" data-confirm-text="¿Está seguro de que desea eliminar el producto {{$producto->nombre}}?">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                @endcan
                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
                         <td colspan="6" class="p-0 border-0">
-                            <x-empty-state 
-                                icon="bi-box-seam" 
-                                title="No hay productos registrados" 
-                                description="Aún no tienes productos en tu catálogo de la panadería. Empieza a registrar tus productos aquí."
-                                buttonLabel="Agregar primer producto"
-                                :buttonRoute="url('/productos/create')" 
-                            />
+                            @can('productos.create')
+                                <x-empty-state 
+                                    icon="bi-box-seam" 
+                                    title="No hay productos registrados" 
+                                    description="Aún no tienes productos en tu catálogo de la panadería. Empieza a registrar tus productos aquí."
+                                    buttonLabel="Agregar primer producto"
+                                    :buttonRoute="url('/productos/create')" 
+                                />
+                            @else
+                                <x-empty-state 
+                                    icon="bi-box-seam" 
+                                    title="No hay productos registrados" 
+                                    description="Aún no tienes productos en tu catálogo de la panadería."
+                                />
+                            @endcan
                         </td>
                     </tr>
                     @endforelse

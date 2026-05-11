@@ -68,44 +68,69 @@
             </a>
         </li>
 
+        @canany(['productos.view', 'categorias.view', 'insumos.view', 'recetas.view', 'produccion.view'])
         <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Inventario</div>
+        @endcanany
+        @can('productos.view')
         <li class="nav-item">
             <a href="{{ url('/productos') }}" class="nav-link {{ request()->is('productos*') ? 'active' : '' }}">
                 <i class="bi bi-box"></i> <span>Productos</span>
             </a>
         </li>
+        @endcan
+        @can('categorias.view')
         <li class="nav-item">
             <a href="{{ url('/categorias') }}" class="nav-link {{ request()->is('categorias*') ? 'active' : '' }}">
                 <i class="bi bi-tag"></i> <span>Categorías</span>
             </a>
         </li>
+        @endcan
+        @can('insumos.view')
         <li class="nav-item">
             <a href="{{ url('/insumos') }}" class="nav-link {{ request()->is('insumos*') ? 'active' : '' }}">
                 <i class="bi bi-basket"></i> <span>Insumos</span>
             </a>
         </li>
+        @endcan
+        @can('recetas.view')
         <li class="nav-item">
             <a href="{{ url('/recetas') }}" class="nav-link {{ request()->is('recetas*') ? 'active' : '' }}">
                 <i class="bi bi-journal-text"></i> <span>Recetas</span>
             </a>
         </li>
+        @endcan
+        @can('produccion.view')
         <li class="nav-item">
             <a href="{{ url('/produccion') }}" class="nav-link {{ request()->is('produccion*') ? 'active' : '' }}">
                 <i class="bi bi-arrow-repeat"></i> <span>Producción</span>
             </a>
         </li>
+        @endcan
         
+        @canany(['proveedores.view', 'roles.view', 'usuarios.view'])
         <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Administración</div>
+        @endcanany
+        @can('proveedores.view')
         <li class="nav-item">
             <a href="{{ url('/proveedores') }}" class="nav-link {{ request()->is('proveedores*') ? 'active' : '' }}">
                 <i class="bi bi-truck"></i> <span>Proveedores</span>
             </a>
         </li>
+        @endcan
+        @can('roles.view')
+        <li class="nav-item">
+            <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('roles*') ? 'active' : '' }}">
+                <i class="bi bi-shield-check"></i> <span>Roles y Permisos</span>
+            </a>
+        </li>
+        @endcan
+        @can('usuarios.view')
         <li class="nav-item">
             <a href="{{ url('/usuarios') }}" class="nav-link {{ request()->is('usuarios*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> <span>Usuarios</span>
             </a>
         </li>
+        @endcan
 
         <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Cuenta</div>
         <li class="nav-item">

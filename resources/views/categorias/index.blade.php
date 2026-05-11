@@ -12,9 +12,11 @@
                 <p class="mb-0 text-muted">Organiza y clasifica tu catálogo de inventario</p>
             </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
-                <a href="{{ route('categorias.create') }}" class="btn btn-primary-panaderia text-nowrap">
-                    <i class="bi bi-plus-circle me-1"></i> Nueva Categoría
-                </a>
+                @can('categorias.create')
+                    <a href="{{ route('categorias.create') }}" class="btn btn-primary-panaderia text-nowrap">
+                        <i class="bi bi-plus-circle me-1"></i> Nueva Categoría
+                    </a>
+                @endcan
             </div>
         </div>
     </x-card>
@@ -140,20 +142,26 @@
                         </td>
                         <td class="py-3 px-4 text-end">
                             <div class="d-flex justify-content-end gap-2 acciones">
-                                <a href="{{ route('categorias.show', $categoria->id) }}" class="btn btn-sm btn-light text-gold border" title="Ver Productos">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn-sm btn-light text-secondary border" title="Editar Categoría">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <!-- Confirmación de eliminación embebida minimalista -->
-                                <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST" class="d-inline form-delete" data-confirm-text="¿Está seguro de que desea eliminar la categoría {{$categoria->nombre}}? Productos huérfanos se quedarán sin categoría.">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar Categoría">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                @can('categorias.view')
+                                    <a href="{{ route('categorias.show', $categoria->id) }}" class="btn btn-sm btn-light text-gold border" title="Ver Productos">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                @endcan
+                                @can('categorias.edit')
+                                    <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn-sm btn-light text-secondary border" title="Editar Categoría">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                @endcan
+                                @can('categorias.delete')
+                                    <!-- Confirmación de eliminación embebida minimalista -->
+                                    <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST" class="d-inline form-delete" data-confirm-text="¿Está seguro de que desea eliminar la categoría {{$categoria->nombre}}? Productos huérfanos se quedarán sin categoría.">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar Categoría">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                @endcan
                             </div>
                         </td>
                     </tr>
@@ -168,7 +176,9 @@
                                 @if(request()->has('search') || request()->has('status_filter'))
                                     <a href="{{ route('categorias.index') }}" class="btn btn-outline-secondary mt-3">Limpiar filtros</a>
                                 @else
-                                    <a href="{{ route('categorias.create') }}" class="btn btn-primary-panaderia mt-3 text-nowrap"><i class="bi bi-plus-lg me-1"></i>Crear primera Categoría</a>
+                                        @can('categorias.create')
+                                            <a href="{{ route('categorias.create') }}" class="btn btn-primary-panaderia mt-3 text-nowrap"><i class="bi bi-plus-lg me-1"></i>Crear primera Categoría</a>
+                                        @endcan
                                 @endif
                             </x-empty-state>
                         </td>

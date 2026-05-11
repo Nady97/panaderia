@@ -15,9 +15,11 @@
                 <a href="{{ route('categorias.index') }}" class="btn btn-light-panaderia text-nowrap">
                     <i class="bi bi-arrow-left me-1"></i> Volver a categorías
                 </a>
-                <a href="{{ route('productos.create') }}?categoria_id={{ $categoria->id }}" class="btn btn-gold-panaderia text-nowrap">
-                    <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
-                </a>
+                @can('productos.create')
+                    <a href="{{ route('productos.create') }}?categoria_id={{ $categoria->id }}" class="btn btn-gold-panaderia text-nowrap">
+                        <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+                    </a>
+                @endcan
             </div>
         </div>
     </x-card>
@@ -112,12 +114,16 @@
                             <!-- Botones de Acción -->
                             <td class="py-3 px-4 text-end">
                                 <div class="d-flex justify-content-end gap-1">
-                                    <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm btn-light-panaderia text-gold border border-color" title="Ver Detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm btn-light-panaderia text-main border border-color" title="Editar Producto">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
+                                    @can('productos.view')
+                                        <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm btn-light-panaderia text-gold border border-color" title="Ver Detalles">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    @endcan
+                                    @can('productos.edit')
+                                        <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm btn-light-panaderia text-main border border-color" title="Editar Producto">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
@@ -133,7 +139,9 @@
                                     <a href="{{ route('categorias.show', $categoria->id) }}" class="btn btn-light-panaderia mt-3">Limpiar filtro</a>
                                 @else
                                     <p class="text-muted small">Esta categoría aún no tiene panes o productos registrados.</p>
-                                    <a href="{{ route('productos.create') }}?categoria_id={{ $categoria->id }}" class="btn btn-gold-panaderia mt-3 text-nowrap"><i class="bi bi-plus-lg me-1"></i>Crear producto en esta categoría</a>
+                                    @can('productos.create')
+                                        <a href="{{ route('productos.create') }}?categoria_id={{ $categoria->id }}" class="btn btn-gold-panaderia mt-3 text-nowrap"><i class="bi bi-plus-lg me-1"></i>Crear producto en esta categoría</a>
+                                    @endcan
                                 @endif
                             </td>
                         </tr>

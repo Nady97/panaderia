@@ -89,9 +89,9 @@
                                 {{-- Producto --}}
                                 <td class="py-3 px-4">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div class="p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
+                                      <!--  <div class="p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
                                             <i class="bi bi-box-seam" style="font-size: 1.2rem;"></i>
-                                        </div>
+                                        </div> -->
                                         <div>
                                             @if($produccion->producto)
                                                 <div class="fw-bold" style="font-size: 1rem;">

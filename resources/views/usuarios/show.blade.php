@@ -12,14 +12,26 @@
                 <p class="mb-0 text-secondary">Información completa de <strong>{{ $usuario->nombre }}</strong></p>
             </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
-                @if(auth()->user()->rol && auth()->user()->rol->nombre === 'Administrador')
-                <a href="{{ route('usuarios.edit', $usuario->codigo) }}" class="btn btn-gold-panaderia text-nowrap">
-                    <i class="bi bi-pencil-square me-1"></i> Editar
-                </a>
-                <a href="{{ route('usuarios.historial', $usuario->codigo) }}" class="btn btn-light-panaderia text-nowrap">
-                    <i class="bi bi-clock-history me-1"></i> Historial
-                </a>
-                @endif
+                @can('usuarios.edit')
+                    <a href="{{ route('usuarios.edit', $usuario->codigo) }}" class="btn btn-gold-panaderia text-nowrap">
+                        <i class="bi bi-pencil-square me-1"></i> Editar
+                    </a>
+                @endcan
+                @can('usuarios.reset-password')
+                    @if(auth()->user()->codigo !== $usuario->codigo)
+                        <form action="{{ route('usuarios.reset-password', $usuario->codigo) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Restablecer la contrasena de {{$usuario->nombre}}? Se generara una contrasena temporal.');">
+                            @csrf
+                            <button type="submit" class="btn btn-warning text-nowrap">
+                                <i class="bi bi-key me-1"></i> Restablecer Contraseña
+                            </button>
+                        </form>
+                    @endif
+                @endcan
+                @can('usuarios.historial')
+                    <a href="{{ route('usuarios.historial', $usuario->codigo) }}" class="btn btn-light-panaderia text-nowrap">
+                        <i class="bi bi-clock-history me-1"></i> Historial
+                    </a>
+                @endcan
                 <a href="{{ route('usuarios.index') }}" class="btn btn-light-panaderia text-nowrap">
                     <i class="bi bi-arrow-left me-1"></i> Volver a la Lista
                 </a>

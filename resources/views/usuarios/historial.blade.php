@@ -11,9 +11,11 @@
                 <p class="mb-0 text-muted">Usuario: <strong>{{ $usuario->nombre }}</strong> ({{ $usuario->codigo }})</p>
             </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
-                <a href="{{ route('usuarios.historial.pdf', $usuario->codigo) }}" class="btn btn-light-panaderia text-nowrap">
-                    <i class="bi bi-file-earmark-pdf me-1"></i> Exportar PDF
-                </a>
+                @can('usuarios.historial')
+                    <a href="{{ route('usuarios.historial.pdf', $usuario->codigo) }}" class="btn btn-light-panaderia text-nowrap">
+                        <i class="bi bi-file-earmark-pdf me-1"></i> Exportar PDF
+                    </a>
+                @endcan
                 <a href="{{ route('usuarios.show', $usuario->codigo) }}" class="btn btn-light-panaderia text-nowrap">
                     <i class="bi bi-arrow-left me-1"></i> Volver
                 </a>
