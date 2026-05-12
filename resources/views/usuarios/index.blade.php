@@ -201,6 +201,17 @@
                                             </form>
                                         @endif
                                     @endcan
+                                                                        {{-- Botón Forzar Logout --}}
+                                    @if($estaActivo && auth()->user()->codigo !== $usuario->codigo)
+                                        @can('usuarios.delete')
+                                            <form action="{{ route('usuarios.force-logout', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0" onsubmit="return confirm('¿Cerrar la sesión de {{ $usuario->nombre }}? Será desconectado inmediatamente.')">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-light border text-warning" title="Forzar cierre de sesión">
+                                                    <i class="bi bi-door-closed"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    @endif
                                     @can('usuarios.reset-password')
                                         @if(auth()->user()->codigo !== $usuario->codigo)
                                             <form action="{{ route('usuarios.reset-password', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0" onsubmit="return confirm('¿Restablecer la contrasena de {{$usuario->nombre}}? Se generara una contrasena temporal.');">

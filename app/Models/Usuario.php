@@ -130,4 +130,17 @@ class Usuario extends Authenticatable
     {
         return $this->getKey();
     }
+
+    /**
+ * Verifica si el usuario tiene una sesión activa
+ */
+    public function isCurrentlyActive(): bool
+    {
+        if (!$this->last_login_at) return false;
+        
+        $timeout = config('session.lifetime') / 60; // en horas
+        
+        return $this->last_login_at->gt($this->last_logout_at ?? now()->subYears(1)) 
+            && $this->last_login_at->diffInHours(now()) < $timeout;
+    }
 }

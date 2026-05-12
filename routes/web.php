@@ -162,6 +162,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('usuarios/{codigo}/reset-password', [UsuarioController::class, 'resetPassword'])
         ->name('usuarios.reset-password')->middleware('can:usuarios.reset-password');
 
+    // Forzar cierre de sesión (solo admin)
+    Route::post('/usuarios/{codigo}/force-logout', [UsuarioController::class, 'forceLogout'])
+        ->name('usuarios.force-logout')
+        ->middleware('can:usuarios.delete');
+
     // ============================================
     // PERFIL
     // ============================================

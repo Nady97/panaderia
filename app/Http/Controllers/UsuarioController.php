@@ -246,4 +246,22 @@ class UsuarioController extends Controller
             ->route('usuarios.index')
             ->with('success', "Contrasena temporal para {$usuario->nombre}: {$tempPassword}");
     }
+    /**
+     * Forzar cierre de sesión de un usuario específico (Admin)
+     */
+    public function forceLogout($codigo)
+    {
+        $usuario = Usuario::findOrFail($codigo);
+
+        // Eliminar sesiones de la tabla sessions
+        DB::table('sessions')->where('user_id', $codigo)->delete();
+
+        // Eliminar caché de actividad
+        \Illuminate\Support\Facades\Cache::forget('user_last_activity_' . $codigo);
+
+        // Actualizar fecha de última salida
+        $usuario->update(['last_logout_at' => now()]);
+
+        return back()->with('success', "Sesión de {$usuario->nombre} cerrada forzosamente.");
+    }
 }
