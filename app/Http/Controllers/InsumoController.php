@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Models\Insumo;
+use App\Http\Requests\StoreInsumoRequest;
+use App\Http\Requests\UpdateInsumoRequest;
 
 class InsumoController extends Controller
 {
@@ -57,19 +59,20 @@ class InsumoController extends Controller
         return view('insumos.show', compact('insumo'));
     }
 
-    public function store(Request $request)
+    public function store(StoreInsumoRequest $request)
     {
-        $data = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:insumos,nombre'],
-            'unidad_medida' => ['required', 'string', 'max:20'],
-            'stock_actual' => ['required', 'numeric', 'min:0'],
-            'stock_minimo' => ['nullable', 'numeric', 'min:0'],
-            'precio_compra_promedio' => ['nullable', 'numeric', 'min:0'],
-        ]);
+        $insumo = new Insumo($request->validated());
+        $insumo->save();
 
-        Insumo::create($data);
+        return redirect()->route('insumos.index')->with('success', 'Insumo creado exitosamente.');
+    }
 
-        return redirect()->route('insumos.index')->with('success', 'Insumo registrado correctamente.');
+    public function update(UpdateInsumoRequest $request, $id)
+    {
+        $insumo = Insumo::findOrFail($id);
+        $insumo->update($request->validated());
+
+        return redirect()->route('insumos.edit', $id)->with('success', 'Insumo actualizado exitosamente.');
     }
 
     public function edit(Insumo $insumo)
@@ -77,20 +80,6 @@ class InsumoController extends Controller
         return view('insumos.edit', compact('insumo'));
     }
 
-    public function update(Request $request, Insumo $insumo)
-    {
-        $data = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', Rule::unique('insumos', 'nombre')->ignore($insumo->id)],
-            'unidad_medida' => ['required', 'string', 'max:20'],
-            'stock_actual' => ['required', 'numeric', 'min:0'],
-            'stock_minimo' => ['nullable', 'numeric', 'min:0'],
-            'precio_compra_promedio' => ['nullable', 'numeric', 'min:0'],
-        ]);
-
-        $insumo->update($data);
-
-        return redirect()->route('insumos.index')->with('success', 'Insumo actualizado correctamente.');
-    }
 
     public function destroy(Insumo $insumo)
     {
