@@ -9,7 +9,10 @@ use App\Models\Usuario;
 use App\Models\Insumo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Requests\StoreRecetaRequest;
+use App\Http\Requests\UpdateRecetaRequest;
 
 class RecetaController extends Controller
 {
@@ -55,23 +58,14 @@ class RecetaController extends Controller
         return view('recetas.create', compact('productos'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'rendimiento_estimado' => 'required|numeric|min:0.01',
-            'tiempo_preparacion_min' => 'required|integer|min:1',
-            'instrucciones' => 'nullable|string',
-            'estado' => 'required|in:activa,borrador,obsoleta',
-            'producto_id' => 'required|exists:productos,id',
-        ]);
+    public function store(StoreRecetaRequest $request)
+{
+    $receta = new Receta($request->validated());
+    $receta->usuario_codigo = Auth::user()->codigo;
+    $receta->save();
 
-        $receta = new Receta($request->all());
-        $receta->usuario_codigo = Auth::user() ? Auth::user()->codigo : Usuario::first()->codigo;
-        $receta->save();
-
-        return redirect()->route('recetas.index')->with('success', 'Receta creada exitosamente.');
-    }
+    return redirect()->route('recetas.index')->with('success', 'Receta creada exitosamente.');
+}
 
     public function show($id)
     {
@@ -89,22 +83,13 @@ class RecetaController extends Controller
         return view('recetas.edit', compact('receta', 'productos', 'insumosDisponibles'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'rendimiento_estimado' => 'required|numeric|min:0.01',
-            'tiempo_preparacion_min' => 'required|integer|min:1',
-            'instrucciones' => 'nullable|string',
-            'estado' => 'required|in:activa,borrador,obsoleta',
-            'producto_id' => 'required|exists:productos,id',
-        ]);
+    public function update(UpdateRecetaRequest $request, $id)
+{
+    $receta = Receta::findOrFail($id);
+    $receta->update($request->validated());
 
-        $receta = Receta::findOrFail($id);
-        $receta->update($request->all());
-
-        return redirect()->route('recetas.edit', $id)->with('success', 'Receta actualizada exitosamente.');
-    }
+    return redirect()->route('recetas.edit', $id)->with('success', 'Receta actualizada exitosamente.');
+}
 
     public function addInsumo(Request $request, $recetaId)
     {

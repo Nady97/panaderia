@@ -4,26 +4,23 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateRecetaRequest extends FormRequest
+{public function rules(): array
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
+    return [
+        'nombre' => 'sometimes|string|max:100',
+        'rendimiento_estimado' => 'sometimes|numeric|min:0.01',
+        'tiempo_preparacion_min' => 'sometimes|integer|min:1',
+        'instrucciones' => 'nullable|string',
+        'estado' => 'sometimes|in:activa,borrador,obsoleta',
+        'producto_id' => 'sometimes|exists:productos,id',
+    ];
+}
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            //
-        ];
-    }
+public function authorize(): bool
+{
+    return Gate::check('recetas.edit');
+}
 }
