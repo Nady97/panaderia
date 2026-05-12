@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreProveedorRequest;
+use App\Http\Requests\UpdateProveedorRequest;
 
 class ProveedorController extends Controller
 {
@@ -59,26 +61,13 @@ class ProveedorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProveedorRequest $request)
     {
-        $request->validate([
-            'codigo' => 'required|string|max:10|unique:proveedores,codigo',
-            'nombre_contacto' => 'required|string|max:60',
-            'empresa' => 'required|string|max:60',
-            'nit' => 'nullable|string|max:20|unique:proveedores,nit',
-            'telefono' => 'required|string|max:15',
-            'email' => 'nullable|email|max:100',
-            'direccion' => 'nullable|string',
-            'estado' => 'nullable|in:activo,suspendido,inactivo'
-        ]);
-
-        $data = $request->all();
+        $data = $request->validated();
         if (empty($data['estado'])) {
             $data['estado'] = 'activo';
         }
-
         Proveedor::create($data);
-
         return redirect()->route('proveedores.index')->with('success', 'Proveedor registrado exitosamente.');
     }
 
@@ -100,22 +89,10 @@ class ProveedorController extends Controller
         return view('proveedores.edit', compact('proveedor'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateProveedorRequest $request, string $id)
     {
         $proveedor = Proveedor::findOrFail($id);
-
-        $request->validate([
-            'nombre_contacto' => 'required|string|max:60',
-            'empresa' => 'required|string|max:60',
-            'nit' => 'nullable|string|max:20|unique:proveedores,nit,' . $id . ',codigo',
-            'telefono' => 'required|string|max:15',
-            'email' => 'nullable|email|max:100',
-            'direccion' => 'nullable|string',
-            'estado' => 'required|in:activo,suspendido,inactivo'
-        ]);
-
-        $proveedor->update($request->all());
-
+        $proveedor->update($request->validated());
         return redirect()->route('proveedores.index')->with('success', 'Proveedor actualizado exitosamente.');
     }
 

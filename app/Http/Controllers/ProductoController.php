@@ -89,7 +89,7 @@ class ProductoController extends Controller
         $nombre = time() . '.' . $imagen->getClientOriginalExtension();
         $ruta = storage_path('app/public/productos/' . $nombre);
         
-        \Image\Image::make($imagen)->resize(800, null, function ($constraint) {
+        \Intervention\Image\ImageManager::imagick()->read($imagen)->resize(800, null, function ($constraint) {
             $constraint->aspectRatio();
         })->save($ruta);
         

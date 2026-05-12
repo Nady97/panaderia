@@ -9,6 +9,8 @@ use App\Models\Insumo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreProduccionRequest;
+use App\Http\Requests\UpdateProduccionRequest;
 
 class ProduccionController extends Controller
 {
@@ -43,16 +45,9 @@ class ProduccionController extends Controller
         return view("produccion.create", compact("productos"));
     }
 
-    public function store(Request $request)
+    public function store(StoreProduccionRequest $request)
     {
-        $validated = $request->validate([
-            "producto_id" => "required|exists:productos,id",
-            "cantidad" => "required|numeric|min:0.01",
-            "fecha_produccion" => "required|date",
-            "estado" => "required|in:planificado,en_proceso,completado,fallido",
-            "observaciones" => "nullable|string"
-        ]);
-
+        $validated = $request->validated();
         $receta = Receta::where("producto_id", $validated["producto_id"])->first();
 
         if (!$receta) {
@@ -105,15 +100,9 @@ class ProduccionController extends Controller
         return view("produccion.edit", compact("produccion", "productos"));
     }
 
-    public function update(Request $request, Produccion $produccion)
+    public function update(UpdateProduccionRequest $request, Produccion $produccion)
     {
-        $validated = $request->validate([
-            "producto_id" => "required|exists:productos,id",
-            "cantidad" => "required|numeric|min:0.01",
-            "fecha_produccion" => "required|date",
-            "estado" => "required|in:planificado,en_proceso,completado,fallido",
-            "observaciones" => "nullable|string"
-        ]);
+        $validated = $request->validated();
 
         $recetaNueva = Receta::where("producto_id", $validated["producto_id"])->first();
         if (!$recetaNueva) return back()->with("error", "No hay receta activa para el producto.");
