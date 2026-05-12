@@ -40,19 +40,26 @@ class ProductoController extends Controller
     }
     // Método para almacenar un nuevo producto en la base de datos
     public function store(StoreProductoRequest $request)
-    {
-        $validated = $request->validated();
-
-        if ($request->hasFile('imagen')) {
-            $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
-        }
-
-        Producto::create(array_merge($validated, [
-            'estado' => 'activo'
-        ]));
-
-        return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente');
+{
+    $data = $request->validated();
+    
+    if ($request->hasFile('imagen')) {
+        $imagen = $request->file('imagen');
+        $nombre = time() . '.' . $imagen->getClientOriginalExtension();
+        $ruta = storage_path('app/public/productos/' . $nombre);
+        
+        // Redimensionar imagen (si tienes Intervention Image)
+        \Image\Image::make($imagen)->resize(800, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($ruta);
+        
+        $data['imagen'] = 'productos/' . $nombre;
     }
+    
+    $producto = Producto::create($data);
+
+    return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
+}
     // Método para mostrar los detalles de un producto específico
     // MEJORA 1: Route Model Binding. En vez de recibir un $id, Laravel inyecta el objeto $producto automáticamente resuelto desde la BD.
     public function show(Producto $producto)
@@ -67,20 +74,32 @@ class ProductoController extends Controller
         $categorias = Categoria::all();
         return view('productos.edit', compact('producto', 'categorias'));
     }
-    public function update(UpdateProductoRequest $request, Producto $producto)
-    {
-        $validated = $request->validated();
-
-        if ($request->hasFile('imagen')) {
-            $this->deleteStoredImage($producto->imagen);
-            $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
+  public function update(UpdateProductoRequest $request, $id)
+{
+    $producto = Producto::findOrFail($id);
+    $data = $request->validated();
+    
+    if ($request->hasFile('imagen')) {
+        // Eliminar imagen anterior
+        if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
+            Storage::disk('public')->delete($producto->imagen);
         }
-
-        $producto->update($validated);
-
-        return redirect()->route('productos.index')
-            ->with('success', 'Producto actualizado correctamente');
+        
+        $imagen = $request->file('imagen');
+        $nombre = time() . '.' . $imagen->getClientOriginalExtension();
+        $ruta = storage_path('app/public/productos/' . $nombre);
+        
+        \Image\Image::make($imagen)->resize(800, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($ruta);
+        
+        $data['imagen'] = 'productos/' . $nombre;
     }
+    
+    $producto->update($data);
+
+    return redirect()->route('productos.edit', $id)->with('success', 'Producto actualizado exitosamente.');
+}
 
     // Método para eliminar un producto específico
     public function destroy(Producto $producto)

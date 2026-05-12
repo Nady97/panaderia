@@ -11,11 +11,11 @@
                 </h2>
                 <p class="mb-0 text-muted">Administra los proveedores y cadenas de suministro</p>
             </div>
-            <div class="d-flex gap-3 align-items-center flex-wrap">
+            @can('proveedores.create')
                 <a href="{{ route('proveedores.create') }}" class="btn btn-primary-panaderia text-nowrap">
                     <i class="bi bi-plus-circle me-1"></i> Nuevo Proveedor
                 </a>
-            </div>
+            @endcan
         </div>
     </x-card>
 
@@ -168,23 +168,31 @@
                                 @endif
                             </td>
                             <td class="py-3 px-4 text-end">
-                                <div class="d-flex justify-content-end gap-1">
-                                    <a href="{{ route('proveedores.show', $proveedor->codigo) }}" class="btn btn-sm btn-light text-gold border" title="Ver Detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a href="{{ route('proveedores.edit', $proveedor->codigo) }}" class="btn btn-sm btn-light text-main border" title="Editar Proveedor">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form action="{{ route('proveedores.destroy', $proveedor->codigo) }}" method="POST" class="d-inline p-0 m-0 form-delete" data-confirm-text="¿Está seguro de que desea eliminar el proveedor {{$proveedor->empresa}}?">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar Proveedor">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                                    <div class="d-flex justify-content-end gap-1">
+                                        @can('proveedores.view')
+                                            <a href="{{ route('proveedores.show', $proveedor->codigo) }}" class="btn btn-sm btn-light text-gold border" title="Ver Detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        @endcan
+                                        
+                                        @can('proveedores.edit')
+                                            <a href="{{ route('proveedores.edit', $proveedor->codigo) }}" class="btn btn-sm btn-light text-main border" title="Editar Proveedor">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        @endcan
+                                        
+                                        @can('proveedores.delete')
+                                            <form action="{{ route('proveedores.destroy', $proveedor->codigo) }}" method="POST" class="d-inline p-0 m-0 form-delete" data-confirm-text="¿Está seguro de que desea eliminar el proveedor {{$proveedor->empresa}}?">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-light text-danger border" title="Eliminar Proveedor">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                             </tr>
                         @empty
                         <tr>
                             <td colspan="5" class="p-0 border-0">
@@ -223,6 +231,3 @@
     </x-card>
 </div>
 @endsection
-
-
-

@@ -10,15 +10,15 @@
                 <p class="mb-0 text-muted">Bienvenida, <strong>{{ auth()->user()->nombre ?? 'Usuario' }}</strong></p>
             </div>
             <div>
-                        <h3 class="fw-bold mb-0 text-main">{{ $totalProductos ?? 0 }}</h3>
-                        <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Productos</p>
-                    </div>
+                <h3 class="fw-bold mb-0 text-main">{{ $totalProductos ?? 0 }}</h3>
+                <p class="text-muted mb-0 small text-uppercase fw-semibold">Total Productos</p>
+            </div>
             <div class="d-flex gap-3 align-items-center flex-wrap">
-                        @can('productos.create')
-                            <a href="{{ url('/productos/create') }}" class="btn btn-primary-panaderia text-nowrap">
-                                <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
-                            </a>
-                        @endcan
+                @can('productos.create')
+                    <a href="{{ route('productos.create') }}" class="btn btn-primary-panaderia text-nowrap">
+                        <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+                    </a>
+                @endcan
             </div>
         </div>
     </x-card>
@@ -144,7 +144,7 @@
                 </thead>
                 <tbody >
                     @forelse($productos as $index => $producto)
-                    <tr class="producto-fila" class="border-bottom-modern" style="transition: background 0.2s;"
+                    <tr class="producto-fila border-bottom-modern" style="transition: background 0.2s;"
                         data-stock="{{ $producto->stock }}" 
                         data-nombre="{{ strtolower($producto->nombre) }}" data-precio="{{ $producto->precio_venta }}" data-itera="{{ $loop->iteration }}"
                         data-estado="{{ $producto->estado }}">

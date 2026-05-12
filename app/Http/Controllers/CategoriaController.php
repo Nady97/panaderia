@@ -53,20 +53,10 @@ class CategoriaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreCategoriaRequest $request)
-    {
-        $data = $request->validated();
-
-        if (empty($data['slug'])) {
-            $data['slug'] = \Illuminate\Support\Str::slug($data['nombre']);
-        }
-        if (!isset($data['activo'])) {
-            $data['activo'] = true;
-        }
-
-        Categoria::create($data);
-
-        return redirect()->route('categorias.index')->with('success', 'Categoría creada correctamente.');
-    }
+{
+    Categoria::create($request->validated());
+    return redirect()->route('categorias.index')->with('success', 'Categoría creada exitosamente.');
+}
 
     /**
      * Display the specified resource.
@@ -96,21 +86,12 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoriaRequest $request, Categoria $categoria)
-    {
-        $data = $request->validated();
-
-        if (empty($data['slug'])) {
-            $data['slug'] = \Illuminate\Support\Str::slug($data['nombre']);
-        }
-        if (!isset($data['activo'])) {
-            $data['activo'] = false; // Checkboxes only send if checked
-        }
-
-        $categoria->update($data);
-
-        return redirect()->route('categorias.index')->with('success', 'Categoría actualizada correctamente.');
-    }
+    public function update(UpdateCategoriaRequest $request, $id)
+{
+    $categoria = Categoria::findOrFail($id);
+    $categoria->update($request->validated());
+    return redirect()->route('categorias.edit', $id)->with('success', 'Categoría actualizada exitosamente.');
+}
 
     /**
      * Remove the specified resource from storage.
