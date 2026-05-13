@@ -27,32 +27,31 @@
     </x-card>
 
     <!-- Tarjetas de resumen -->
-    <div class="row g-2 mb-2">
-        @foreach($roles->sortBy(fn($r) => ($r->slug === 'proveedor' || strtolower($r->nombre) === 'proveedor') ? 1 : 0) as $key => $rol)
-        <!-- Excluir rol 'Cliente' de las tarjetas de resumen -->
-        @if($rol->slug !== 'cliente' && strtolower($rol->nombre) !== 'cliente')
-        <div class="col-6 col-md-3">
-            @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
-            <a href="{{ url('/proveedores') }}" class="text-decoration-none">
-            @endif
-            <x-card class="h-100 bg-transparent-hover kpi-card {{ ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') ? 'border-primary' : '' }}">
-                <div class="d-flex align-items-center gap-3 w-100">
-                    <div class="p-3 rounded-circle kpi-icon-wrapper" style="color: var(--gold-dark);">
-                        {!! $rol->icono ?? '<i class="bi bi-person kpi-icon"></i>' !!}
-                    </div>
-                    <div>
-                        <h3 class="mb-0 fw-bold text-main">{{ $totalPorRol[$rol->slug] ?? 0 }}</h3>
-                        <span class="text-muted small text-uppercase fw-semibold">{{ $rol->nombre }}</span>
-                    </div>
-                </div>
-            </x-card>
-            @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
-            </a>
-            @endif
-        </div>
+<div class="row g-2 mb-2">
+    @foreach($roles->sortBy(fn($r) => ($r->slug === 'proveedor' || strtolower($r->nombre) === 'proveedor') ? 1 : 0) as $rol)
+    @if($rol->slug !== 'cliente' && strtolower($rol->nombre) !== 'cliente')
+    <div class="col-md-3 col-sm-6">
+        @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
+        <a href="{{ url('/proveedores') }}" class="text-decoration-none">
         @endif
-        @endforeach
+        <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card {{ ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') ? 'border-primary' : '' }}">
+            <div class="d-flex align-items-center w-100">
+                <div class="p-3 me-3" style="color: var(--gold-dark);">
+                    {!! $rol->icono ?? '<i class="bi bi-person kpi-icon"></i>' !!}
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0 text-main">{{ $totalPorRol[$rol->slug] ?? 0 }}</h3>
+                    <p class="text-muted mb-0 small text-uppercase fw-semibold">{{ $rol->nombre }}</p>
+                </div>
+            </div>
+        </x-card>
+        @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
+        </a>
+        @endif
     </div>
+    @endif
+    @endforeach
+</div>
 
     <!-- Buscador Integrado y Filtros Server-Side -->
     <x-card class="mb-4">
