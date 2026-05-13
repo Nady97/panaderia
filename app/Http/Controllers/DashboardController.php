@@ -84,6 +84,11 @@ class DashboardController extends Controller
         $clientesNuevos = 0;
         $tendenciaClientes = null;
 
+        // En la sección de MÉTRICAS PENDIENTES
+        $productoEstrella = null;
+        $productoMasElaborado = null;
+        $recetaMasUsada = null;
+
         // ========================================================================
         // RETORNAR VISTA CON TODAS LAS VARIABLES
         // ========================================================================
@@ -107,7 +112,10 @@ class DashboardController extends Controller
             
             // Datos para tablas y gráficos
             'ultimosProductos',
-            'inventoryChartData'
+            'inventoryChartData',
+
+            'productoEstrella',
+            'recetaMasUsada',
         ));
     }
 
