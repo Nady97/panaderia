@@ -98,7 +98,7 @@
                             <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
                         @enderror
                     </div>
-
+                    
                     <!-- Campo: Estado Operativo Toggle -->
                     <div class="col-12 mt-4">
                         <div class="detail-box p-3">

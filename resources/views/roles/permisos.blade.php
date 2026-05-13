@@ -53,6 +53,14 @@
                     <form method="POST" action="{{ route('roles.permisos.update', $rol->id) }}">
                         @csrf
                         @method('PUT')
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="seleccionarTodos()">
+                                    <i class="bi bi-check-all"></i> Seleccionar Todos
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deseleccionarTodos()">
+                                    <i class="bi bi-x-circle"></i> Deseleccionar Todos
+                                </button>
+                            </div>
 
                         @if($permisos->isEmpty())
                             <x-empty-state
@@ -70,6 +78,7 @@
                                         @foreach($grupo as $permiso)
                                             <div class="col-12 col-md-6 col-lg-4">
                                                 <div class="form-check">
+                                                    
                                                     <input class="form-check-input" type="checkbox" name="permisos[]" value="{{ $permiso->id }}" id="permiso_{{ $permiso->id }}" {{ $rol->permisos->contains($permiso->id) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="permiso_{{ $permiso->id }}">
                                                         <span class="fw-semibold text-main">{{ $permiso->nombre }}</span>
@@ -96,4 +105,13 @@
         </div>
     </x-card>
 </div>
+
+<script>
+function seleccionarTodos() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+}
+function deseleccionarTodos() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+}
+</script>
 @endsection
