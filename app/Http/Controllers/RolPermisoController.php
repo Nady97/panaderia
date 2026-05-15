@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Permiso;
 use App\Models\Rol;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateRolPermisoRequest;
 
 class RolPermisoController extends Controller
 {
+ // withCount() agrega dos atributos automáticos: $rol->usuarios_count → Número de usuarios con ese rol
+// $rol->permisos_count → Número de permisos asignados
   public function index()
   {
-    $roles = Rol::orderBy('nombre')->get();
+    $roles = Rol::withCount(['usuarios', 'permisos'])->orderBy('nombre')->get();
 
     return view('roles.index', compact('roles'));
   }
@@ -23,17 +26,10 @@ class RolPermisoController extends Controller
     return view('roles.permisos', compact('rol', 'permisos'));
   }
 
-  public function update(Request $request, Rol $rol)
+  //  Con Form Request
+  public function update(UpdateRolPermisoRequest $request, Rol $rol)
   {
-    $data = $request->validate([
-      'permisos' => 'array',
-      'permisos.*' => 'integer|exists:permisos,id',
-    ]);
-
-    $rol->permisos()->sync($data['permisos'] ?? []);
-
-    return redirect()
-      ->route('roles.permisos.edit', $rol)
-      ->with('success', 'Permisos actualizados correctamente.');
+      $rol->permisos()->sync($request->validated()['permisos'] ?? []);
+      return redirect()->route('roles.permisos.edit', $rol)->with('success', 'Permisos actualizados.');
   }
 }

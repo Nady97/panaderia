@@ -26,39 +26,43 @@
         </div>
     </x-card>
 
-    <!-- Tarjetas de resumen -->
-<div class="row g-2 mb-2">
-    @foreach($roles->sortBy(fn($r) => ($r->slug === 'proveedor' || strtolower($r->nombre) === 'proveedor') ? 1 : 0) as $rol)
-    @if($rol->slug !== 'cliente' && strtolower($rol->nombre) !== 'cliente')
-    <div class="col-md-3 col-sm-6">
-        @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
-        <a href="{{ url('/proveedores') }}" class="text-decoration-none">
-        @endif
-        <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card {{ ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') ? 'border-primary' : '' }}">
-            <div class="d-flex align-items-center w-100">
-                <div class="p-3 me-3" style="color: var(--gold-dark);">
-                    {!! $rol->icono ?? '<i class="bi bi-person kpi-icon"></i>' !!}
+    <!-- Tarjetas de resumen de Roles -->
+    <div class="row g-2 mb-2">
+        @foreach($roles as $rol)
+        @if($rol->slug !== 'cliente' && strtolower($rol->nombre) !== 'cliente')
+        <div class="col-6 col-md-3">
+            @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
+            <a href="{{ url('/proveedores') }}" class="text-decoration-none">
+            @endif
+            <x-card class="h-100 bg-transparent-hover kpi-card {{ ($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor') ? 'border-primary' : '' }}">
+                <div class="d-flex align-items-center gap-2 gap-md-3 w-100 p-1">
+                    <div class="p-2 p-md-3 rounded-circle kpi-icon-wrapper flex-shrink-0" style="color: var(--gold-dark);">
+                        {!! $rol->icono ?? '<i class="bi bi-person kpi-icon"></i>' !!}
+                    </div>
+                    <div class="overflow-hidden">
+                        <h3 class="mb-0 fw-bold text-main" style="font-size: clamp(1rem, 4vw, 1.75rem); line-height: 1.2;">
+                            {{ $rol->usuarios_count ?? $totalPorRol[$rol->slug] ?? 0 }}
+                        </h3>
+                        <span class="text-muted small text-uppercase fw-semibold d-block text-truncate" style="font-size: clamp(0.6rem, 2.5vw, 0.75rem);">
+                            {{ $rol->nombre }}
+                        </span>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="fw-bold mb-0 text-main">{{ $totalPorRol[$rol->slug] ?? 0 }}</h3>
-                    <p class="text-muted mb-0 small text-uppercase fw-semibold">{{ $rol->nombre }}</p>
-                </div>
-            </div>
-        </x-card>
-        @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
-        </a>
+            </x-card>
+            @if($rol->slug === 'proveedor' || $rol->nombre === 'Proveedor')
+            </a>
+            @endif
+        </div>
         @endif
+        @endforeach
     </div>
-    @endif
-    @endforeach
-</div>
 
     <!-- Buscador Integrado y Filtros Server-Side -->
     <x-card class="mb-4">
         <div class="card-body p-4">
             <form action="{{ route('usuarios.index') }}" method="GET" class="row g-3 align-items-end" id="serverFilterForm">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">
+                    <label class="form-label fw-bold mb-2 text-main">
                         <i class="bi bi-search me-1"></i> Buscar Usuario
                     </label>
                     <div class="input-group input-group-modern">
@@ -67,7 +71,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold mb-2" style="font-size: 0.9rem;" class="text-main">Filtrar por Rol</label>
+                    <label class="form-label fw-bold mb-2 text-main">Filtrar por Rol</label>
                     <div class="input-group input-group-modern">
                         <span class="input-group-text"><i class="bi bi-funnel"></i></span>
                         <select name="rol_id" class="form-select" onchange="this.form.submit()">
@@ -75,7 +79,7 @@
                             @foreach($roles as $rol)
                                 @if($rol->slug !== 'cliente' && strtolower($rol->nombre) !== 'cliente' && $rol->slug !== 'proveedor' && strtolower($rol->nombre) !== 'proveedor')
                                     <option value="{{ $rol->id }}" {{ request('rol_id') == $rol->id ? 'selected' : '' }}>
-                                        {{ strip_tags($rol->icono ?? '') }} {{ $rol->nombre }}
+                                        {{ $rol->nombre }}
                                     </option>
                                 @endif
                             @endforeach
@@ -99,15 +103,14 @@
                 <table class="table table-hover align-middle mb-0 text-main">
                     <thead class="border-bottom-modern border-2">
                         <tr>
-                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Usuario</th>
-                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Contacto</th>
-                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Estado / Ultima conexion</th>
-                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted"></th>
-                            <th class="py-3 px-3" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Rol</th>
-                            <th class="py-3 px-3 text-end" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase;" class="text-muted">Acciones</th>
+                            <th class="py-3 px-2 text-muted text-uppercase fw-semibold small">Usuario</th>
+                            <th class="py-3 px-2 d-none d-md-table-cell text-muted text-uppercase fw-semibold small">Contacto</th>
+                            <th class="py-3 px-2 text-muted text-uppercase fw-semibold small">Estado</th>
+                            <th class="py-3 px-2 text-muted text-uppercase fw-semibold small">Rol</th>
+                            <th class="py-3 px-2 text-end text-muted text-uppercase fw-semibold small">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         @forelse($usuarios as $usuario)
                         @php
                             $nombreRol = $usuario->rol ? $usuario->rol->nombre : 'Sin rol';
@@ -116,7 +119,6 @@
                                 'Cajero' => '<i class="bi bi-cash-coin"></i>',
                                 'Cocinero / Panadero' => '<i class="bi bi-egg-fried"></i>',
                                 'Proveedor' => '<i class="bi bi-truck"></i>',
-                               // 'Cliente' => '<i class="bi bi-person"></i>',
                                 default => '<i class="bi bi-question-circle"></i>'
                             };
                             
@@ -127,21 +129,29 @@
                                 'Proveedor' => 'info',
                                 default => 'secondary'
                             };
+                            
+                            $esUsuarioActual = auth()->check() && auth()->user()->codigo === $usuario->codigo;
+                            $estaActivo = $esUsuarioActual || ($usuario->last_login_at && (!$usuario->last_logout_at || $usuario->last_login_at->gt($usuario->last_logout_at)));
                         @endphp
                         <tr class="border-bottom-modern" style="transition: background 0.2s;">
+                            {{-- Usuario --}}
                             <td class="py-3 px-2">
-                                <div class="d-flex align-items-center gap-3">
-                                  <!--  <div class="p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
-                                        <i class="bi bi-person-fill" style="font-size: 1.2rem;"></i>
-                                    </div> -->
-                                    <div>
-                                        <div class="fw-bold" style=" font-size: 1rem;" class="text-main">
+                                <div class="d-flex align-items-center gap-2 gap-md-3">
+                                    <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                                         style="width: 36px; height: 36px; background: var(--bg-primary); color: var(--gold-dark); border: 1px solid var(--border-color);">
+                                        <span style="font-size: 0.9rem; font-weight: bold;">{{ strtoupper(substr($usuario->nombre, 0, 1)) }}</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <div class="fw-bold text-main text-truncate" style="font-size: clamp(0.85rem, 3vw, 1rem);">
                                             {{ $usuario->nombre }}
                                         </div>
+                                        <small class="d-md-none text-muted text-truncate d-block">{{ $usuario->email }}</small>
                                     </div>
                                 </div>
                             </td>
-                            <td class="py-3 px-2">
+                            
+                            {{-- Contacto (oculto en móvil) --}}
+                            <td class="py-3 px-2 d-none d-md-table-cell">
                                 <div class="d-flex flex-column gap-1">
                                     <span style="font-size: 0.9rem;"><i class="bi bi-envelope me-2 text-muted"></i>{{ $usuario->email }}</span>
                                     @if($usuario->telefono)
@@ -149,31 +159,32 @@
                                     @endif
                                 </div>
                             </td>
+                            
+                            {{-- Estado --}}
                             <td class="py-3 px-2">
-                                @php
-                                    $esUsuarioActual = auth()->check() && auth()->user()->codigo === $usuario->codigo;
-                                    $estaActivo = $esUsuarioActual || ($usuario->last_login_at && (!$usuario->last_logout_at || $usuario->last_login_at->gt($usuario->last_logout_at)));
-                                @endphp
                                 @if($estaActivo)
                                     <x-badge type="success"><i class="bi bi-circle-fill me-1"></i>Activo</x-badge>
-                                    <div class="small text-muted mt-1">
+                                    <div class="small text-muted mt-1 d-none d-md-block">
                                         Desde: {{ $usuario->last_login_at ? $usuario->last_login_at->timezone('America/La_Paz')->format('d/m/Y h:i A') : 'Sin registro' }}
                                     </div>
                                 @else
                                     <x-badge type="secondary"><i class="bi bi-circle me-1"></i>Inactivo</x-badge>
-                                    <div class="small text-muted mt-1">
+                                    <div class="small text-muted mt-1 d-none d-md-block">
                                         Salida: {{ $usuario->last_logout_at ? $usuario->last_logout_at->timezone('America/La_Paz')->format('d/m/Y h:i A') : ($usuario->last_login_at ? $usuario->last_login_at->timezone('America/La_Paz')->format('d/m/Y h:i A') : 'Sin registro') }}
                                     </div>
                                 @endif
                             </td>
-                            <td class="py-3 px-2"></td>
+                            
+                            {{-- Rol --}}
                             <td class="py-3 px-2">
                                 <x-badge type="{{ $rolColorClass }}">
                                     {!! $rolIcono !!} {{ $nombreRol }}
                                 </x-badge>
                             </td>
-                            <td class="py-3 px-4 text-end">
-                                <div class="d-flex justify-content-end gap-1">
+                            
+                            {{-- Acciones --}}
+                            <td class="py-3 px-2 text-end">
+                                <div class="d-flex justify-content-end gap-1 flex-wrap">
                                     @can('usuarios.view')
                                         <a href="{{ route('usuarios.show', $usuario->codigo) }}" class="btn btn-sm btn-light border text-gold" title="Ver detalles">
                                             <i class="bi bi-eye"></i>
@@ -200,7 +211,8 @@
                                             </form>
                                         @endif
                                     @endcan
-                                                                        {{-- Botón Forzar Logout --}}
+                                    
+                                    {{-- Botón Forzar Logout --}}
                                     @if($estaActivo && auth()->user()->codigo !== $usuario->codigo)
                                         @can('usuarios.delete')
                                             <form action="{{ route('usuarios.force-logout', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0" onsubmit="return confirm('¿Cerrar la sesión de {{ $usuario->nombre }}? Será desconectado inmediatamente.')">
@@ -211,11 +223,12 @@
                                             </form>
                                         @endcan
                                     @endif
+                                    
                                     @can('usuarios.reset-password')
                                         @if(auth()->user()->codigo !== $usuario->codigo)
-                                            <form action="{{ route('usuarios.reset-password', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0" onsubmit="return confirm('¿Restablecer la contrasena de {{$usuario->nombre}}? Se generara una contrasena temporal.');">
+                                            <form action="{{ route('usuarios.reset-password', $usuario->codigo) }}" method="POST" class="d-inline p-0 m-0" onsubmit="return confirm('¿Restablecer la contraseña de {{$usuario->nombre}}? Se generará una contraseña temporal.');">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-light border text-warning" title="Restablecer contrasena">
+                                                <button type="submit" class="btn btn-sm btn-light border text-warning" title="Restablecer contraseña">
                                                     <i class="bi bi-key"></i>
                                                 </button>
                                             </form>
@@ -247,20 +260,16 @@
                 </table>
             </div>
 
-            <!-- Enlaces de Paginación Nativos Bootstrap 5 -->
             @if($usuarios->hasPages())
-                <div class="d-flex justify-content-between align-items-center mt-4 px-4 pb-3 border-top pt-3" class="border-top-modern">
+                <div class="d-flex justify-content-between align-items-center mt-4 px-4 pb-3 border-top pt-3">
                     <div class="text-muted small">
                         Mostrando de <span class="fw-bold">{{ $usuarios->firstItem() }}</span> a <span class="fw-bold">{{ $usuarios->lastItem() }}</span> de <span class="fw-bold">{{ $usuarios->total() }}</span> registros
                     </div>
                 </div>
-                
-                {{-- Contenedor especial de paginación --}}
                 <div class="px-4 pb-4 paginacion-personalizada">
                     {{ $usuarios->links() }}
                 </div>
             @endif
-
         </div>
     </x-card>
 </div>

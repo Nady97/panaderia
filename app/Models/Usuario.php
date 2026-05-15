@@ -28,6 +28,7 @@ class Usuario extends Authenticatable
         'password',
         'telefono',
         'direccion',
+        'descripcion',
         'rol_id',
         'last_login_at',
         'last_logout_at',

@@ -162,7 +162,7 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente');
     }
 
-    public function edit(string $codigo)
+    public function edit($codigo)
     {
         $usuarioActual = auth()->user();
         if (!$usuarioActual->rol || $usuarioActual->rol->nombre !== 'Administrador') {
@@ -175,7 +175,7 @@ class UsuarioController extends Controller
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
-    public function update(Request $request, string $codigo)
+    public function update(Request $request, $codigo)
     {
         $usuario = Usuario::where('codigo', $codigo)->firstOrFail();
 
@@ -184,6 +184,7 @@ class UsuarioController extends Controller
             'email' => 'required|email|unique:usuarios,email,' . $codigo . ',codigo',
             'telefono' => 'nullable|string|max:20',
             'direccion' => 'nullable|string|max:255',
+            'descripcion' => 'nullable|string',
             'sexo' => 'nullable|in:M,F',
             'rol_id' => 'required|exists:roles,id',
             'password' => 'nullable|min:6|confirmed|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
@@ -196,6 +197,7 @@ class UsuarioController extends Controller
             'email' => $request->email,
             'telefono' => $request->telefono,
             'direccion' => $request->direccion,
+            'descripcion' => $request->descripcion,
             'sexo' => $request->sexo,
             'rol_id' => $request->rol_id,
         ]);
@@ -226,7 +228,7 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente');
     }
 
-    public function resetPassword(string $codigo)
+    public function resetPassword($codigo)
     {
         $usuarioActual = auth()->user();
 

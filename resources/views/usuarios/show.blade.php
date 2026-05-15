@@ -88,6 +88,8 @@
                             </span>
                         </div>
                     </div>
+
+                    {{-- Dirección --}}
                     <div class="col-12">
                         <div class="detail-box">
                             <span class="detail-label">Dirección</span>
@@ -100,6 +102,20 @@
                             </span>
                         </div>
                     </div>
+
+                    {{-- Descripción / Notas --}}
+                    @if($usuario->descripcion)
+                    <div class="col-12">
+                        <div class="detail-box">
+                            <span class="detail-label">
+                                <i class="bi bi-journal-text me-2 text-muted"></i>Descripción / Notas
+                            </span>
+                            <span class="detail-value text-muted" style="font-size: 0.9rem;">
+                                {{ $usuario->descripcion }}
+                            </span>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </x-card>
         </div>
@@ -129,7 +145,6 @@
                                 'Cajero' => '💰',
                                 'Cocinero / Panadero' => '🥖',
                                 'Proveedor' => '🚚',
-                               // 'Cliente' => '👤',
                                 default => '❓'
                             };
                             $rolColorClass = match($nombreRol) {

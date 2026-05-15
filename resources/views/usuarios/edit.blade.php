@@ -65,6 +65,22 @@
                     </div>
                 </div>
 
+                {{-- Descripción / Notas --}}
+            <div class="col-12">
+                <label class="form-label fw-semibold mb-2 text-main">
+                    <i class="bi bi-journal-text me-2 text-muted"></i>Descripción / Notas
+                </label>
+                <div class="input-group input-group-modern @error('descripcion') is-invalid @enderror">
+                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
+                    <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" 
+                            rows="3" placeholder="Notas internas sobre este usuario (opcional)">{{ old('descripcion', $usuario->descripcion) }}</textarea>
+                </div>
+                @error('descripcion')
+                    <div class="invalid-feedback d-block mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                @enderror
+            </div>
+
+
                 <div class="col-md-6 flex-column">
                     <label class="form-label fw-bold text-main">Dirección</label>
                     <div class="input-group input-group-modern">
