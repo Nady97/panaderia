@@ -153,32 +153,30 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/produccion/{produccion}/asignar-responsable', [\App\Http\Controllers\ProduccionController::class, 'asignarResponsable'])
         ->name('produccion.asignar-responsable')->middleware('can:produccion.edit');
 
-    // ============================================
-    // NOTAS DE COMPRA (CU-10, CU-11)
-    // ============================================
-    Route::get('/notas-compra', [\App\Http\Controllers\NotaCompraController::class, 'index'])
-        ->name('notas_compra.index')->middleware('can:notas_compra.view');
-    Route::get('/notas-compra/create', [\App\Http\Controllers\NotaCompraController::class, 'create'])
-        ->name('notas_compra.create')->middleware('can:notas_compra.create');
-    Route::post('/notas-compra', [\App\Http\Controllers\NotaCompraController::class, 'store'])
-        ->name('notas_compra.store')->middleware('can:notas_compra.create');
-    Route::get('/notas-compra/{notaCompra}', [\App\Http\Controllers\NotaCompraController::class, 'show'])
-        ->name('notas_compra.show')->middleware('can:notas_compra.view');
-    Route::get('/notas-compra/{notaCompra}/edit', [\App\Http\Controllers\NotaCompraController::class, 'edit'])
-        ->name('notas_compra.edit')->middleware('can:notas_compra.edit');
-    Route::put('/notas-compra/{notaCompra}', [\App\Http\Controllers\NotaCompraController::class, 'update'])
-        ->name('notas_compra.update')->middleware('can:notas_compra.edit');
-    Route::delete('/notas-compra/{notaCompra}', [\App\Http\Controllers\NotaCompraController::class, 'destroy'])
-        ->name('notas_compra.destroy')->middleware('can:notas_compra.delete');
-    Route::post('/notas-compra/{notaCompra}/confirmar', [\App\Http\Controllers\NotaCompraController::class, 'confirmar'])
-        ->name('notas_compra.confirmar')->middleware('can:notas_compra.edit');
-    Route::post('/notas-compra/{notaCompra}/marcar-recibida', [\App\Http\Controllers\NotaCompraController::class, 'marcarRecibida'])
-        ->name('notas_compra.marcar-recibida')->middleware('can:notas_compra.edit');
-    Route::post('/notas-compra/{notaCompra}/agregar-detalle', [\App\Http\Controllers\NotaCompraController::class, 'agregarDetalle'])
-        ->name('notas_compra.agregar-detalle')->middleware('can:notas_compra.edit');
-    Route::delete('/notas-compra/detalle/{detalle}', [\App\Http\Controllers\NotaCompraController::class, 'eliminarDetalle'])
-        ->name('notas_compra.eliminar-detalle')->middleware('can:notas_compra.edit');
-
+// ============================================
+// NOTAS DE COMPRA (CU-10, CU-11)
+// ============================================
+    Route::prefix('notas-compra')->name('notas_compra.')->middleware('can:notas_compra.view')->group(function () {
+    // Rutas principales
+    Route::get('/', [NotaCompraController::class, 'index'])->name('index');
+    Route::get('/create', [NotaCompraController::class, 'create'])->name('create')->middleware('can:notas_compra.create');
+    Route::post('/', [NotaCompraController::class, 'store'])->name('store')->middleware('can:notas_compra.create');
+    Route::get('/{notaCompra}', [NotaCompraController::class, 'show'])->name('show');
+    Route::get('/{notaCompra}/edit', [NotaCompraController::class, 'edit'])->name('edit')->middleware('can:notas_compra.edit');
+    Route::put('/{notaCompra}', [NotaCompraController::class, 'update'])->name('update')->middleware('can:notas_compra.edit');
+    Route::delete('/{notaCompra}', [NotaCompraController::class, 'destroy'])->name('destroy')->middleware('can:notas_compra.delete');
+    
+    // Acciones especiales
+    Route::post('/{notaCompra}/marcar-recibida', [NotaCompraController::class, 'marcarRecibida'])->name('marcar-recibida')->middleware('can:notas_compra.edit');
+    
+    // Insumos
+    Route::post('/{notaCompra}/agregar-detalle', [NotaCompraController::class, 'agregarDetalle'])->name('agregar-detalle')->middleware('can:notas_compra.edit');
+    Route::delete('/detalle/{detalle}', [NotaCompraController::class, 'eliminarDetalle'])->name('eliminar-detalle')->middleware('can:notas_compra.edit');
+    
+    // Productos
+    Route::post('/{notaCompra}/agregar-producto', [NotaCompraController::class, 'agregarProducto'])->name('agregar-producto')->middleware('can:notas_compra.edit');
+    Route::delete('/producto/{producto}', [NotaCompraController::class, 'eliminarProducto'])->name('eliminar-producto')->middleware('can:notas_compra.edit');
+});
     // ============================================
     // FACTURAS INTERNAS (CU-12)
     // ============================================
@@ -189,7 +187,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/facturas-internas/{facturaInterna}', [\App\Http\Controllers\FacturaInternaController::class, 'show'])
         ->name('facturas_internas.show')->middleware('can:facturas_internas.view');
     Route::get('/facturas-internas/{facturaInterna}/edit', [FacturaInternaController::class, 'edit'])->name('facturas_internas.edit'); 
-    Route::put('/facturas-internas/{facturaInterna}', [FacturaInternaController::class, 'update'])->name('facturas_internas.update');    // 👈 AGREGAR
+    Route::put('/facturas-internas/{facturaInterna}', [FacturaInternaController::class, 'update'])->name('facturas_internas.update');  
     Route::delete('/facturas-internas/{facturaInterna}', [FacturaInternaController::class, 'destroy'])->name('facturas_internas.destroy');    
     Route::post('/notas-compra/{notaCompra}/emitir-factura', [\App\Http\Controllers\FacturaInternaController::class, 'emitirDesdeNota'])
         ->name('facturas_internas.emitir')->middleware('can:facturas_internas.create');

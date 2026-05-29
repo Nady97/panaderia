@@ -13,6 +13,7 @@ class Insumo extends Model
 
     protected $fillable = [
         'nombre',
+        'estado', 
         'unidad_medida',
         'stock_actual',
         'stock_minimo',
@@ -23,5 +24,9 @@ class Insumo extends Model
     {
         return $this->belongsToMany(Receta::class, 'detalle_receta', 'insumo_id', 'receta_id')
             ->withPivot('id', 'cantidad_necesaria');
+    }
+    public function scopeActivo($query)
+    {
+        return $query->where('estado', '=', 'activo');
     }
 }

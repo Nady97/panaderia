@@ -14,7 +14,7 @@ class FacturaInternaController extends Controller
   public function index(Request $request)
   {
     $this->authorize('viewAny', FacturaInterna::class);
-    
+
     $query = FacturaInterna::with(['usuario', 'detalles.producto']);
 
     if ($request->filled('search')) {
@@ -29,7 +29,7 @@ class FacturaInternaController extends Controller
       $query->where('estado', $request->estado);
     }
 
-    $facturas = $query->orderBy('fecha_emision', 'desc')->paginate(10)->withQueryString();
+    $facturas = $query->orderBy('fecha_emision', 'asc')->paginate(10)->withQueryString();
     $estadisticas = [
       'total' => FacturaInterna::count(),
       'emitidas' => FacturaInterna::where('estado', 'emitida')->count(),
@@ -44,7 +44,7 @@ class FacturaInternaController extends Controller
   public function show(FacturaInterna $facturaInterna)
   {
     $this->authorize('view', $facturaInterna);
-    
+
     $facturaInterna->load(['usuario', 'detalles.producto']);
     return view('facturas_internas.show', compact('facturaInterna'));
   }
@@ -52,14 +52,14 @@ class FacturaInternaController extends Controller
   public function create()
   {
     $this->authorize('create', FacturaInterna::class);
-    
+
     return view('facturas_internas.create');
   }
 
   public function store(Request $request)
   {
     $this->authorize('create', FacturaInterna::class);
-    
+
     $validated = $request->validate([
       'cliente_ci' => 'required|string|max:12',
       'cliente_telefono' => 'nullable|string|max:20',
@@ -128,7 +128,7 @@ class FacturaInternaController extends Controller
   public function edit(FacturaInterna $facturaInterna)
   {
     $this->authorize('update', $facturaInterna);
-    
+
     if ($facturaInterna->estado !== 'valida') {
       return back()->withErrors(['error' => 'Solo puedes editar facturas válidas (no pagadas ni anuladas).']);
     }
@@ -140,7 +140,7 @@ class FacturaInternaController extends Controller
   public function update(Request $request, FacturaInterna $facturaInterna)
   {
     $this->authorize('update', $facturaInterna);
-    
+
     if ($facturaInterna->estado !== 'valida') {
       return back()->withErrors(['error' => 'No puedes editar una factura que no está válida.']);
     }
@@ -216,7 +216,7 @@ class FacturaInternaController extends Controller
   public function destroy(FacturaInterna $facturaInterna)
   {
     $this->authorize('delete', $facturaInterna);
-    
+
     if ($facturaInterna->estado === 'anulada') {
       return back()->withErrors(['error' => 'No puedes eliminar una factura anulada.']);
     }
@@ -249,7 +249,7 @@ class FacturaInternaController extends Controller
 
   private function generarNumeroFactura(): string
   {
-    $ultimo = FacturaInterna::orderBy('id', 'desc')->first();
+    $ultimo = FacturaInterna::orderBy('id', 'asc')->first();
     $numero = ($ultimo ? $ultimo->id : 0) + 1;
     return 'FI-' . str_pad($numero, 6, '0', STR_PAD_LEFT);
   }
@@ -257,7 +257,7 @@ class FacturaInternaController extends Controller
   public function marcarPagada(FacturaInterna $facturaInterna)
   {
     $this->authorize('recordPayment', $facturaInterna);
-    
+
     if ($facturaInterna->estado !== 'emitida') {
       return back()->withErrors(['error' => 'La factura debe estar emitida para marcar como pagada.']);
     }
@@ -271,7 +271,7 @@ class FacturaInternaController extends Controller
   public function anular(FacturaInterna $facturaInterna)
   {
     $this->authorize('cancel', $facturaInterna);
-    
+
     if ($facturaInterna->estado === 'anulada') {
       return back()->withErrors(['error' => 'La factura ya está anulada.']);
     }
@@ -285,7 +285,7 @@ class FacturaInternaController extends Controller
   public function descargarPdf(FacturaInterna $facturaInterna)
   {
     $this->authorize('generatePDF', $facturaInterna);
-    
+
     $facturaInterna->load(['usuario']);
 
     $pdf = Pdf::loadView('facturas_internas.pdf', ['factura' => $facturaInterna]);

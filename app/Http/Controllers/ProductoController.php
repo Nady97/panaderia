@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class ProductoController extends Controller
 {

@@ -5,6 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableChanges;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class Producto extends Model
 {
@@ -12,16 +19,26 @@ class Producto extends Model
     protected $table = 'productos';
 
     protected $fillable = [
-        'nombre',
-        'precio_venta',
-        'precio_costo',
-        'stock',
-        'stock_minimo',
-        'estado',
-        'imagen',
-        'categoria_id'
+
+        'codigo', 'nombre', 'descripcion', 'precio_venta', 'precio_costo',
+        'stock_actual', 'stock_minimo', 'imagen', 'estado', 'categoria_id'
+
+    ];
+     protected $casts = [
+        'precio_venta' => 'decimal:2',
+        'precio_costo' => 'decimal:2',
+        'stock_actual' => 'decimal:2'
     ];
 
+    
+    public function notasCompra()
+    {
+        return $this->belongsToMany(NotaCompra::class, 'nota_compra_productos')
+                    ->withPivot('cantidad', 'precio_compra_unitario', 'subtotal')
+                    ->withTimestamps();
+    }
+
+    
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
@@ -31,6 +48,7 @@ class Producto extends Model
     {
         return $this->hasMany(Receta::class, 'producto_id');
     }
+
 
     // Obtener el proveedor más reciente que suministró este producto
     public function obtenerProveedorActual()

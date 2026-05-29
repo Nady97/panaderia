@@ -18,7 +18,7 @@ class ProduccionController extends Controller
     {
         $this->authorize('viewAny', Produccion::class);
 
-        $query = Produccion::with("producto")->orderBy("fecha_programada", "desc");
+        $query = Produccion::with("producto")->orderBy("fecha_programada", "asc");
 
         if ($request->has("estado") && $request->estado != "") {
             $estadoMap = ["En Proceso" => "en_proceso", "Completado" => "completado", "Cancelado" => "fallido", "Planificado" => "planificado"];
