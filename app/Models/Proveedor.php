@@ -25,4 +25,10 @@ class Proveedor extends Model
         'direccion',
         'estado'
     ];
+
+    // Relaciones
+    public function notasCompra()
+    {
+        return $this->hasMany(NotaCompra::class, 'proveedor_codigo', 'codigo');
+    }
 }

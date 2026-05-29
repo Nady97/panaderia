@@ -8,11 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
+use Intervention\Image\Facades\Image;
 
 class ProductoController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Producto::class);
+
         // Optimización: Eager Loading de la relación categoría para evitar defecto de N+1 Consultas.
         $productos = Producto::with('categoria')->paginate(10)->withQueryString();
 
@@ -33,81 +36,110 @@ class ProductoController extends Controller
             'descontinuados'
         ));
     }
+
     public function create()
     {
+        $this->authorize('create', Producto::class);
+
         $categorias = Categoria::all();
         return view('productos.create', compact('categorias'));
     }
+
     // Método para almacenar un nuevo producto en la base de datos
     public function store(StoreProductoRequest $request)
-{
-    $data = $request->validated();
-    
-    if ($request->hasFile('imagen')) {
-        $imagen = $request->file('imagen');
-        $nombre = time() . '.' . $imagen->getClientOriginalExtension();
-        $ruta = storage_path('app/public/productos/' . $nombre);
-        
-        // Redimensionar imagen (si tienes Intervention Image)
-        \Image\Image::make($imagen)->resize(800, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($ruta);
-        
-        $data['imagen'] = 'productos/' . $nombre;
-    }
-    
-    $producto = Producto::create($data);
+    {
+        $this->authorize('create', Producto::class);
 
-    return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
-}
+        $data = $request->validated();
+
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $nombre = time() . '.' . $imagen->getClientOriginalExtension();
+            
+            // Crear directorio si no existe
+            if (!Storage::disk('public')->exists('productos')) {
+                Storage::disk('public')->makeDirectory('productos');
+            }
+            
+            $ruta = storage_path('app/public/productos/' . $nombre);
+
+            // Redimensionar imagen (usando Intervention Image correctamente)
+            $image = Image::make($imagen)->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $image->save($ruta);
+
+            $data['imagen'] = 'productos/' . $nombre;
+        }
+
+        $producto = Producto::create($data);
+
+        return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
+    }
+
     // Método para mostrar los detalles de un producto específico
-    // MEJORA 1: Route Model Binding. En vez de recibir un $id, Laravel inyecta el objeto $producto automáticamente resuelto desde la BD.
     public function show(Producto $producto)
     {
-        // Ya no necesitamos $producto = Producto::findOrFail($id); ¡Magia pura!
+        $this->authorize('view', $producto);
+
         return view('productos.show', compact('producto'));
     }
+
     // Método para mostrar el formulario de edición de un producto
-    // Aplicando la misma mejora de inyección de dependencia (Route Model Binding)
     public function edit(Producto $producto)
     {
+        $this->authorize('update', $producto);
+
         $categorias = Categoria::all();
         return view('productos.edit', compact('producto', 'categorias'));
     }
-  public function update(UpdateProductoRequest $request, $id)
-{
-    $producto = Producto::findOrFail($id);
-    $data = $request->validated();
-    
-    if ($request->hasFile('imagen')) {
-        // Eliminar imagen anterior
-        if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
-            Storage::disk('public')->delete($producto->imagen);
-        }
-        
-        $imagen = $request->file('imagen');
-        $nombre = time() . '.' . $imagen->getClientOriginalExtension();
-        $ruta = storage_path('app/public/productos/' . $nombre);
-        
-        \Intervention\Image\ImageManager::imagick()->read($imagen)->resize(800, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($ruta);
-        
-        $data['imagen'] = 'productos/' . $nombre;
-    }
-    
-    $producto->update($data);
 
-    return redirect()->route('productos.edit', $id)->with('success', 'Producto actualizado exitosamente.');
-}
+    // CORREGIDO: Usar Route Model Binding consistentemente
+    public function update(UpdateProductoRequest $request, Producto $producto)
+    {
+        $this->authorize('update', $producto);
+
+        $data = $request->validated();
+
+        if ($request->hasFile('imagen')) {
+            // Eliminar imagen anterior
+            if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+
+            $imagen = $request->file('imagen');
+            $nombre = time() . '.' . $imagen->getClientOriginalExtension();
+            
+            // Crear directorio si no existe
+            if (!Storage::disk('public')->exists('productos')) {
+                Storage::disk('public')->makeDirectory('productos');
+            }
+            
+            $ruta = storage_path('app/public/productos/' . $nombre);
+
+            // CORREGIDO: Usar la sintaxis correcta de Intervention Image
+            $image = Image::make($imagen)->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $image->save($ruta);
+
+            $data['imagen'] = 'productos/' . $nombre;
+        }
+
+        $producto->update($data);
+
+        return redirect()->route('productos.edit', $producto->id)->with('success', 'Producto actualizado exitosamente.');
+    }
 
     // Método para eliminar un producto específico
     public function destroy(Producto $producto)
     {
+        $this->authorize('delete', $producto);
+
         try {
             $this->deleteStoredImage($producto->imagen);
 
-            // Se elimina directamente, ya que el modelo Producto ya viene instanciado gracias al Route Model Binding
+            // Se elimina directamente, ya que el modelo Producto ya viene instanciado
             $producto->delete();
 
             return redirect()->route('productos.index')

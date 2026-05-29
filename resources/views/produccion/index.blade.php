@@ -134,6 +134,17 @@
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                         @endcan
+
+                                        @if($produccion->estado === 'planificado')
+                                            @can('solicitudes_produccion.create')
+                                                <button type="button" class="btn btn-sm btn-warning border-0" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#modalUrgencia{{ $produccion->id }}"
+                                                        title="Marcar como urgente">
+                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                </button>
+                                            @endcan
+                                        @endif
                                         
                                         @can('produccion.delete')
                                             <form action="{{ route('produccion.destroy', $produccion->id) }}" 
@@ -149,6 +160,48 @@
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- Modal de Urgencia para esta producción -->
+                            @if($produccion->estado === 'planificado')
+                                <div class="modal fade" id="modalUrgencia{{ $produccion->id }}" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <form action="{{ route('solicitudes_produccion.crear', $produccion) }}" method="POST">
+                                                @csrf
+                                                <div class="modal-header border-bottom">
+                                                    <h5 class="modal-title fw-bold text-main">
+                                                        <i class="bi bi-exclamation-triangle me-2"></i> Solicitar Producción Urgente
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p class="text-muted mb-3">Producto: <strong>{{ $produccion->producto->nombre ?? 'N/A' }}</strong></p>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="tipo_urgencia{{ $produccion->id }}" class="form-label fw-semibold">Tipo de Urgencia</label>
+                                                        <select name="tipo_urgencia" id="tipo_urgencia{{ $produccion->id }}" class="form-select" required onchange="toggleMotivo('{{ $produccion->id }}')">
+                                                            <option value="">Selecciona una opción...</option>
+                                                            <option value="urgente">Urgente</option>
+                                                            <option value="muy_urgente">Muy Urgente</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="mb-3" id="motivo-{{ $produccion->id }}" style="display: none;">
+                                                        <label for="motivo_urgencia{{ $produccion->id }}" class="form-label fw-semibold">Motivo</label>
+                                                        <textarea name="motivo_urgencia" id="motivo_urgencia{{ $produccion->id }}" class="form-control" rows="3" placeholder="Explica por qué es urgente..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-top">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-warning">
+                                                        <i class="bi bi-check-circle me-1"></i> Solicitar
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         @empty
                             <tr>
                                 <td colspan="5" class="p-0 border-0">
@@ -187,6 +240,21 @@
 
 @push('scripts')
 <script>
+function toggleMotivo(produccionId) {
+    const select = document.getElementById('tipo_urgencia' + produccionId);
+    const motivoField = document.getElementById('motivo-' + produccionId);
+    const motivoTextarea = document.getElementById('motivo_urgencia' + produccionId);
+    
+    if (select.value && select.value !== '') {
+        motivoField.style.display = 'block';
+        motivoTextarea.required = true;
+    } else {
+        motivoField.style.display = 'none';
+        motivoTextarea.required = false;
+        motivoTextarea.value = '';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.form-delete').forEach(form => {
         form.addEventListener('submit', function(e) {

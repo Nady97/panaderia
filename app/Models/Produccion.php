@@ -21,11 +21,14 @@ class Produccion extends Model
         'fecha_programada',
         'hora_inicio',
         'hora_fin',
+        'fecha_inicio_real',
+        'fecha_fin_real',
         'estado',
         'cantidad_producida',
         'observaciones_calidad',
         'receta_id',
         'usuario_codigo',
+        'usuario_responsable_codigo',
         'created_at'
     ];
 
@@ -33,6 +36,8 @@ class Produccion extends Model
         'fecha_programada' => 'date',
         'hora_inicio' => 'datetime',
         'hora_fin' => 'datetime',
+        'fecha_inicio_real' => 'datetime',
+        'fecha_fin_real' => 'datetime',
         'cantidad_producida' => 'decimal:2',
         'created_at' => 'datetime'
     ];
@@ -73,6 +78,14 @@ class Produccion extends Model
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'usuario_codigo', 'codigo');
+    }
+
+    /**
+     * Relación con Usuario Responsable del Proceso
+     */
+    public function usuarioResponsable()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_responsable_codigo', 'codigo');
     }
 
     /**

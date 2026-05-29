@@ -11,7 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('producciones')) {
+        if (Schema::hasTable('producciones')) {
+            // Si la tabla ya existe, agregamos las columnas que faltan
+            Schema::table('producciones', function (Blueprint $table) {
+                if (!Schema::hasColumn('producciones', 'usuario_codigo')) {
+                    $table->string('usuario_codigo', 10)->collation('utf8mb4_general_ci')->nullable();
+                }
+                if (!Schema::hasColumn('producciones', 'receta_id')) {
+                    $table->integer('receta_id')->nullable();
+                }
+            });
+        } else {
+            // Si no existe, la creamos con toda la estructura
             Schema::create('producciones', function (Blueprint $table) {
                 $table->charset = 'utf8mb4';
                 $table->collation = 'utf8mb4_general_ci';
@@ -35,12 +46,9 @@ return new class extends Migration
                 $table->string('usuario_codigo', 10)->collation('utf8mb4_general_ci'); // usuarios.codigo es varchar(10)
 
                 $table->timestamp('created_at')->useCurrent();
-            });
 
-            // Crear las llaves foráneas por separado (Práctica segura para MariaDB)
-            Schema::table('producciones', function (Blueprint $table) {
-                $table->foreign('receta_id')->references('id')->on('recetas')->onDelete('restrict');
-                $table->foreign('usuario_codigo')->references('codigo')->on('usuarios')->onDelete('restrict');
+                $table->index('receta_id');
+                $table->index('usuario_codigo');
             });
         }
     }

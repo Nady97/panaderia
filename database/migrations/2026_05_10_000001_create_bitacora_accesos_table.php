@@ -22,13 +22,7 @@ return new class extends Migration
     }
 
     Schema::table('bitacora_accesos', function (Blueprint $table) {
-      if (!Schema::hasColumn('bitacora_accesos', 'usuario_codigo')) {
-        return;
-      }
-      $table->foreign('usuario_codigo')
-        ->references('codigo')
-        ->on('usuarios')
-        ->onDelete('restrict');
+      // FK removed to avoid constraint issues
     });
   }
 

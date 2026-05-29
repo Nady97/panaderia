@@ -11,7 +11,8 @@ return new class extends Migration
         // ✅ Verificar si la columna ya existe
         if (!Schema::hasColumn('usuarios', 'rol_id')) {
             Schema::table('usuarios', function (Blueprint $table) {
-                $table->foreignId('rol_id')->nullable()->constrained('roles')->onDelete('set null');
+                $table->unsignedBigInteger('rol_id')->nullable();
+                $table->index('rol_id');
             });
         }
     }
@@ -20,7 +21,6 @@ return new class extends Migration
     {
         if (Schema::hasColumn('usuarios', 'rol_id')) {
             Schema::table('usuarios', function (Blueprint $table) {
-                $table->dropForeign(['rol_id']);
                 $table->dropColumn('rol_id');
             });
         }

@@ -107,6 +107,31 @@
         </li>
         @endcan
         
+        @canany(['notas_compra.view', 'facturas_internas.view', 'solicitudes_produccion.view'])
+        <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Compras y Facturación</div>
+        @endcanany
+        @can('notas_compra.view')
+        <li class="nav-item">
+            <a href="{{ route('notas_compra.index') }}" class="nav-link {{ request()->is('notas-compra*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-pdf"></i> <span>Notas de Compra</span>
+            </a>
+        </li>
+        @endcan
+        @can('facturas_internas.view')
+        <li class="nav-item">
+            <a href="{{ route('facturas_internas.index') }}" class="nav-link {{ request()->is('facturas-internas*') ? 'active' : '' }}">
+                <i class="bi bi-receipt"></i> <span>Facturas Internas</span>
+            </a>
+        </li>
+        @endcan
+        @can('solicitudes_produccion.view')
+        <li class="nav-item">
+            <a href="{{ route('solicitudes_produccion.index') }}" class="nav-link {{ request()->is('solicitudes-produccion*') ? 'active' : '' }}">
+                <i class="bi bi-lightning"></i> <span>Prod. Urgente</span>
+            </a>
+        </li>
+        @endcan
+        
         @canany(['proveedores.view', 'roles.view', 'usuarios.view'])
         <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Administración</div>
         @endcanany
@@ -128,6 +153,15 @@
         <li class="nav-item">
             <a href="{{ url('/usuarios') }}" class="nav-link {{ request()->is('usuarios*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> <span>Usuarios</span>
+            </a>
+        </li>
+        @endcan
+
+        @can('reportes.view')
+        <div class="sidebar-heading mt-4 mb-2 small text-uppercase">Reportes</div>
+        <li class="nav-item">
+            <a href="{{ route('reportes.index') }}" class="nav-link {{ request()->is('reportes*') ? 'active' : '' }}">
+                <i class="bi bi-bar-chart"></i> <span>Reportes</span>
             </a>
         </li>
         @endcan

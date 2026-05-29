@@ -117,6 +117,61 @@
 
         <!-- Sidebar Trazabilidad -->
         <div class="col-lg-4">
+            <!-- Card: Estado y Acciones Rápidas -->
+            <x-card class="border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-main mb-3">
+                        <i class="bi bi-lightning me-2"></i> Solicitar Cambio de Prioridad
+                    </h5>
+                    <p class="text-muted small mb-3">Marca esta producción como urgente o muy urgente si necesita cambiar su prioridad de ejecución.</p>
+                    
+                    @if($produccion->estado === 'planificado')
+                        <form action="{{ route('solicitudes_produccion.crear', $produccion) }}" method="POST" id="solicitudUrgenciaForm">
+                            @csrf
+                            
+                            <div class="mb-3">
+                                <label for="tipo_urgencia" class="form-label small text-muted fw-semibold">Tipo de Urgencia</label>
+                                <select name="tipo_urgencia" id="tipo_urgencia" class="form-select form-select-sm" required onchange="toggleMotivoField()">
+                                    <option value="normal">Normal (Sin cambios)</option>
+                                    <option value="urgente">Urgente</option>
+                                    <option value="muy_urgente">Muy Urgente</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3" id="motivoField" style="display: none;">
+                                <label for="motivo_urgencia" class="form-label small text-muted fw-semibold">Motivo de Urgencia</label>
+                                <textarea name="motivo_urgencia" id="motivo_urgencia" class="form-control form-control-sm" rows="3" placeholder="Explica por qué es urgente..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-warning w-100 btn-sm">
+                                <i class="bi bi-exclamation-triangle me-1"></i> Crear Solicitud
+                            </button>
+                        </form>
+
+                        <script>
+                            function toggleMotivoField() {
+                                const select = document.getElementById('tipo_urgencia');
+                                const motivoField = document.getElementById('motivoField');
+                                const motivoTextarea = document.getElementById('motivo_urgencia');
+                                
+                                if (select.value !== 'normal') {
+                                    motivoField.style.display = 'block';
+                                    motivoTextarea.required = true;
+                                } else {
+                                    motivoField.style.display = 'none';
+                                    motivoTextarea.required = false;
+                                    motivoTextarea.value = '';
+                                }
+                            }
+                        </script>
+                    @else
+                        <div class="alert alert-info alert-sm mb-0">
+                            <i class="bi bi-info-circle me-2"></i> 
+                            <small>Solo puedes crear solicitudes para producciones en estado <strong>Planificado</strong></small>
+                        </div>
+                    @endif
+                </div>
+            </x-card>
             <x-card class="border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
                     <h5 class="fw-bold text-main mb-3 border-bottom pb-2">Tiempos y Trazabilidad</h5>

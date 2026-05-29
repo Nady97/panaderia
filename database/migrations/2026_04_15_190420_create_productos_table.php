@@ -20,18 +20,12 @@ return new class extends Migration
 
                 //  RELACIÓN CON PROVEEDORES
                 $table->unsignedBigInteger('proveedor_id')->nullable();
-                ////$table->foreign('proveedor_id')
-                 //   ->references('id_proveedor')
-                  //  ->on('proveedores')
-                  //  ->onDelete('set null');
-                  //  RELACIÓN CON CATEGORÍAS (si existe)
+                //  RELACIÓN CON CATEGORÍAS (si existe)
                 $table->unsignedBigInteger('categoria_id')->nullable();
-                $table->foreign('categoria_id')
-                    ->references('id')
-                    ->on('categorias')
-                    ->onDelete('set null');
                 $table->timestamps();
-                });
+
+                $table->index(['categoria_id', 'proveedor_id']);
+            });
         }
     }
 

@@ -275,6 +275,87 @@ class PermisoSeeder extends Seeder
         'modulo' => 'Produccion',
         'descripcion' => 'Eliminar produccion.',
       ],
+      // ============================================
+      // NOTAS DE COMPRA (CU-10, CU-11)
+      // ============================================
+      [
+        'nombre' => 'Ver notas de compra',
+        'slug' => 'notas_compra.view',
+        'modulo' => 'Compras',
+        'descripcion' => 'Visualizar notas de compra.',
+      ],
+      [
+        'nombre' => 'Crear notas de compra',
+        'slug' => 'notas_compra.create',
+        'modulo' => 'Compras',
+        'descripcion' => 'Crear notas de compra a proveedores.',
+      ],
+      [
+        'nombre' => 'Editar notas de compra',
+        'slug' => 'notas_compra.edit',
+        'modulo' => 'Compras',
+        'descripcion' => 'Modificar notas de compra en borrador.',
+      ],
+      [
+        'nombre' => 'Eliminar notas de compra',
+        'slug' => 'notas_compra.delete',
+        'modulo' => 'Compras',
+        'descripcion' => 'Eliminar notas de compra.',
+      ],
+      // ============================================
+      // FACTURAS INTERNAS (CU-12)
+      // ============================================
+      [
+        'nombre' => 'Ver facturas internas',
+        'slug' => 'facturas_internas.view',
+        'modulo' => 'Facturación',
+        'descripcion' => 'Visualizar facturas internas.',
+      ],
+      [
+        'nombre' => 'Crear facturas internas',
+        'slug' => 'facturas_internas.create',
+        'modulo' => 'Facturación',
+        'descripcion' => 'Emitir facturas internas desde notas de compra.',
+      ],
+      [
+        'nombre' => 'Editar facturas internas',
+        'slug' => 'facturas_internas.edit',
+        'modulo' => 'Facturación',
+        'descripcion' => 'Modificar facturas internas.',
+      ],
+      [
+        'nombre' => 'Eliminar facturas internas',
+        'slug' => 'facturas_internas.delete',
+        'modulo' => 'Facturación',
+        'descripcion' => 'Anular facturas internas.',
+      ],
+      [
+        'nombre' => 'Descargar facturas',
+        'slug' => 'facturas_internas.download',
+        'modulo' => 'Facturación',
+        'descripcion' => 'Descargar facturas en PDF.',
+      ],
+      // ============================================
+      // SOLICITUDES DE PRODUCCIÓN (CU-26)
+      // ============================================
+      [
+        'nombre' => 'Ver solicitudes de producción',
+        'slug' => 'solicitudes_produccion.view',
+        'modulo' => 'Produccion',
+        'descripcion' => 'Visualizar solicitudes de producción urgente.',
+      ],
+      [
+        'nombre' => 'Crear solicitudes de producción',
+        'slug' => 'solicitudes_produccion.create',
+        'modulo' => 'Produccion',
+        'descripcion' => 'Solicitar producción urgente.',
+      ],
+      [
+        'nombre' => 'Aprobar solicitudes de producción',
+        'slug' => 'solicitudes_produccion.approve',
+        'modulo' => 'Produccion',
+        'descripcion' => 'Aprobar o rechazar solicitudes de producción urgente.',
+      ],
       [
         'nombre' => 'Cambiar contraseña',
         'slug' => 'perfil.password',
@@ -286,6 +367,42 @@ class PermisoSeeder extends Seeder
         'slug' => 'perfil.delete',
         'modulo' => 'Cuenta',
         'descripcion' => 'Eliminar la cuenta propia.',
+      ],
+      [
+        'nombre' => 'Ver reportes',
+        'slug' => 'reportes.view',
+        'modulo' => 'Reportes',
+        'descripcion' => 'Acceso a reportes y análisis del sistema.',
+      ],
+      [
+        'nombre' => 'Ver dashboard',
+        'slug' => 'reportes.dashboard',
+        'modulo' => 'Reportes',
+        'descripcion' => 'Ver dashboard de métricas clave.',
+      ],
+      [
+        'nombre' => 'Ver reporte de ventas',
+        'slug' => 'reportes.ventas',
+        'modulo' => 'Reportes',
+        'descripcion' => 'Ver reporte detallado de ventas.',
+      ],
+      [
+        'nombre' => 'Ver reporte de producción',
+        'slug' => 'reportes.produccion',
+        'modulo' => 'Reportes',
+        'descripcion' => 'Ver reporte de producción realizada vs planificada.',
+      ],
+      [
+        'nombre' => 'Ver inventario crítico',
+        'slug' => 'reportes.inventario',
+        'modulo' => 'Reportes',
+        'descripcion' => 'Ver alertas de inventario en nivel crítico.',
+      ],
+      [
+        'nombre' => 'Ver reporte de proveedores',
+        'slug' => 'reportes.proveedores',
+        'modulo' => 'Reportes',
+        'descripcion' => 'Ver reporte de proveedores y compras.',
       ],
     ];
 

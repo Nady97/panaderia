@@ -28,14 +28,8 @@ return new class extends Migration
                 $table->text('observaciones')->nullable();
 
                 $table->timestamps();
-            });
 
-            // 2. Agregamos la llave foránea forzándola explícitamente después de crear la tabla
-            Schema::table('producciones', function (Blueprint $table) {
-                $table->foreign('proveedor_codigo')
-                    ->references('codigo')
-                    ->on('proveedores')
-                    ->onDelete('restrict');
+                $table->index('proveedor_codigo');
             });
         }
     }
