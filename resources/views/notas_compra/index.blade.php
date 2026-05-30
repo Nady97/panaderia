@@ -189,7 +189,7 @@
                                 <h5 class="empty-state-title">No hay notas de compra</h5>
                                 <p class="empty-state-desc">Comienza creando tu primera nota de compra</p>
                                 @can('notas_compra.create')
-                                    <a href="{{ route('notas_compra.create') }}" class="btn-gold-panaderia mt-2">
+                                    <a href="{{ route('notas_compra.create') }}" class="btn btn-primary-panaderia text-nowrap">
                                         <i class="bi bi-plus-circle me-1"></i> Nueva Nota
                                     </a>
                                 @endcan
