@@ -26,7 +26,7 @@ class SolicitudProduccionController extends Controller
       $query->where('tipo_urgencia', $request->tipo_urgencia);
     }
 
-    $solicitudes = $query->orderBy('fecha_solicitud', 'desc')->paginate(10)->withQueryString();
+    $solicitudes = $query->orderBy('fecha_solicitud', 'asc')->paginate(10)->withQueryString();
 
     $estadisticas = [
       'total' => SolicitudProduccion::count(),

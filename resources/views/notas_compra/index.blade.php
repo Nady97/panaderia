@@ -3,7 +3,7 @@
 @section('content')
 <div class="dashboard-container">
     <!-- Header -->
-    <div class="flex-between mb-4 flex-wrap gap-3">
+    <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
             <h1 class="text-primary-heading mb-1">
                 <i class="bi bi-receipt me-2 text-gold"></i>
@@ -11,11 +11,13 @@
             </h1>
             <p class="text-caption">Gestión de compras a proveedores</p>
         </div>
-        @can('notas_compra.create')
-            <a href="{{ route('notas_compra.create') }}" class="btn-gold-panaderia">
-                <i class="bi bi-plus-circle me-1"></i> Nueva Nota
-            </a>
-        @endcan
+        <div class="d-flex gap-3 align-items-center flex-wrap">
+                @can('productos.create')
+                    <a href="{{ route('productos.create') }}" class="btn btn-primary-panaderia text-nowrap">
+                        <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+                    </a>
+                @endcan
+            </div>
     </div>
 
     <!-- KPI Cards -->
