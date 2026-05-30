@@ -53,7 +53,7 @@
         <div class="col-md-3 col-sm-6">
             <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="color: #ef4444;">
+                    <div class="p-3 me-3" style="color: #d45959;">
                         <i class="bi bi-exclamation-circle kpi-icon"></i>
                     </div>
                     <div>
@@ -66,7 +66,7 @@
         <div class="col-md-3 col-sm-6">
             <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="color: #10b981;">
+                    <div class="p-3 me-3" style="color: #087e56;">
                         <i class="bi bi-check-circle kpi-icon"></i>
                     </div>
                     <div>
@@ -79,7 +79,7 @@
         <div class="col-md-3 col-sm-6">
             <x-card class="h-100 d-flex align-items-center bg-transparent-hover kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="color: #8b5cf6;">
+                    <div class="p-3 me-3" style="color: #f10b0b;">
                         <i class="bi bi-x-circle kpi-icon"></i>
                     </div>
                     <div>

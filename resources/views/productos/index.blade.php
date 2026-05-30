@@ -82,7 +82,7 @@
         <div class="col-md-3 col-sm-6">
             <x-card class="h-100 d-flex align-items-center kpi-card">
                 <div class="d-flex align-items-center w-100">
-                    <div class="p-3 me-3" style="color: var(--danger);">
+                    <div class="p-3 me-3">
                         <i class="bi bi-x-circle kpi-icon"></i>
                     </div>
                     <div>

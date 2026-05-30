@@ -25,7 +25,7 @@
         <div class="col-md-3 col-sm-6">
             <div class="card-modern kpi-card p-3">
                 <div class="kpi-icon-wrapper me-3">
-                    <i class="bi bi-receipt kpi-icon text-gold"></i>
+                    <i class="bi bi-receipt kpi-icon"></i>
                 </div>
                 <div>
                     <h3 class="fw-bold mb-0 text-main">{{ $estadisticas['total'] ?? 0 }}</h3>
@@ -36,7 +36,7 @@
         <div class="col-md-3 col-sm-6">
             <div class="card-modern kpi-card p-3">
                 <div class="kpi-icon-wrapper me-3">
-                    <i class="bi bi-hourglass-split kpi-icon text-warning"></i>
+                    <i class="bi bi-hourglass-split kpi-icon"></i>
                 </div>
                 <div>
                     <h3 class="fw-bold mb-0 text-main">{{ $estadisticas['solicitadas'] ?? 0 }}</h3>
