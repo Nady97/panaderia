@@ -1,25 +1,25 @@
 <div align="center">
-  <h1>🥐 Sistema de Gestión Integral para Panadería (ERP)</h1>
+  <h1> Sistema de Gestión Integral para Panadería (ERP)</h1>
   <p>Una plataforma web moderna, unificada para la administración de inventarios, recetas y recursos humanos.</p>
 </div>
 
 ---
 
-## 🚀 Visión General
+## Visión General
 
 Este proyecto es una aplicación web estilo **SaaS (Software as a Service)** desarrollada para optimizar los procesos de una panadería profesional. Permite llevar un control riguroso y en tiempo real de productos, costos operativos, personal, libreta de recetas y listados de proveedores a través de una interfaz de usuario, intuitiva y eficiente.
 
-## ✨ Características y Módulos Principales
+## Características y Módulos Principales
 
 El sistema goza de una arquitectura optimizada que protege el uso de memoria a través de **paginación del lado del servidor**, búsquedas mediante consultas nativas SQL y un diseño simétrico en cada módulo:
 
-- 📦 **Gestión de Productos:** Control preciso de stock físico, alertas de inventario mínimo, cálculo de precios de costo frente a precios de venta pública.
-- 🏷️ **Sistema de Categorías:** Agrupación y clasificación del catálogo de panes y postres, impulsado por identificadores automáticos (Slugs URL).
-- 📖 **Libro de Recetas:** Fichas técnicas avanzadas para panaderos, controlando los tiempos de preparación, métricas de rendimiento por horneada y capacidad de descarga ágil de las recetas en formato PDF.
-- 🚚 **Directorio de Proveedores:** Base de datos relacional para ubicar rápidamente contactos comerciales, empresas de distribución, números de NIT y líneas de atención.
-- 👥 **Personal y Usuarios:** Módulo de control de acceso para los empleados de la panadería con niveles de roles y gestión de credenciales.
+- **Gestión de Productos:** Control preciso de stock físico, alertas de inventario mínimo, cálculo de precios de costo frente a precios de venta pública.
+-  **Sistema de Categorías:** Agrupación y clasificación del catálogo de panes y postres, impulsado por identificadores automáticos (Slugs URL).
+-  **Libro de Recetas:** Fichas técnicas avanzadas para panaderos, controlando los tiempos de preparación, métricas de rendimiento por horneada y capacidad de descarga ágil de las recetas en formato PDF.
+-  **Directorio de Proveedores:** Base de datos relacional para ubicar rápidamente contactos comerciales, empresas de distribución, números de NIT y líneas de atención.
+-  **Personal y Usuarios:** Módulo de control de acceso para los empleados de la panadería con niveles de roles y gestión de credenciales.
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 - **Backend / Core:** Laravel 11 / 12 (PHP 8.2+)
 - **Base de Datos:** MySQL
@@ -29,7 +29,7 @@ El sistema goza de una arquitectura optimizada que protege el uso de memoria a t
 - **Alertas y Notificaciones:** SweetAlert2 (Integrado nativamente vía NPM).
 - **Empaquetado de Assets:** Vite (Hot Module Replacement & Minificación).
 
-## 🎨 Arquitectura de Diseño: Tema "Pan Francés"
+## Arquitectura de Diseño: Tema "Pan Francés"
 
 adoptando el esquema visual **"Pan Francés"**, inspirado en la calidez de una panadería tradicional pero con la seriedad de un ERP corporativo:
 
@@ -40,7 +40,7 @@ adoptando el esquema visual **"Pan Francés"**, inspirado en la calidez de una p
 - **Filtros Interactivos:** Búsqueda en tiempo real del lado del cliente optimizada con atributos data-\* y listeners modulares (Ej. productos.js).
 - **Experiencia Homologada (SweetAlert2):** Interceptores globales en pp.js atrapan los formularios de eliminación y las variables de sesión de Laravel para disparar _Toasts_ y _Modals_ automáticamente.
 
-## ⚙️ Guía Rápida de Instalación y Entorno Local
+## Guía Rápida de Instalación y Entorno Local
 
 **Requisitos del Servidor:**
 
